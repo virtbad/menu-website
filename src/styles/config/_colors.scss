@@ -12,10 +12,68 @@ $white: #ffffff;
 
 // non themed colors
 
+$gray-border: rgba(#777373, 0.4);
+
 // light themed colors
+
+$primary-light: #ffffff;
+$secondary-light: #17181b;
+$tertiary-light: #212226;
+
+$link-light: rgba(#777373, 0.5);
+$link-hover-light: rgba(#777373, 0.7);
+
+$input-border-light: #7f7f7f; //rgba($black, 0.5) but to avoid transparency
+$input-border-hover-light: rgba($black, 0.7);
+$input-border-focus-light: rgba($black, 0.9);
+
+$option-hover-light: rgba(#e3e3e3, 0.3);
+$option-selected-light: rgba(#e3e3e3, 0.5);
 
 // dark themed colors
 
+$primary-dark: #17181b;
+$secondary-dark: #e9ecef;
+$tertiary-dark: #bbbdbf;
+
+$link-dark: rgba($white, 0.5);
+$link-hover-dark: rgba($white, 0.7);
+
+$input-border-dark: #8b8c8d; //rgba($white, 0.5) but to avoid transparency
+$input-border-hover-dark: rgba($white, 0.7);
+$input-border-focus-dark: rgba($white, 0.9);
+
+$option-hover-dark: rgba(#e3e3e3, 0.075);
+$option-selected-dark: rgba(#e3e3e3, 0.1);
+
+// theme lists
+
 $all-theme: ();
-$light-theme: ();
-$dark-theme: ();
+
+$light-theme: (
+  --primary: $primary-light,
+  --secondary: $secondary-light,
+  --tertiary: $tertiary-light,
+  --link: $link-light,
+  --link-hover: $link-hover-light,
+  --input-border: $input-border-light,
+  --input-border-hover: $input-border-hover-light,
+  --input-border-focus: $input-border-focus-light,
+  --border: $gray-border,
+  --option-hover: $option-hover-light,
+  --option-select: $option-selected-light,
+);
+
+$dark-theme: (
+  --primary: $primary-dark,
+  --secondary: $secondary-dark,
+  --tertiary: $tertiary-dark,
+  --link: $link-dark,
+  --link-hover: $link-hover-dark,
+  --input-border: $input-border-dark,
+  --input-border-hover: $input-border-hover-dark,
+  --input-border-focus: $input-border-focus-dark,
+  --border: $gray-border,
+  --option-hover: $option-hover-dark,
+  --option-select: $option-selected-dark,
+);

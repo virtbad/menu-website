@@ -1,0 +1,33 @@
+@use "../../config/" as *;
+
+.card-container {
+  display: grid;
+  border-radius: $border-radius-big;
+  padding: 2rem;
+  background: $card-gradient;
+
+  &[data-variant="big"] {
+    grid-template-areas: "title . price" "description description price" "label . price";
+  }
+
+  &[data-variant="small"] {
+    grid-template-areas: "title ." "description description" "label ." "price price";
+  }
+
+  .title {
+    grid-area: title;
+  }
+
+  .description {
+    grid-area: description;
+  }
+
+  .price-container {
+    grid-area: price;
+    display: flex;
+  }
+
+  .label {
+    grid-area: label;
+  }
+}
