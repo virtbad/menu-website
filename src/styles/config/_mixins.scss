@@ -21,3 +21,11 @@
   }
   transition: color, background-color 0.2s;
 }
+
+@mixin hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

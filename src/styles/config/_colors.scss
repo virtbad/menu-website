@@ -7,12 +7,13 @@
 //                                                                   //
 ///////////////////////////////////////////////////////////////////////
 
-$black: #000000;
-$white: #ffffff;
-
 // non themed colors
 
+$black: #000000;
+$white: #ffffff;
 $gray-border: rgba(#777373, 0.4);
+$error: #8a0e06;
+$error-hover: #9c1108;
 
 // light themed colors
 
@@ -30,6 +31,8 @@ $input-border-focus-light: rgba($black, 0.9);
 $option-hover-light: rgba(#e3e3e3, 0.3);
 $option-selected-light: rgba(#e3e3e3, 0.5);
 
+$scrollbar-thumb-light: #d3d3d3;
+
 // dark themed colors
 
 $primary-dark: #17181b;
@@ -45,6 +48,8 @@ $input-border-focus-dark: rgba($white, 0.9);
 
 $option-hover-dark: rgba(#e3e3e3, 0.075);
 $option-selected-dark: rgba(#e3e3e3, 0.1);
+
+$scrollbar-thumb-dark: #28292e;
 
 // theme lists
 
@@ -62,6 +67,7 @@ $light-theme: (
   --border: $gray-border,
   --option-hover: $option-hover-light,
   --option-select: $option-selected-light,
+  --scrollbar-thumb: $scrollbar-thumb-light,
 );
 
 $dark-theme: (
@@ -76,4 +82,5 @@ $dark-theme: (
   --border: $gray-border,
   --option-hover: $option-hover-dark,
   --option-select: $option-selected-dark,
+  --scrollbar-thumb: $scrollbar-thumb-dark,
 );

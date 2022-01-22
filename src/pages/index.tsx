@@ -1,6 +1,9 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import Layout from "../components/Layout";
-import MenuCard from "../components/system/MenuCard";
+import Autocomplete from "../components/system/Autocomplete";
+import Input from "../components/system/Input";
+import Link from "../components/system/Link";
+import Select from "../components/system/Select";
 
 /**
  * Landing page of the website
@@ -9,7 +12,21 @@ import MenuCard from "../components/system/MenuCard";
 const HomePage: NextPage = (): JSX.Element => {
   return (
     <Layout>
-      <MenuCard uuid="asdfasdf" variant={"big"} />
+      {/*  <MenuCard uuid={"uuid"} variant={"big"} />
+      <MenuCard uuid={"uuid"} variant={"small"} /> */}
+      <Input placeholder={"asdasdf"} readonly label={"Test"} />
+      <Select
+        label={"Test"}
+        values={[
+          { value: "asdf", label: "adsf" },
+          { value: "bruuh", label: "br" },
+        ]}
+        multiple
+        placeholder={"asdasdf"}
+        onMultipleSelect={console.log}
+      />
+      <Autocomplete options={["asdfasdf", "test"]} />
+      <Link href={"/"} children={"Hello"} />
     </Layout>
   );
 };

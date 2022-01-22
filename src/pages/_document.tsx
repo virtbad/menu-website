@@ -1,7 +1,42 @@
-import Document, { Head, Html, Main, NextScript } from "next/document";
+import createCache from "@emotion/cache";
+import createEmotionServer from "@emotion/server/create-instance";
+import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from "next/document";
+import React from "react";
+
+/**
+ * Create a new cache for the emotion css
+ */
+
+export const createEmotionCache = () => {
+  return createCache({ key: "css", prepend: true });
+};
+
+/**
+ * Default layout of the DOM
+ */
 
 export default class CustomDocument extends Document {
-  render(): JSX.Element {
+  public static async getInitialProps(context: DocumentContext): Promise<DocumentInitialProps> {
+    // handle css for ssr and build
+
+    const originalRenderPage = context.renderPage;
+    const cache = createEmotionCache();
+    const { extractCriticalToChunks } = createEmotionServer(cache);
+
+    context.renderPage = () => originalRenderPage({ enhanceApp: (App: any) => (props) => <App emotionCache={cache} {...props} /> });
+
+    const initialProps = await Document.getInitialProps(context);
+
+    const emotionStyle = extractCriticalToChunks(initialProps.html);
+    const emotionStyleTags = emotionStyle.styles.map((style) => <style data-emotion={`${style.key} ${style.ids.join(" ")}`} key={style.key} dangerouslySetInnerHTML={{ __html: style.css }} />);
+
+    return {
+      ...initialProps,
+      styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
+    };
+  }
+
+  render() {
     const theme: string = `
     var isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (localStorage.theme !== "system")

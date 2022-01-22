@@ -8,10 +8,14 @@
 
   &[data-variant="big"] {
     grid-template-areas: "title . price" "description description price" "label . price";
+    height: $menucard-big-height;
+    width: $menucard-big-width;
   }
 
   &[data-variant="small"] {
     grid-template-areas: "title ." "description description" "label ." "price price";
+    height: $menucard-small-height;
+    width: $menucard-small-width;
   }
 
   .title {

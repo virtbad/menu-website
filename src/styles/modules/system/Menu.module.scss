@@ -1,0 +1,23 @@
+@use "../../config/" as *;
+
+/* .menu-root {
+} */
+
+.menu-list {
+  background-color: var(--primary) !important;
+}
+
+.menu-paper {
+  background-color: transparent !important;
+}
+
+.item-root {
+  color: var(--secondary) !important;
+  &:hover {
+    background-color: var(--option-hover) !important;
+  }
+}
+
+.item-selected {
+  background-color: var(--option-select) !important;
+}

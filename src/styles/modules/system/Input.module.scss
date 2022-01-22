@@ -1,0 +1,54 @@
+@use "../../config/" as *;
+
+.input-root {
+  min-width: $input-min-width;
+  color: var(--secondary) !important;
+
+  span[data-endadornment="true"] {
+    color: var(--input-border) !important;
+  }
+}
+
+.input-outline {
+  border-color: var(--input-border) !important;
+
+  &:hover {
+    border-color: var(--input-border-hover) !important;
+  }
+}
+
+.input-label {
+  color: var(--input-border) !important;
+
+  &:hover {
+    color: var(--input-border-hover) !important;
+  }
+}
+
+.input-error {
+  .input-outline {
+    border-color: $error !important;
+  }
+
+  .input-label {
+    color: $error-hover !important;
+  }
+}
+
+// class to target disabled inputs
+
+/* .input-disabled {
+} */
+
+.input-focused {
+  color: var(--input-border-focus) !important;
+  border-color: var(--input-border-focus) !important;
+
+  .input-label {
+    color: var(--input-border-focus) !important;
+  }
+}
+
+.input-error {
+  color: $error !important;
+}

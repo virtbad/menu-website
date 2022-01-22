@@ -22,6 +22,21 @@
   }
 }
 
+//scrollbar
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: $border-radius-small;
+}
+
 //remove default stylings
 
 html {
