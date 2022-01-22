@@ -1,0 +1,14 @@
+@use "../../config/" as *;
+
+.link {
+  color: var(--link);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--link-hover);
+  }
+
+  &[data-disabled="true"] {
+    cursor: default;
+  }
+}

@@ -1,0 +1,36 @@
+@use "../../config/" as *;
+
+.select-root {
+  min-width: $input-min-width;
+  color: var(--secondary) !important;
+  fieldset {
+    border-color: var(--input-border) !important;
+
+    &:hover {
+      border-color: var(--input-border-hover) !important;
+    }
+  }
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.select-icon {
+  color: var(--secondary) !important;
+}
+
+.select-icon-disabled {
+  display: none;
+}
+
+/* .menu-root {
+} */
+
+.menu-list {
+  background-color: var(--primary) !important;
+}
+
+.menu-paper {
+  background-color: transparent !important;
+}
