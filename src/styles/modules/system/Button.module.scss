@@ -1,0 +1,42 @@
+@use "../../config/" as *;
+
+.button-root {
+  padding: 0.4rem 1.375rem;
+  border-radius: $border-radius-small;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: $white !important;
+  background-color: $button;
+  width: fit-content;
+  font-weight: bold;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  span[data-endadornment="true"] {
+    padding-left: 0.75rem;
+    transform: scale(0.8);
+    margin-right: -0.5rem;
+  }
+
+  &:hover {
+    background-color: $button-hover;
+  }
+
+  &:disabled {
+    background-color: $button-disabled !important;
+    cursor: default;
+  }
+
+  &[data-theme="green"] {
+    color: $button !important;
+    background-color: $white;
+
+    &:hover {
+      color: $button-hover !important;
+    }
+
+    &:disabled {
+      color: $button !important;
+    }
+  }
+}

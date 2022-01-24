@@ -9,7 +9,7 @@
   overflow-x: hidden;
 
   .layout-content {
-    height: calc(100vh - $header-height);
+    height: calc(100vh - 2rem);
   }
 
   header {

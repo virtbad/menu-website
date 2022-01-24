@@ -1,9 +1,7 @@
+import HomeRepairServiceOutlined from "@mui/icons-material/ArrowForward";
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import Layout from "../components/Layout";
-import Autocomplete from "../components/system/Autocomplete";
-import Input from "../components/system/Input";
-import Link from "../components/system/Link";
-import Select from "../components/system/Select";
+import { Autocomplete, Button, Input, Link, Select } from "../components/system";
 
 /**
  * Landing page of the website
@@ -14,7 +12,7 @@ const HomePage: NextPage = (): JSX.Element => {
     <Layout>
       {/*  <MenuCard uuid={"uuid"} variant={"big"} />
       <MenuCard uuid={"uuid"} variant={"small"} /> */}
-      <Input placeholder={"asdasdf"} readonly label={"Test"} />
+      <Input placeholder={"asdasdf"} label={"Test"} InputProps={{ endAdornment: "asdf" }} />
       <Select
         label={"Test"}
         values={[
@@ -23,10 +21,10 @@ const HomePage: NextPage = (): JSX.Element => {
         ]}
         multiple
         placeholder={"asdasdf"}
-        onMultipleSelect={console.log}
       />
       <Autocomplete options={["asdfasdf", "test"]} />
-      <Link href={"/"} children={"Hello"} />
+      <Link href={"/home"} children={"Hello"} />
+      <Button children={"Test"} endIcon={<HomeRepairServiceOutlined />} />
     </Layout>
   );
 };
