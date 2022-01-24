@@ -1,0 +1,38 @@
+@use "../config/" as *;
+
+.footer-container {
+  display: flex;
+  padding: 2rem;
+  gap: 1rem;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.footer-items {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-section {
+  max-width: 15rem;
+  width: 15rem;
+  flex: 1;
+  display: grid;
+  grid-template-areas: "title" "entries";
+
+  .footer-section-title {
+    grid-area: title;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-section-entries {
+    grid-area: entries;
+    display: flex;
+    flex-direction: column;
+  }
+}

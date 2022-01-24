@@ -1,6 +1,7 @@
 import { CacheProvider } from "@emotion/react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
+import { VersionProvider } from "../hooks/VersionContext";
 import "../styles/global.scss";
 import { createEmotionCache } from "./_document";
 
@@ -15,7 +16,9 @@ const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
 
   return (
     <CacheProvider value={emotionCache}>
-      <Component {...pageProps} />
+      <VersionProvider>
+        <Component {...pageProps} />
+      </VersionProvider>
     </CacheProvider>
   );
 };

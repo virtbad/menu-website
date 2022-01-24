@@ -1,11 +1,32 @@
 @use "../../config/" as *;
 
 .link {
+  width: fit-content;
   color: var(--link);
   cursor: pointer;
+  transition: color 0.2s;
+  user-select: none;
+  position: relative;
+
+  &[data-underline="true"] {
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--link);
+      transition: background-color 0.2s;
+    }
+  }
 
   &:hover {
     color: var(--link-hover);
+
+    &::after {
+      background-color: var(--link-hover);
+    }
   }
 
   &[data-disabled="true"] {

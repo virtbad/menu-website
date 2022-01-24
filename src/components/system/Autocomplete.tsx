@@ -36,6 +36,7 @@ const Autocomplete: React.FC<AutocompleteProps> = forwardRef(({ label = "Suche",
         popper: style["popper-root"],
         paper: style["paper-root"],
       }}
+      componentsProps={{ clearIndicator: { disableRipple: true } }}
     />
   );
 });
