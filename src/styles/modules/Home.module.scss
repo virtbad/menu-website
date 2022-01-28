@@ -1,0 +1,33 @@
+@use "../config/" as *;
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.today-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - $layout-padding);
+
+  .menu-container {
+    margin-top: calc($header-height + 3rem);
+    flex: 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .upperwave-container {
+    flex: 0;
+    justify-self: flex-end;
+    margin-left: -$layout-padding;
+    margin-right: -$layout-padding;
+    width: calc(100% + (2 * $layout-padding));
+
+    path {
+      fill: var(--secondary);
+      fill-opacity: 1;
+    }
+  }
+}

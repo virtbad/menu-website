@@ -11,11 +11,13 @@ interface LayoutProps {}
 
 const Layout: React.FC<LayoutProps> = ({ children }): JSX.Element => {
   return (
-    <main className={style["layout-container"]}>
+    <>
       <Header />
-      <section className={style["layout-content"]} children={children} />
-      <Footer />
-    </main>
+      <main className={style["layout-container"]}>
+        <section className={style["layout-content"]} children={children} />
+        <Footer />
+      </main>
+    </>
   );
 };
 

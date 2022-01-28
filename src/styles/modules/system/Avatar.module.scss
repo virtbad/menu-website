@@ -1,0 +1,21 @@
+@use "../../config/" as *;
+
+.avatar-container {
+  border-radius: 50%;
+  background: $card-gradient;
+
+  &[data-size="small"] {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+
+  &[data-size="normal"] {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  &[data-size="big"] {
+    height: 6.5rem;
+    width: 6.5rem;
+  }
+}
