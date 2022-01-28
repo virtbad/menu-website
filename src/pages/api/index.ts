@@ -7,7 +7,7 @@ const startedRuntime: number = Date.now();
  * API route to get the current version of the website
  */
 
-const versionEndpoint: NextApiHandler = (request: NextApiRequest, response: NextApiResponse) => {
+const versionEndpoint: NextApiHandler = (_: NextApiRequest, response: NextApiResponse) => {
   const packageJson: Buffer = readFileSync(process.cwd() + "/package.json");
   const json: { [key: string]: any } = JSON.parse(packageJson.toString());
 

@@ -13,7 +13,7 @@ const Footer: React.FC = (): JSX.Element => {
     <footer className={style["footer-container"]}>
       <section className={style["footer-items"]}>
         <FooterSection title={"Navigation"}>
-          <Link href={"/search"} noUnderline children={"Menusuche"} />
+          <Link href={"/search"} children={"Menusuche"} />
         </FooterSection>
         <FooterSection title={"API"} />
       </section>

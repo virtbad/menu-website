@@ -1,0 +1,30 @@
+@use "../config/" as *;
+
+.header-container {
+  height: calc($header-height - (2 * $layout-padding));
+  position: sticky;
+  display: grid;
+  grid-template-columns: 20% calc(60% - 2rem) 20%;
+  gap: 1rem;
+  width: calc(100% - (2 * $layout-padding));
+  top: 0;
+  left: 0;
+  padding: $layout-padding;
+  background: var(--primary);
+  z-index: 10;
+
+  & > * {
+    align-self: center;
+    &:not(:nth-child(2)) {
+      display: flex;
+    }
+
+    &:first-child {
+      justify-content: flex-start;
+    }
+
+    &:last-child {
+      justify-content: flex-end;
+    }
+  }
+}

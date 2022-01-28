@@ -1,15 +1,16 @@
 @use "../config/" as *;
 
 .layout-container {
+  margin-top: -$header-height;
   display: flex;
-  padding: 2rem;
+  padding: $layout-padding;
   flex-direction: column;
   min-height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
 
   .layout-content {
-    height: calc(100vh - 2rem);
+    height: calc(100vh - $layout-padding);
   }
 
   header {
