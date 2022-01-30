@@ -1,20 +1,26 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
+import Layout from "../../components/Layout";
+import MenuPage from "../../components/MenuPage";
 
 /**
  * Page for a given menu
  */
 
-const MenuPage: NextPage = (): JSX.Element => {
+const SpecificMenuPage: NextPage = (): JSX.Element => {
   const { query } = useRouter();
   const { uuid } = query;
 
-  return <></>;
+  return (
+    <Layout>
+      <MenuPage />
+    </Layout>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext) => {
   return { props: {}, revalidate: 1 };
 };
 
-export default MenuPage;
+export default SpecificMenuPage;

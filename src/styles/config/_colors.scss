@@ -35,6 +35,7 @@ $option-hover-light: rgba(#e3e3e3, 0.3);
 $option-selected-light: rgba(#e3e3e3, 0.5);
 
 $scrollbar-thumb-light: #d3d3d3;
+$scrollbar-background-light: #e0e0e0;
 
 // dark themed colors
 
@@ -53,6 +54,7 @@ $option-hover-dark: rgba(#e3e3e3, 0.075);
 $option-selected-dark: rgba(#e3e3e3, 0.1);
 
 $scrollbar-thumb-dark: #28292e;
+$scrollbar-background-dark: #1d1e22;
 
 // theme lists
 
@@ -71,6 +73,7 @@ $light-theme: (
   --option-hover: $option-hover-light,
   --option-select: $option-selected-light,
   --scrollbar-thumb: $scrollbar-thumb-light,
+  --scrollbar-background: $scrollbar-background-light,
 );
 
 $dark-theme: (
@@ -86,4 +89,5 @@ $dark-theme: (
   --option-hover: $option-hover-dark,
   --option-select: $option-selected-dark,
   --scrollbar-thumb: $scrollbar-thumb-dark,
+  --scrollbar-background: $scrollbar-background-dark,
 );

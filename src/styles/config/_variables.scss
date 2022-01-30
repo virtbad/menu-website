@@ -14,8 +14,14 @@ $layout-padding: 1.5rem;
 $header-height: 6.5rem;
 
 $menucard-big-width: 15rem;
-$menucard-big-height: 15rem;
+$menucard-big-height: 20rem;
 $menucard-small-width: 30rem;
 $menucard-small-height: 5rem;
 
 $input-min-width: 4rem;
+
+@mixin without-layout-padding {
+  margin-left: -$layout-padding;
+  margin-right: -$layout-padding;
+  width: calc(100% + (2 * $layout-padding));
+}
