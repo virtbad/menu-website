@@ -10,7 +10,7 @@
   overflow-x: hidden;
 
   .layout-content {
-    height: calc(100vh - $layout-padding);
+    min-height: calc(100vh - $layout-padding);
   }
 
   header {

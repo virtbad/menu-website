@@ -1,0 +1,11 @@
+@use "../../config/" as *;
+
+.list-container {
+  display: flex;
+}
+
+.listitem-container {
+  display: flex;
+  padding: 1rem 1.5rem;
+  border-radius: $border-radius-small;
+}
