@@ -1,0 +1,26 @@
+@use "../config/" as *;
+
+.searchpage-container {
+  margin-top: $header-height;
+  display: flex;
+  flex-direction: column;
+
+  .searchpage-content {
+    align-self: center;
+    @include container-width;
+    display: flex;
+    flex-direction: column;
+
+    .searchpage-searchbar {
+      width: 100%;
+      margin-bottom: 1rem;
+      position: static;
+    }
+
+    .searchpage-menus {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}

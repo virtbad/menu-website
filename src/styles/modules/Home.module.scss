@@ -32,7 +32,20 @@
     padding: $layout-padding;
     display: flex;
     background-color: $button;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .topmenu-title {
+      @include container-width;
+      margin-bottom: 1rem;
+    }
+
+    .topmenu-menus {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      @include container-width;
+    }
   }
 
   svg {

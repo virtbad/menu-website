@@ -1,6 +1,7 @@
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import Home from "../components/Home";
 import Layout from "../components/Layout";
+import Meta from "../components/Meta";
 
 /**
  * Landing page of the website
@@ -9,6 +10,7 @@ import Layout from "../components/Layout";
 const HomePage: NextPage = (): JSX.Element => {
   return (
     <Layout>
+      <Meta title="Home" description="" />
       <Home />
     </Layout>
   );

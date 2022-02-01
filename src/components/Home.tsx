@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { Menu } from "../classes/Menu.class";
 import style from "../styles/modules/Home.module.scss";
+import { randomMenu } from "../util/test";
 import { Button, MenuCard } from "./system";
+import { RatedListItem } from "./system/List";
 
 /**
  * Home landing page
@@ -37,11 +40,20 @@ const Today: React.FC = (): JSX.Element => {
  */
 
 const TopMenus: React.FC = (): JSX.Element => {
+  const [menus] = useState<Array<Menu>>(new Array(5).fill(null).map(randomMenu));
+
   return (
     <section className={style["topmenu-container"]}>
       <UpperWave />
       <div className={style["topmenu-content"]}>
-        <h2 children={"Beliebt"} />
+        <div className={style["topmenu-title"]}>
+          <h2 children={"Beliebte Menüs"} />
+        </div>
+        <div className={style["topmenu-menus"]}>
+          {menus.map((menu: Menu, index: number) => {
+            return <RatedListItem key={index} title={menu.title} votes={Math.floor(Math.random() * 100)} score={index + 1} />;
+          })}
+        </div>
       </div>
       <LowerWave />
     </section>
