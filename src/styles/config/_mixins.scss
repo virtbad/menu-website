@@ -29,3 +29,76 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+@mixin max-380 {
+  @media only screen and (max-width: calc(380px)) {
+    @content;
+  }
+}
+
+@mixin max-550 {
+  @media only screen and (max-width: calc(550px)) {
+    @content;
+  }
+}
+
+@mixin max-1000 {
+  @media only screen and (max-width: calc(1000px)) {
+    @content;
+  }
+}
+
+@mixin max-1200 {
+  @media only screen and (max-width: calc(1200px)) {
+    @content;
+  }
+}
+
+@mixin min-1300 {
+  @media only screen and (min-width: calc(1300px)) {
+    @content;
+  }
+}
+
+@mixin max-1600 {
+  @media only screen and (max-width: calc(1600px)) {
+    @content;
+  }
+}
+
+@mixin min-1600 {
+  @media only screen and (min-width: calc(1600px)) {
+    @content;
+  }
+}
+
+@mixin container-width {
+  @include max-380 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  @include max-550 {
+    width: 400px;
+    max-width: 400px;
+  }
+
+  @include max-1000 {
+    width: 600px;
+    max-width: 600px;
+  }
+
+  @include max-1200 {
+    width: 650px;
+    max-width: 650px;
+  }
+
+  @include max-1600 {
+    width: 800px;
+    max-width: 800px;
+  }
+
+  @include min-1600() {
+    width: 800px;
+  }
+}
