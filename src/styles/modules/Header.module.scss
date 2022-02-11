@@ -10,8 +10,13 @@
   top: 0;
   left: 0;
   padding: $layout-padding;
-  background: var(--primary);
+  background: transparent;
   z-index: 10;
+  transition: all 0.2s;
+
+  &[data-background="true"] {
+    background: var(--primary);
+  }
 
   & > * {
     align-self: center;

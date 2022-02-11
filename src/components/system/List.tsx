@@ -53,7 +53,7 @@ export const RatedListItem: React.FC<RatedListItemProps> = ({ score, title, vote
     <div className={style["listitem-container"]} data-rated={true}>
       <h3 className={style["item-score"]} children={`${score}.`} />
       <div className={style["item-title"]} children={title} />
-      <Button className={style["item-button"]} children={"Mehr"} href={href} />
+      <Button forwardIcon className={style["item-button"]} children={"Mehr"} href={href} />
     </div>
   );
 };
