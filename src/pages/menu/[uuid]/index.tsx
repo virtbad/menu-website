@@ -14,10 +14,9 @@ import { fetcher } from "../../../util/global.config";
 const SpecificMenuPage: NextPage = (): JSX.Element => {
   const { query, ...router } = useRouter();
   const { uuid } = query;
+  const {} = useSWR(false && uuid && "", fetcher); //fetch specific menu [check for existance]
 
   if (router.isFallback) return <Fallback />;
-
-  const {} = useSWR(false && uuid && "", fetcher); //fetch specific menu [check for existance]
 
   return (
     <Layout>

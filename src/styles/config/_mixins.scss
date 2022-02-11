@@ -73,29 +73,29 @@
 }
 
 @mixin container-width {
-  @include max-380 {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  @include max-550 {
-    width: 400px;
-    max-width: 400px;
-  }
-
-  @include max-1000 {
-    width: 600px;
-    max-width: 600px;
+  @include max-1600 {
+    width: min(800px, calc(100vw - 3rem));
+    max-width: min(800px, calc(100vw - 3rem));
   }
 
   @include max-1200 {
-    width: 650px;
-    max-width: 650px;
+    width: min(650px, calc(100vw - 3rem));
+    max-width: min(650px, calc(100vw - 3rem));
   }
 
-  @include max-1600 {
-    width: 800px;
-    max-width: 800px;
+  @include max-1000 {
+    width: min(600px, calc(100vw - 3rem));
+    max-width: min(600px, calc(100vw - 3rem));
+  }
+
+  @include max-550 {
+    width: min(400px, calc(100vw - 3rem));
+    max-width: min(400px, calc(100vw - 3rem));
+  }
+
+  @include max-380 {
+    width: calc(100vw - 3rem);
+    max-width: calc(100vw - 3rem);
   }
 
   @include min-1600() {
