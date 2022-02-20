@@ -8,9 +8,12 @@ export class Menu {
 
   protected _prices: Array<MenuPrice> = [];
 
+  private _rating: number;
+
   constructor(ctr: MenuConstructor) {
     this._title = ctr.title;
     this._description = ctr.description;
+    this._rating = 10;
 
     ctr.prices.map((entry: MenuPriceConstructor | MenuPrice) => {
       if (entry instanceof MenuPrice) this._prices.push(entry);
@@ -40,5 +43,10 @@ export class Menu {
 
   public get prices(): Array<MenuPrice> {
     return this._prices;
+  }
+
+
+  public get rating(): number {
+    return this._rating;
   }
 }

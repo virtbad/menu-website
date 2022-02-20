@@ -1,211 +1,89 @@
 import React, {useState} from "react";
-import {Comment as CommentClass} from "../classes/Comment.class"
 import style from "../styles/modules/MenuPage.module.scss";
-import {User} from "../classes/User.class";
-import {Avatar, Button, Input} from "./system";
-import EditIcon from '@mui/icons-material/EditRounded';
-import DeleteIcon from '@mui/icons-material/DeleteRounded';
-import AddCommentIcon from '@mui/icons-material/AddRounded';
-import {createTheme} from "@mui/system";
-import {Rating, TextField} from "@mui/material";
+import CommentBox from "./CommentBox";
+import {Menu} from "../classes/Menu.class";
+import {randomMenu} from "../util/test";
 
 const MenuPage: React.FC = (): JSX.Element => {
-  createTheme({palette: {mode: "dark"}})
-
+  // TODO: Fetch menu
+  // TODO: Flex wrap when too small
   return (
     <section className={style["menupage-container"]}>
-      <div className={style["menupage-menu-container"]}></div>
+      <div className={style["menupage-menu-container"]}>
+        <BackgroundBlob/>
+        <div className={style["menupage-menu-blobtainer"]}>
+          <div className={style["menupage-menu-box"]}>
+            <Rating menu={randomMenu()}/>
+
+            <MenuDisplay menu={randomMenu()}/>
+          </div>
+        </div>
+
+      </div>
       <div className={style["menupage-comments-container"]}>
-        <CommentBox/>
+        <CommentBox menuId=""/>
       </div>
+
     </section>
   );
 };
 
-const CommentBox: React.FC = (): JSX.Element => {
-
-  if (true) { // Use auth context to determine
-    return (
-      <div className={style["comments-login"]}>Log in to see what others say about this menu!</div>
-    )
-  }
-
-  let reload: () => void;
-  const setReload = (reloadFunction: () => void) => {
-    reload = reloadFunction;
-  }
-
-  let edit: (comment: CommentClass) => void;
-  const setEdit = (editFunction: (comment: CommentClass) => void) => {
-    edit = editFunction;
-  }
-
-  let addElement: (comment: CommentClass) => void;
-  const setAddElement = (addElementFunction: (comment: CommentClass) => void) => {
-    addElement = addElementFunction;
-  }
-
+const MenuDisplay: React.FC<{menu: Menu}> = ({menu}): JSX.Element => {
+  // TODO: Add prices and label
   return (
-    <section className={style["comments-container"]}>
-      <div className={style["comments-pane"]}>
-
-        <CommentList edit={(c) => edit(c)} reloadTrigger={setReload} addItemTrigger={setAddElement}/>
-
-        <CommentEditor editingTrigger={setEdit} edited={(successful, addBack) => {
-          if (successful) reload();
-          else if(addBack != null) addElement(addBack);
-        }}/>
-
-      </div>
-    </section>
-  );
-};
-
-
-const CommentList: React.FC<CommentListProps> = ({edit, reloadTrigger, addItemTrigger}): JSX.Element => {
-
-  const [comments, setComments] = useState(createComments()); //TODO: Replace with request to server
-
-  reloadTrigger(() => {setComments(createComments())});
-  addItemTrigger((c) => {
-    setComments([...comments, c]);
-  });
-
-  const removeElement = (id: string) => {
-    setComments(comments.filter(c => id != c.id));
-  }
-
-  const deleteComment = (id: string) => {
-    // TODO: Do server delete request
-    removeElement(id);
-  }
-
-  const editComment = (id: string) => {
-    // @ts-ignore
-    edit(comments.find(c => id == c.id));
-    removeElement(id);
-  }
-
-  return (
-    <div className={style["comments-list"]}>
-      {comments.sort((a, b) => a.created.getTime() - b.created.getTime()).map((comment) => <Comment remove={deleteComment} edit={editComment} comment={comment}/>)}
+    <div className={style["menu-textbox"]}>
+      <h3 className={style["menu-title"]}>{menu.title}</h3>
+      <div className={style["menu-content"]}>{menu.description}</div>
     </div>
   )
 }
-interface CommentListProps {
-  edit: (comment: CommentClass) => void,
-  reloadTrigger: (f: () => void) => void,
-  addItemTrigger: (f: (comment: CommentClass) => void) => void
+
+const BackgroundBlob: React.FC = (): JSX.Element => {
+  return (
+  <svg className={style["menupage-blob"]} viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+    <path className={style["menupage-blob-path"]} d="M220,409.7973050402167C238.90103774120314,413.71371692332383,255.29507691923845,435.0807099683788,273.96211529974534,430.16856300058436C292.69655318331957,425.23868015750674,295.7712115453857,397.58409951950426,311.15497522382293,385.8102843882068C324.49157072241184,375.60324967527947,344.47463377036314,377.03961890572765,357.3967457522401,366.3126734387405C370.251406074167,355.64172116225944,374.1376872146776,337.434816134299,384.8618385607835,324.6245041792812C396.66389933296904,310.5265979371547,420.2944938030966,304.3262413567572,424.3090088957479,286.3840211080526C428.532180063022,267.5092465755281,407.4664034848477,250.93730940470817,405.6577445363389,231.68059522056686C404.1052325226024,215.15106645528087,412.87015381299835,199.39364127388018,414.58758451399535,182.88043302888775C416.50452837650016,164.44889271862894,425.3259220713612,143.82747059821097,416.48878919529,127.53939414605274C407.40471832046603,110.79617629690158,381.3467857719581,111.18377664491675,368.206251750589,97.39312570900364C355.93715003497914,84.5170204622886,354.4968195551162,64.21093559787289,343.11963410628636,50.540361561081426C331.43757087910166,36.50345313869716,318.06562268965246,21.810664454710476,300.67208637272455,16.24556843630675C283.0156802159751,10.596366697692162,263.67289170418354,16.386145497230892,245.3591444928194,19.261701397212274C228.5582157569649,21.899720214113614,212.6652275350172,27.898739136655205,196.32954348551536,32.62904317555565C181.18564182518895,37.01424424650422,166.29015840512736,41.59583731213191,151.30521646966685,46.49678223338556C135.87588145081,51.543069461235504,119.54877090023362,54.284851470345515,105.45967018266049,62.34876087460869C91.16445051130587,70.53064264652784,77.99252946871059,81.15754326733516,67.94422298712105,94.20852145419887C57.9245914511022,107.22225594334714,55.551237666727694,124.59635651210226,46.822076457582035,138.50865488643197C37.28985380545673,153.70085062317347,20.0325475275758,163.86467528135253,13.708579318598744,180.6478068748605C7.507383755598991,197.10511306801376,11.155707215688635,215.5519258946514,11.164967953679046,233.13878655209965C11.17447209811063,251.18789494492785,7.248403570109987,270.178139805577,13.764586581016884,287.0099478805638C20.329323685588445,303.9671749599663,34.44720444742203,317.168909517229,48.269750939044265,328.9833300261453C61.486566162044255,340.2800193104107,82.36390289487913,341.41433489171646,93.26419154970563,354.95992829568445C105.95782269857635,370.7340762845464,98.03651669657106,400.0380682800343,114.70162612846508,411.5370310219991C130.36002906376282,422.34136403208225,152.46800000499704,409.24989171062606,171.48957794611917,408.93561968398444C187.72406944515774,408.66739553556255,204.1010127710938,406.5029365846203,220,409.7973050402167" fill="url(#gradient)" />
+  </svg>
+  )
 }
 
+const Rating: React.FC<{menu: Menu}>  = ({menu}): JSX.Element => {
 
-
-/**
- * This component is the editor, that allows one to edit comments.
- * @param edited function to call when a comment has been edited or published
- * @param editingTrigger trigger method to edit a comment
- */
-const CommentEditor: React.FC<CommentEditorProps> = ({ editingTrigger, edited }): JSX.Element => {
-  const [current, setCurrent] = useState({activated: false, comment: null as CommentClass | null});
-
-  editingTrigger((comment) => setCurrent({activated: true, comment: comment}));
+  const [{voting, rating, initialVoting}, setVoting] = useState(() => {/* TODO: Fetch from endpoint*/ return {voting: 1, initialVoting: 1, rating: menu.rating}})
+  const changeVoting = (direction: number) => {
+    // TODO: Update on server
+    setVoting({voting: direction, rating: menu.rating - initialVoting + direction, initialVoting: initialVoting});
+  };
 
   return (
-    <section className={style["comment-editor"]}>
-      {!current.activated &&
-      <div className={style["comment-editor-writer-box"]}>
-          <Button theme="secondary" onClick={() => setCurrent({activated: true, comment: null})} startIcon={<AddCommentIcon/>}>Write a comment</Button>
+    <div className={style["menupage-menu-rating"]}>
+      <div className={style["menupage-menu-rating-box"]}>
+        <VotingButton handler={changeVoting} direction={"up"} chosen={voting > 0}/>
+        <div className={style["menupage-menu-rating-number"]}>{rating}</div>
+        <VotingButton handler={changeVoting} direction={"down"} chosen={voting < 0}/>
       </div>
-      }
-      {current.activated &&
-      <>
-          <div className={style["comment-editor-spacer"]}/>
-          <div className={style["comment-editor-title-box"]}>
-              <Input inputProps={{maxLength: 64}} className={style["comment-editor-title"]} size="small" id="outlined-basic" label="Title" defaultValue={current.comment == null ? "" : current.comment.title}/>
-              <Rating defaultValue={current.comment == null ? 3.5 : current.comment.rating} precision={0.5}/>
-          </div>
-
-          <Input inputProps={{maxLength: 256}} size="small" id="outlined-basic" multiline rows={3} defaultValue={current.comment == null ? "" : current.comment.content}/>
-        {/*TODO: Add length counter in text field*/}
-
-          <div className={style["comment-editor-submit-box"]}>
-              <Button theme="primary" onClick={() => {
-
-                // TODO: Send comment to server
-                if (current.comment != null) edited(true, null);
-                setCurrent({activated: false, comment: null});
-
-              }}>{current.comment == null ? "Post" : "Edit"}</Button>
-
-              <Button theme="secondary" onClick={() => {
-
-                if (current.comment != null) edited(false, current.comment);
-                setCurrent({activated: false, comment: null});
-
-              }}>Cancel</Button>
-          </div>
-      </>
-      }
-    </section>
+      <div className={style["menupage-menu-rating-grower"]}/>
+    </div>
   );
 }
-interface CommentEditorProps {
-  editingTrigger: (f: (comment: CommentClass) => void) => void,
-  edited: (successful: boolean, addBack: CommentClass | null) => void
+
+interface VotingButtonProps {
+  direction: "up" | "down"
+  chosen: boolean,
+  handler: (direction: number) => void
 }
-
-/**
- * This component resembles a comment
- * @param comment comment to display
- * @param user [temporary] user that is logged in
- * @param edit function to run on edit
- * @param remove function to run on delete
- */
-const Comment: React.FC<CommentProps> = ({comment, edit, remove}): JSX.Element => {
-
-  let user = createUser(); // TODO: Use user from auth context
-
-  let editable = user.admin || user.tag == comment.user.tag;
-  let date = comment.created.toLocaleDateString("de", {month: "2-digit", day: "2-digit", year: "2-digit"});
-
+const VotingButton: React.FC<VotingButtonProps> = ({direction, chosen, handler}): JSX.Element => {
   return (
-    <section className={style["comment-box"]} id={"comment-" + comment.id}>
-      <div className={style["comment-title-box"]}>
-
-        <div className={style["comment-title"]} children={comment.title}/>
-        <Rating value={comment.rating} precision={0.5} readOnly/>
-
-      </div>
-      <div className={style["comment-content"]}>{comment.content}</div>
-      <div className={style["comment-user-box"]}>
-
-        {editable &&
-        <div className={style["comment-user-icons"]}>
-            <EditIcon onClick={() => edit(comment.id)} sx={{fontSize: "1em"}}/>
-            <DeleteIcon onClick={() => remove(comment.id)} sx={{fontSize: "1em"}} className={style["comment-user-icon-urgent"]}/>
-        </div>
-        }
-
-        <div className={style["flex-grow"]}/>
-
-        <div className={style["comment-user-date"]}>{date} <span>{(comment.edited ? "(edited)" : "")}</span></div>
-        <div className={style["comment-user-user-box"]}>
-          <Avatar size={"text"}/>
-          <div>{comment.user.firstname + " " + comment.user.lastname}</div>
-        </div>
-
-      </div>
-    </section>
-  );
-
-};
-interface CommentProps {
-  comment: CommentClass,
-  edit: (uuid: string) => void,
-  remove: (uuid: string) => void,
+    <svg onClick={() => handler(chosen ? 0 : (direction == "up" ? 1 : -1))} className={style["menupage-menu-rating-button"]} viewBox="0 0 150 100" data-direction={direction} data-chosen={chosen}>
+      <polyline points="25 25 75 75 125 25" stroke-width={20} stroke-linejoin={"round"} stroke-linecap={"round"}/>
+      <defs>
+        <linearGradient id="BackgroundGradient" gradientTransform="rotate(65)">
+          <stop offset="0%" stop-color="#184d0f" />
+          <stop offset="100%" stop-color="#298519" />
+        </linearGradient>
+      </defs>
+    </svg>
+  )
 }
-
-
 
 const MenuDivider: React.FC = (): JSX.Element => {
   return <div className={style["menupage-divider"]}></div>;
