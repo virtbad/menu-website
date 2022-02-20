@@ -1,11 +1,10 @@
-import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { Menu } from "../../classes/Menu.class";
 import { MenuPrice } from "../../classes/MenuPrice.class";
 import style from "../../styles/modules/system/MenuCard.module.scss";
 import { randomMenu } from "../../util/test";
+import Vote from "./Vote";
 
 interface MenuCardProps {
   variant?: "small" | "big";
@@ -26,11 +25,12 @@ const MenuCard: React.FC<MenuCardProps> = ({ stickOut = false, variant = "big" }
     <section className={style["card-container"]} data-variant={variant}>
       <div className={style["title"]}>
         <h2 children={menu.title} />
-        <span className={style["vote-container"]}>
+        {/* <span className={style["vote-container"]}>
           <ArrowDropUpSharpIcon />
           <h2 children={10} />
           <ArrowDropDownSharpIcon />
-        </span>
+        </span> */}
+        <Vote votes={10} />
       </div>
       <div className={style["description"]}>
         <div children={menu.description} />

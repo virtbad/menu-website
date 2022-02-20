@@ -8,6 +8,8 @@
   min-height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
+  background: url("../../assets/background.svg");
+  background-color: var(--primary);
 
   .layout-content {
     min-height: calc(100vh - $layout-padding);

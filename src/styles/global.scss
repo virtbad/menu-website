@@ -25,7 +25,7 @@
 //scrollbar
 
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 0.5rem;
 }
 
 *::-webkit-scrollbar-track {
@@ -68,6 +68,10 @@ body {
 :not(code) {
   box-sizing: inherit;
   @include text-font;
+}
+
+code {
+  font-family: monospace;
 }
 
 h1,

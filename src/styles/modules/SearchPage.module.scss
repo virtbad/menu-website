@@ -1,9 +1,15 @@
 @use "../config/" as *;
 
 .searchpage-container {
-  margin-top: $header-height;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 10rem;
+
+  h1 {
+    margin-bottom: 0.75rem;
+  }
 
   .searchpage-content {
     align-self: center;
@@ -14,7 +20,8 @@
     .searchpage-searchbar {
       width: 100%;
       margin-bottom: 1rem;
-      position: static;
+      position: sticky;
+      top: $header-height;
     }
 
     .searchpage-menus {
@@ -30,27 +37,16 @@
   position: relative;
 
   .background {
-    background-color: $button;
+    background-color: var(--home-accent);
     height: 10rem;
   }
 
   &:first-of-type {
     align-self: flex-start;
     transform: translateY(-$layout-padding);
-    &::after {
-      content: "";
-      top: 0;
-      left: 0;
-      height: 10rem;
-      background-color: $button;
-    }
 
-    svg {
-      transform: translateY(-1px);
-    }
-
-    path {
-      stroke: $button;
+    rect {
+      fill: var(--home-accent);
     }
   }
 
@@ -59,7 +55,7 @@
     height: 20rem;
 
     path {
-      fill: $button;
+      fill: var(--home-accent);
       fill-opacity: 1;
       height: 100%;
       width: 100%;

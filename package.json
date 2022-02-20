@@ -1,6 +1,6 @@
 {
   "name": "menu-website",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,6 +20,7 @@
     "axios": "^0.25.0",
     "next": "12.0.8",
     "react": "17.0.2",
+    "react-countup": "^6.1.1",
     "react-dom": "17.0.2",
     "sass": "^1.47.0",
     "swr": "^1.1.2",

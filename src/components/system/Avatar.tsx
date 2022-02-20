@@ -5,15 +5,16 @@ interface AvatarProps {
   size?: "small" | "normal" | "big";
   src?: string;
   onClick?: () => void;
+  pointer?: boolean;
 }
 
 /**
  * Rounded avatar component
  */
 
-const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ size = "normal", src, onClick }, ref): JSX.Element => {
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ size = "normal", src, onClick, pointer = false }, ref): JSX.Element => {
   return (
-    <div data-size={size} className={style["avatar-container"]} onClick={onClick} ref={ref}>
+    <div data-size={size} className={style["avatar-container"]} style={{ cursor: pointer ? "pointer" : "default" }} onClick={onClick} ref={ref}>
       {src && <img src={src} alt={""} />}
     </div>
   );
