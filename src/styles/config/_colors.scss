@@ -56,6 +56,8 @@ $option-selected-dark: rgba(#e3e3e3, 0.1);
 $scrollbar-thumb-dark: #28292e;
 $scrollbar-background-dark: #1d1e22;
 
+// --------- NEW COLOURING SYSTEM ---------
+
 $background-primary: #17181b;
 $background-secondary: #1d1d21;
 
@@ -65,6 +67,8 @@ $foreground-tertiary: #626265;
 
 $foreground-hover: #aaacaf;
 $foreground-hover-urgent: #c04a4a;
+$foreground-hover-upvote: $foreground-hover;
+$foreground-hover-downvote: $foreground-hover;
 
 $accent-primary: #46b231;
 $accent-secondary: #298519;
