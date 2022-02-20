@@ -13,8 +13,14 @@
 
 .item-root {
   color: var(--secondary) !important;
+  display: flex;
+  gap: 0.75rem;
   &:hover {
     background-color: var(--option-hover) !important;
+  }
+
+  span[data-endicon="true"] {
+    justify-self: flex-end;
   }
 }
 

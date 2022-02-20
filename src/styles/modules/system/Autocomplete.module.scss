@@ -25,3 +25,9 @@
 .autocomplete-icon {
   color: var(--secondary) !important;
 }
+
+.autocomplete-root {
+  &[data-background="true"] {
+    background-color: var(--primary);
+  }
+}

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useCountUp } from "react-countup";
 import { Menu } from "../classes/Menu.class";
 import style from "../styles/modules/Home.module.scss";
 import { randomMenu } from "../util/test";
@@ -51,7 +52,7 @@ const TopMenus: React.FC = (): JSX.Element => {
         </div>
         <div className={style["topmenu-menus"]}>
           {menus.map((menu: Menu, index: number) => {
-            return <RatedListItem key={index} title={menu.title} votes={Math.floor(Math.random() * 100)} score={index + 1} />;
+            return <RatedListItem key={index} menu={menu} />;
           })}
         </div>
       </div>
@@ -115,19 +116,49 @@ const MenuBubble: React.FC = (): JSX.Element => {
 };
 
 const StatisticsBubble: React.FC = (): JSX.Element => {
+  const menuCount: number = 4812;
+  const reducedCount: number = menuCount - (menuCount % 50);
+  const counterRef = useRef(null);
+  const { reset, start } = useCountUp({
+    start: 0,
+    end: reducedCount,
+    duration: 4,
+    separator: "'",
+    ref: counterRef,
+    prefix: "Mehr als ",
+    suffix: " Menüs!",
+    startOnMount: true,
+  });
+
+  useEffect(() => {
+    let started: boolean = false;
+    const observer = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => {
+      if (entry.isIntersecting && !started) {
+        reset();
+        start();
+        started = true;
+      }
+    });
+    observer.observe(counterRef.current as any);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const bubble: JSX.Element = (
     <svg preserveAspectRatio={"none"} viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" xlinkHref="http://www.w3.org/1999/xlink">
       <path d="M462.5,277Q468,314,437,337Q406,360,383.5,383Q361,406,334.5,427Q308,448,274,447Q240,446,206.5,446.5Q173,447,143.5,430Q114,413,95.5,385.5Q77,358,64.5,329.5Q52,301,34.5,270.5Q17,240,20,205Q23,170,42,140Q61,110,93.5,96.5Q126,83,147.5,52.5Q169,22,204.5,28.5Q240,35,271.5,40.5Q303,46,341,47.5Q379,49,393.5,83.5Q408,118,424,146.5Q440,175,448.5,207.5Q457,240,462.5,277Z" />
     </svg>
   );
 
-  return <BaseBubble bubble={bubble} title={"Statistiken"} description={"Statistiken zur Mensa seit der SV-Übernahme"} />;
+  return <BaseBubble bubble={bubble} title={<span ref={counterRef} />} description={`Sieh dir die Statistiken von ${menuCount.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden`} />;
 };
 
 interface BaseBubbleProps {
   bubble: JSX.Element;
-  title?: string;
-  description?: string;
+  title?: string | JSX.Element;
+  description?: string | JSX.Element;
   href?: string;
 }
 
@@ -142,7 +173,7 @@ const BaseBubble: React.FC<BaseBubbleProps> = ({ bubble, title, description, hre
       <div className={style["bubble-text"]}>
         <h2 className={style["bubble-text-title"]} children={title} />
         <div className={style["bubble-text-description"]} children={description} />
-        <Button theme={"green"} children={"Mehr"} className={style["bubble-text-button"]} href={href} />
+        <div className={style["bubble-text-button"]} children={<Button theme={"green"} children={"Mehr"} forwardIcon href={href} />} />
       </div>
     </section>
   );

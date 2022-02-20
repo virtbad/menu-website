@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import { fetcher } from "../util/global.config";
+import { apiUrl, fetcher } from "../util/global.config";
 
 interface VersionContext {
   frontend: string;
@@ -17,8 +17,8 @@ export const VersionContext = createContext<VersionContext>({ frontend: "", back
 export const VersionProvider: NextPage = ({ children }): JSX.Element => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [data, setData] = useState<VersionContext>({ frontend: "", backend: "" });
-  const { ...frontend } = useSWR(!loaded && "/api/", fetcher);
-  const { ...backend } = useSWR(!loaded && "");
+  const { ...frontend } = useSWR(!loaded && "/api", fetcher);
+  const { ...backend } = useSWR(!loaded && apiUrl, fetcher);
 
   useEffect(() => {
     if (!frontend.isValidating && !backend.isValidating && !loaded) {
@@ -26,6 +26,7 @@ export const VersionProvider: NextPage = ({ children }): JSX.Element => {
         frontend: frontend.data?.version || "",
         backend: backend.data?.version || "",
       });
+
       setLoaded(true);
     }
   }, [frontend, backend]);

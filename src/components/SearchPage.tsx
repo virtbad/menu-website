@@ -1,25 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Menu } from "../classes/Menu.class";
+import { useSearchbar } from "../hooks/SearchbarContext";
 import style from "../styles/modules/SearchPage.module.scss";
-import { randomMenu } from "../util/test";
 import { Autocomplete } from "./system";
 import { RatedListItem } from "./system/List";
 
-const SearchPage: React.FC = (): JSX.Element => {
-  const [results, setResults] = useState<Array<Menu>>([]);
-  const [filter, setFilter] = useState<string>("");
+interface SearchPageProps {
+  query?: string;
+}
+
+const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
+  const [filter, setFilter] = useState<string>(query);
   const searchbarRef = useRef<HTMLDivElement>(null);
-
-  const fetchResults = () => {};
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (results.length < 50) setResults([...results, randomMenu()]);
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  });
+  const { getMenuResults, data } = useSearchbar();
 
   useEffect(() => {
     const observer: IntersectionObserver = new IntersectionObserver((entries: Array<IntersectionObserverEntry>) => {
@@ -34,17 +27,33 @@ const SearchPage: React.FC = (): JSX.Element => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!data.results) getMenuResults(query).catch(() => {});
+  }, []);
+
+  console.log(searchbarRef);
+
   return (
     <>
       <TopWave />
       <section className={style["searchpage-container"]}>
         <div className={style["searchpage-content"]}>
+          <h1 children={"Menüsuche"} />
           <div ref={searchbarRef} className={style["searchpage-searchbar"]}>
-            <Autocomplete fullWidth onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(event?.target?.value || "")} options={results.map(({ title }) => title)} label={"Menü suchen"} />
+            <Autocomplete
+              disablePopper
+              themedBackground
+              fullWidth
+              value={query}
+              onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(event?.target?.value || "")}
+              onAutocomplete={(_, value) => setFilter(value || "")}
+              options={data.results.map(({ title }) => title)}
+              label={"Menü suchen"}
+            />
           </div>
           <div className={style["searchpage-menus"]}>
-            {results.map((menu: Menu, index: number) => {
-              if (menu.title.toLowerCase().includes(filter.toLowerCase())) return <RatedListItem key={index} score={index + 1} title={menu.title} votes={Math.floor(Math.random() * 10)} />;
+            {data.results.map((menu: Menu) => {
+              if (menu.title.toLowerCase().includes(filter.toLowerCase())) return <RatedListItem key={menu.uuid} menu={menu} />;
             })}
           </div>
         </div>
@@ -60,12 +69,12 @@ const SearchPage: React.FC = (): JSX.Element => {
 const TopWave: React.FC = (): JSX.Element => {
   return (
     <section className={style["wave-container"]}>
-      <div className={style["background"]} />
-      <svg preserveAspectRatio={"none"} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <svg preserveAspectRatio={"none"} version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1440 320" xmlSpace="preserve">
         <path
-          fill-opacity="1"
-          d="M0,96L60,85.3C120,75,240,53,360,69.3C480,85,600,139,720,154.7C840,171,960,149,1080,122.7C1200,96,1320,64,1380,48L1440,32L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-        ></path>
+          d="M0,252l60-11.4c60-10.9,180-34.3,300-17c120,16.7,240,74,360,90.7c120,17.3,240-6.1,360-34c120-28.4,240-62.4,300-79.4
+	l60-17v-34h-60c-60,0-180,0-300,0s-240,0-360,0s-240,0-360,0s-240,0-300,0H0V252z"
+        />
+        <rect width="1440" height="150" />
       </svg>
     </section>
   );

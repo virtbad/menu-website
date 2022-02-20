@@ -27,11 +27,12 @@
 
 .topmenu-container {
   @include without-layout-padding;
+  color: $white;
 
   .topmenu-content {
     padding: $layout-padding;
     display: flex;
-    background-color: $button;
+    background-color: var(--home-accent);
     align-items: center;
     flex-direction: column;
 
@@ -55,7 +56,8 @@
       height: 20rem;
 
       path {
-        fill: $button;
+        fill: var(--home-accent);
+        //fill: url(#background-gradient);
         fill-opacity: 1;
         height: 100%;
         width: 100%;
@@ -70,6 +72,7 @@
 
     &:nth-child(2) {
       justify-self: flex-start;
+      filter: $drop-shadow;
     }
   }
 }
@@ -81,7 +84,9 @@
   gap: 5rem;
 
   .bubble-container {
-    fill: $button;
+    filter: $drop-shadow;
+    //fill: url(#background-gradient);
+    fill: var(--home-accent);
     width: fit-content;
     display: flex;
     position: relative;
@@ -119,12 +124,27 @@
     }
 
     .bubble-text {
+      justify-content: center;
+      color: $white;
       position: absolute;
       height: 40%;
       top: 25%;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+    }
+
+    .bubble-text-description {
+      font-size: 1.3rem;
+      font-weight: 300;
+    }
+
+    .bubble-text-button {
+      margin-top: 1.5rem;
+      display: flex;
+      /* flex: 1 auto;
+      display: flex;
+      align-items: flex-end; */
     }
   }
 }
