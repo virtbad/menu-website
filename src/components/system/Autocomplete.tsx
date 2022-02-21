@@ -16,15 +16,12 @@ interface AutocompleteProps extends Omit<MuiInputProps, "variant"> {
  * Autocomplete component based of @mui/material autocomplete
  */
 
-const Autocomplete: React.FC<AutocompleteProps> = forwardRef(({ label = "Suche", onTextChange, disablePopper = false, themedBackground = false, noOptionsText, onAutocomplete, options, onChange, value, ...props }, ref): JSX.Element => {
+const Autocomplete: React.FC<AutocompleteProps> = forwardRef(({ label = "Suche", onTextChange, disablePopper = false, themedBackground = false, noOptionsText, onAutocomplete, options, onChange, value, InputProps, ...props }, ref): JSX.Element => {
   const [text, setText] = useState<string>((value as any) || "");
 
   useEffect(() => {
     if (value) setText(value as any);
   }, [value]);
-
-  console.log(text);
-  console.log(options);
 
   return (
     <MuiAutocomplete
@@ -35,13 +32,16 @@ const Autocomplete: React.FC<AutocompleteProps> = forwardRef(({ label = "Suche",
       }}
       size={"small"}
       noOptionsText={noOptionsText || "Keine Ergebnisse"}
-      renderInput={(params) => {
+      renderInput={({ InputProps, ...params }) => {
         // could add filter functionality
         return (
           <Input
             ref={ref}
             label={label}
-            value={text}
+            InputProps={{
+              value: text,
+              ...InputProps,
+            }}
             onChange={(event) => {
               setText(event.target.value);
               onChange && onChange(event);
@@ -49,6 +49,7 @@ const Autocomplete: React.FC<AutocompleteProps> = forwardRef(({ label = "Suche",
             }}
             {...props}
             {...params}
+            value={text}
           />
         );
       }}

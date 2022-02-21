@@ -61,8 +61,8 @@ export default class CustomDocument extends Document {
             <svg height={"0px"} width={"0px"}>
               <defs>
                 <linearGradient id="background-gradient" gradientTransform="rotate(65)">
-                  <stop offset="0%" stop-color="#184d0f" />
-                  <stop offset="100%" stop-color="#298519" />
+                  <stop offset="0%" stopColor="#184d0f" />
+                  <stop offset="100%" stopColor="#298519" />
                 </linearGradient>
               </defs>
             </svg>

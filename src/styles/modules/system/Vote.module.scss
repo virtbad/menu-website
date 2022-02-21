@@ -59,6 +59,39 @@
   flex-direction: column;
   width: fit-content;
 
+  &[data-theme="auto"] {
+    .vote-triangle {
+      svg {
+        stroke: var(--secondary);
+        &[data-selected="true"] {
+          fill: var(--secondary);
+        }
+      }
+    }
+  }
+
+  &[data-theme="light"] {
+    .vote-triangle {
+      svg {
+        stroke: $secondary-light;
+        &[data-selected="true"] {
+          fill: $secondary-light;
+        }
+      }
+    }
+  }
+
+  &[data-theme="dark"] {
+    .vote-triangle {
+      svg {
+        stroke: $secondary-dark;
+        &[data-selected="true"] {
+          fill: $secondary-dark;
+        }
+      }
+    }
+  }
+
   .vote-votes {
     grid-area: votes;
     font-size: 1.25rem;
@@ -77,14 +110,14 @@
 
   &[data-selected="true"] {
     svg {
-      fill: $white;
+      fill: var(--secondary);
     }
   }
 
   svg {
     height: 1.5rem;
     width: 1rem;
-    stroke: $white;
+    stroke: var(--secondary);
     fill: none;
     stroke-width: 2.5px;
   }

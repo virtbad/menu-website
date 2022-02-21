@@ -4,13 +4,36 @@
   display: flex;
 }
 
+*[theme="dark"] {
+  .listitem-container {
+    background-color: rgba($white, 0.04);
+  }
+}
+
+*[theme="light"] {
+  .listitem-container {
+    background-color: rgba($black, 0.02);
+  }
+}
+
 .listitem-container {
   display: grid;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
   cursor: pointer;
   gap: 0.75rem;
   transition: background-color 0.2s ease;
-  background-color: rgba($white, 0.04);
+
+  &[data-theme="auto"] {
+    display: grid;
+  }
+
+  &[data-theme="light"] {
+    display: grid;
+  }
+
+  &[data-theme="dark"] {
+    display: grid;
+  }
 
   &:hover {
     background-color: var(--option-hover);
@@ -23,7 +46,7 @@
   border-radius: $border-radius-small;
 
   &[data-rated="true"] {
-    grid-template-areas: "vote title title" "vote description description" "vote date button";
+    grid-template-areas: "vote title date" "vote description button";
     grid-template-columns: min-content auto min-content;
 
     .item-title {
@@ -44,6 +67,7 @@
     .item-button {
       grid-area: button;
       justify-self: flex-end;
+      align-self: flex-end;
     }
 
     .item-vote {
@@ -57,6 +81,24 @@
 
     .item-date {
       grid-area: date;
+      font-weight: bold;
+      font-family: monospace;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@include max-550 {
+  .listitem-container {
+    &[data-rated="true"] {
+      grid-template-areas: "vote title title" "vote description description" "date date button";
+      grid-template-columns: min-content auto auto;
+
+      .item-date {
+        align-self: flex-end;
+        justify-self: flex-start;
+      }
     }
   }
 }
