@@ -23,3 +23,9 @@ const storageEnableLogs: string | false | null = typeof window === "object" && l
  */
 
 export const onlyLocalLogs: boolean = !(typeof storageEnableLogs === "string" && storageEnableLogs === "true");
+
+/**
+ * Debounce delay for search requests
+ */
+
+export const searchDebounceDelay: number = 300;

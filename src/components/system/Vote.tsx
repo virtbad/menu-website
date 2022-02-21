@@ -4,6 +4,7 @@ import React from "react";
 import style from "../../styles/modules/system/Vote.module.scss";
 
 interface VoteProps {
+  theme?: "auto" | "dark" | "light";
   votes: number;
   disabled?: boolean;
   onVote?: (up: boolean, votes: number) => void;
@@ -13,12 +14,12 @@ interface VoteProps {
  * Horizontal vote component
  */
 
-const Vote: React.FC<VoteProps> = ({ votes, onVote, disabled = false }): JSX.Element => {
+const Vote: React.FC<VoteProps> = ({ votes, onVote, disabled = false, theme = "auto" }): JSX.Element => {
   const onUpvote = () => !disabled && onVote && onVote(true, votes + 1);
   const onDownvote = () => !disabled && onVote && onVote(false, votes - 1);
 
   return (
-    <div className={style["vote-container"]}>
+    <div className={style["vote-container"]} data-theme={theme}>
       <code className={style["vote-votes"]} children={votes.toLocaleString("de", { signDisplay: "always" }).replace(".", "'")} />
       <div className={style["vote-buttons"]}>
         <span className={style["vote-icon"]} children={<KeyboardArrowUpIcon fontSize={"large"} />} onClick={onUpvote} />
@@ -32,12 +33,12 @@ const Vote: React.FC<VoteProps> = ({ votes, onVote, disabled = false }): JSX.Ele
  * Vertical vote component
  */
 
-export const VerticalVote: React.FC<VoteProps> = ({ votes, onVote, disabled = false }): JSX.Element => {
+export const VerticalVote: React.FC<VoteProps> = ({ votes, onVote, disabled = false, theme = "auto" }): JSX.Element => {
   const onUpvote = () => !disabled && onVote && onVote(true, votes + 1);
   const onDownvote = () => !disabled && onVote && onVote(false, votes - 1);
 
   return (
-    <div className={style["vertical-vote-container"]}>
+    <div className={style["vertical-vote-container"]} data-theme={theme}>
       <div className={style["vote-up"]} children={<ArrowIcon variant={"up"} onClick={onUpvote} />} />
       <code className={style["vote-votes"]} children={votes.toLocaleString("de", { signDisplay: "always" }).replace(".", "'")} />
       <div className={style["vote-down"]} children={<ArrowIcon variant={"down"} onClick={onDownvote} />} />

@@ -72,6 +72,12 @@
   }
 }
 
+@mixin min-1800 {
+  @media screen and (min-width: calc(1800px)) {
+    @content;
+  }
+}
+
 @mixin container-width {
   @include max-1600 {
     width: min(800px, calc(100vw - 3rem));

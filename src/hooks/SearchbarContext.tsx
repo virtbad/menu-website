@@ -83,6 +83,7 @@ export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
       Object.entries(options).forEach(([key, value]) => {
         if (value !== undefined) searchQuery += `&${key}=${value}`;
       });
+      Logger.request(`Fetching menus with query "${query}"`);
       const results: AxiosResponse<Array<MenuConstructor>> = await axios.get(searchQuery);
       const mapped = (results?.data || []).map((ctr: MenuConstructor) => new Menu(ctr));
       setData({ query: query, results: mapped });

@@ -1,7 +1,9 @@
+import { debounce } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Menu } from "../classes/Menu.class";
 import { useSearchbar } from "../hooks/SearchbarContext";
 import style from "../styles/modules/SearchPage.module.scss";
+import { searchDebounceDelay } from "../util/global.config";
 import { Autocomplete } from "./system";
 import { RatedListItem } from "./system/List";
 
@@ -10,28 +12,36 @@ interface SearchPageProps {
 }
 
 const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
-  const [filter, setFilter] = useState<string>(query);
-  const searchbarRef = useRef<HTMLDivElement>(null);
-  const { getMenuResults, data } = useSearchbar();
+  let mounted: boolean = true;
+  const [results, setResults] = useState<{ query: string; results: Array<Menu> }>({ query: "", results: [] });
+  const ref = useRef<HTMLInputElement>(null);
+  const { getMenuResults } = useSearchbar();
 
   useEffect(() => {
-    const observer: IntersectionObserver = new IntersectionObserver((entries: Array<IntersectionObserverEntry>) => {
-      if (entries[0]?.isIntersecting) {
-        //handle intersect event
-        //create searchbar context
-      }
+    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => {
+      console.log(entry.isIntersecting);
     });
-    observer.observe(searchbarRef.current as any);
+    observer.observe(ref.current as any);
     return () => {
       observer.disconnect();
     };
   }, []);
 
   useEffect(() => {
-    if (!data.results) getMenuResults(query).catch(() => {});
+    mounted = true;
+    getMenuResults(query)
+      .then((menus: Array<Menu>) => mounted && setResults({ query: query, results: menus }))
+      .catch();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  console.log(searchbarRef);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    getMenuResults(event.target.value)
+      .then((menus: Array<Menu>) => mounted && setResults({ query: event.target.value, results: menus }))
+      .catch();
+  };
 
   return (
     <>
@@ -39,22 +49,28 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
       <section className={style["searchpage-container"]}>
         <div className={style["searchpage-content"]}>
           <h1 children={"Menüsuche"} />
-          <div ref={searchbarRef} className={style["searchpage-searchbar"]}>
+          <div className={style["searchpage-searchbar"]}>
             <Autocomplete
+              ref={ref}
               disablePopper
               themedBackground
               fullWidth
               value={query}
-              onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFilter(event?.target?.value || "")}
-              onAutocomplete={(_, value) => setFilter(value || "")}
-              options={data.results.map(({ title }) => title)}
+              onChange={debounce(handleChange, searchDebounceDelay)}
+              onAutocomplete={(event: any, _: string, reason: string) => {
+                if (reason === "input") ref.current?.setAttribute("data-text", event.target.value);
+              }}
+              options={results.results.map(({ title }) => title)}
               label={"Menü suchen"}
+              placeholder={"Suchbegriff eingeben"}
             />
           </div>
           <div className={style["searchpage-menus"]}>
-            {data.results.map((menu: Menu) => {
-              if (menu.title.toLowerCase().includes(filter.toLowerCase())) return <RatedListItem key={menu.uuid} menu={menu} />;
+            {results.results.map((menu: Menu) => {
+              return <RatedListItem href={`/menu/${menu.uuid}`} key={menu.uuid} menu={menu} />;
             })}
+            {results.results.length === 0 && results.query !== "" && results.query.length !== 1 && <span className={style["noresult"]} children={"Keine Ergebnisse gefunden"} />}
+            {results.results.length === 0 && results.query === "" && <span className={style["noresult"]} children={"Gib einen Suchbegriff ein"} />}
           </div>
         </div>
       </section>

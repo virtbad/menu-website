@@ -6,31 +6,39 @@ import { randomMenu } from "../util/test";
 import { Button, MenuCard } from "./system";
 import { RatedListItem } from "./system/List";
 
+interface HomeProps {
+  menus: Array<Menu>;
+}
+
 /**
  * Home landing page
  */
 
-const Home: React.FC = (): JSX.Element => {
+const Home: React.FC<HomeProps> = ({ menus }): JSX.Element => {
   return (
     <section className={style["home-container"]}>
-      <Today />
+      <Today menus={menus} />
       <TopMenus />
       <Bubbles />
     </section>
   );
 };
 
+interface TodayProps {
+  menus: Array<Menu>;
+}
+
 /**
  * Todays menus component
  */
 
-const Today: React.FC = (): JSX.Element => {
+const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
   return (
     <section className={style["today-container"]}>
       <div className={style["today-content"]}>
-        <MenuCard uuid="" />
-        <MenuCard uuid="" />
-        <MenuCard uuid="" />
+        {menus.map((menu: Menu) => {
+          return <MenuCard key={menu.uuid} menu={menu} />;
+        })}
       </div>
     </section>
   );
@@ -52,7 +60,7 @@ const TopMenus: React.FC = (): JSX.Element => {
         </div>
         <div className={style["topmenu-menus"]}>
           {menus.map((menu: Menu, index: number) => {
-            return <RatedListItem key={index} menu={menu} />;
+            return <RatedListItem theme={"dark"} key={index} menu={menu} />;
           })}
         </div>
       </div>
