@@ -4,32 +4,101 @@
   display: flex;
 }
 
+*[theme="dark"] {
+  .listitem-container {
+    background-color: rgba($white, 0.04);
+  }
+}
+
+*[theme="light"] {
+  .listitem-container {
+    background-color: rgba($black, 0.02);
+  }
+}
+
 .listitem-container {
   display: grid;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+  cursor: pointer;
+  gap: 0.75rem;
+  transition: background-color 0.2s ease;
+
+  &[data-theme="auto"] {
+    display: grid;
+  }
+
+  &[data-theme="light"] {
+    display: grid;
+  }
+
+  &[data-theme="dark"] {
+    display: grid;
+  }
+
+  &:hover {
+    background-color: var(--option-hover);
+  }
+
+  &:active {
+    background-color: var(--option-select);
+  }
+
   border-radius: $border-radius-small;
-  background: var(--secondary);
-  color: var(--primary);
 
   &[data-rated="true"] {
-    grid-template-areas: "score title votes button";
-    grid-template-columns: min-content auto auto min-content;
-
-    .item-score {
-      grid-area: score;
-      border-right: solid 1px var(--border);
-      padding-right: 0.75rem;
-      margin-right: 0.75rem;
-    }
+    grid-template-areas: "vote title date" "vote description button";
+    grid-template-columns: min-content auto min-content;
 
     .item-title {
       grid-area: title;
       align-self: center;
-      font-size: 1.125rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-description {
+      grid-area: description;
+      font-weight: 300;
+      font-size: 1.15rem;
+      margin-top: -0.75rem;
     }
 
     .item-button {
+      grid-area: button;
       justify-self: flex-end;
+      align-self: flex-end;
+    }
+
+    .item-vote {
+      grid-area: vote;
+      margin-right: 0.5rem;
+      padding-top: 0.5rem;
+      width: 2.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .item-date {
+      grid-area: date;
+      font-weight: bold;
+      font-family: monospace;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@include max-550 {
+  .listitem-container {
+    &[data-rated="true"] {
+      grid-template-areas: "vote title title" "vote description description" "date date button";
+      grid-template-columns: min-content auto auto;
+
+      .item-date {
+        align-self: flex-end;
+        justify-self: flex-start;
+      }
     }
   }
 }

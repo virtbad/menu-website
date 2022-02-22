@@ -1,36 +1,32 @@
 @use "../../config/" as *;
 
 .card-container {
+  filter: $drop-shadow;
   display: grid;
   border-radius: $border-radius-big;
-  background-color: var(--secondary);
-  color: var(--primary) !important;
-  padding: 2rem;
-  //background: $card-gradient;
+  background-color: var(--home-accent);
+  padding: 1.25rem 1.5rem 1.5rem 1.5rem;
   justify-self: center;
   align-self: center;
   position: relative;
-  grid-template-rows: min-content auto auto;
-  gap: 0.25rem;
+  grid-template-rows: min-content;
+  gap: 0.75rem;
+  color: $white;
 
-  &[data-variant="big"] {
-    grid-template-areas: "title" "description" "label" "price";
-    height: $menucard-big-height;
-    width: $menucard-big-width;
+  grid-template-areas: "vote title" "vote description" "vote label" "price price";
+  height: $menucard-big-height;
+  width: $menucard-big-width;
+
+  .card-vote {
+    grid-area: vote;
+    width: 2.5rem;
   }
 
-  &[data-variant="small"] {
-    grid-template-areas: "title ." "description description" "label ." "price price";
-    height: $menucard-small-height;
-    width: $menucard-small-width;
-  }
-
-  .title {
+  .card-title {
     grid-area: title;
     line-height: 1.1;
     margin-bottom: 0.25rem;
     display: flex;
-    margin-top: -0.75rem;
     align-items: center;
     word-break: break-word;
 
@@ -39,41 +35,17 @@
     }
   }
 
-  .vote-container {
-    justify-self: flex-end;
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    padding-right: 0.75rem;
-    position: relative;
-    align-items: center;
-    align-self: flex-start;
-    white-space: nowrap;
-
-    & > svg {
-      &:first-of-type {
-        transform: scale(1.75) scaleY(1.5) translateY(0.125rem);
-      }
-
-      &:nth-of-type(2) {
-        transform: scale(1.75) scaleY(1.5) translateY(-0.125rem);
-      }
-    }
-  }
-
-  .description {
+  .card-description {
     grid-area: description;
     display: flex;
-
-    div {
-      font-size: 18px;
-    }
+    font-weight: 300;
+    font-size: 1.3rem;
+    margin-top: -0.75rem;
   }
 
-  .prices-container {
+  .card-prices-container {
     grid-area: price;
     display: flex;
-    gap: 1rem;
     margin-top: 0.5rem;
     padding-top: 0.5rem;
     border-top: solid 1px var(--border);
@@ -88,6 +60,17 @@
       border-top-right-radius: $border-radius-small;
       border-top-left-radius: $border-radius-small;
       letter-spacing: 0.1px;
+      display: flex;
+
+      &:first-child {
+        justify-content: flex-start;
+      }
+
+      &:last-child {
+        justify-content: flex-end;
+      }
+
+      justify-content: center;
 
       .price-group {
         font-weight: bold;
@@ -102,63 +85,5 @@
 
   .label {
     grid-area: label;
-  }
-
-  .card-border-top {
-    position: absolute;
-    height: 1.1rem;
-    width: calc(100% - $border-radius-big);
-    top: calc(-1.1rem + 1px);
-    left: calc($border-radius-big / 2);
-    background-color: $button;
-    transform: skewX(50deg);
-    transform-origin: bottom;
-    border-top: none;
-    border-left: none;
-    z-index: -1;
-    border-top-left-radius: calc($border-radius-big / 2);
-
-    &::before {
-      content: "";
-      position: absolute;
-      height: 2rem;
-      width: calc($border-radius-big);
-      top: 0.035rem;
-      left: -0.275rem;
-      background-color: $button;
-      transform: skewX(5deg);
-      z-index: -1;
-      border-top-left-radius: calc($border-radius-big / 2);
-    }
-  }
-
-  .card-border-left {
-    position: absolute;
-    width: 1.35rem;
-    top: calc($border-radius-big / 2);
-    height: calc(100% - $border-radius-big);
-    left: calc(-1.35rem + 1px);
-    background-color: $button-disabled;
-    transform: skewY(40deg);
-    transform-origin: right;
-    box-sizing: border-box;
-    //border: solid 1px var(--primary);
-    border-bottom: none;
-    // background: linear-gradient(90deg, var(--primary), $button-disabled, $button-disabled);
-    z-index: -2;
-    border-top-left-radius: calc($border-radius-big / 2);
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: 2rem;
-      top: -0.275rem;
-      height: calc($border-radius-big);
-      left: 0.035rem;
-      background: linear-gradient(0deg, $button-disabled, $button);
-      z-index: -2;
-      transform: skewY(5deg);
-      border-top-left-radius: calc($border-radius-big / 2);
-    }
   }
 }

@@ -1,9 +1,15 @@
 @use "../config/" as *;
 
 .searchpage-container {
-  margin-top: $header-height;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 10rem;
+
+  h1 {
+    margin-bottom: 0.75rem;
+  }
 
   .searchpage-content {
     align-self: center;
@@ -14,13 +20,57 @@
     .searchpage-searchbar {
       width: 100%;
       margin-bottom: 1rem;
-      position: static;
+      position: sticky;
+      top: $header-height;
     }
 
     .searchpage-menus {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+
+      .noresult {
+        display: flex;
+        justify-self: center;
+        align-self: center;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-top: 1rem;
+        user-select: none;
+      }
+    }
+  }
+}
+
+.wave-container {
+  @include without-layout-padding;
+  position: relative;
+  filter: $drop-shadow;
+
+  .background {
+    background-color: var(--home-accent);
+    height: 10rem;
+  }
+
+  &:first-of-type {
+    align-self: flex-start;
+    transform: translateY(-$layout-padding);
+
+    rect {
+      fill: var(--home-accent);
+    }
+  }
+
+  svg {
+    width: 100%;
+    height: 20rem;
+
+    path {
+      fill: var(--home-accent);
+      fill-opacity: 1;
+      height: 100%;
+      width: 100%;
     }
   }
 }

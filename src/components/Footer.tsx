@@ -13,11 +13,24 @@ const Footer: React.FC = (): JSX.Element => {
     <footer className={style["footer-container"]}>
       <section className={style["footer-items"]}>
         <FooterSection title={"Navigation"}>
+          <Link href={"/"} children={"Home"} />
           <Link href={"/search"} children={"Menusuche"} />
         </FooterSection>
         <FooterSection title={"API"} />
       </section>
-      <section className={style["footer-endnote"]}></section>
+      <section className={style["footer-endnote"]}>
+        <div className={style["footer-socials"]}></div>
+        <div className={style["footer-versions"]}>
+          <div className={style["footer-version"]}>
+            <h4 children={"Frontend"} />
+            <code children={`v${frontend}`} />
+          </div>
+          <div className={style["footer-version"]}>
+            <h4 children={"Backend"} />
+            <code children={`v${backend}`} />
+          </div>
+        </div>
+      </section>
     </footer>
   );
 };

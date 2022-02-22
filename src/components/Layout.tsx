@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 interface LayoutProps {
-  hideHeaderSearchbar?: boolean;
+  hideHeaderSearchbar?: boolean | "scroll-in";
 }
 
 /**

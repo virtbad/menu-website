@@ -10,7 +10,7 @@ interface InputProps extends Omit<MuiInputProps, "variant"> {
  * Base input component based of @mui/material textfield
  */
 
-const Input: React.FC<InputProps> = forwardRef(({ onInvalid, InputProps = {}, InputLabelProps = {}, readonly = false, classes, ...props }, ref): JSX.Element => {
+const Input: React.FC<InputProps> = forwardRef(({ onInvalid, inputProps = {}, InputProps = {}, InputLabelProps = {}, readonly = false, classes, value, ...props }, ref): JSX.Element => {
   const { endAdornment, ...InputPropsRest } = InputProps;
 
   return (
@@ -34,6 +34,7 @@ const Input: React.FC<InputProps> = forwardRef(({ onInvalid, InputProps = {}, In
         readOnly: readonly,
         endAdornment: endAdornment && <span data-endadornment children={endAdornment} />,
         ...InputPropsRest,
+        value: value,
       }}
       InputLabelProps={{
         classes: {
@@ -44,6 +45,13 @@ const Input: React.FC<InputProps> = forwardRef(({ onInvalid, InputProps = {}, In
         },
         ...InputLabelProps,
       }}
+      value={value}
+      inputProps={
+        {
+          ...inputProps,
+          value: value,
+        } as any
+      }
       {...props}
     />
   );

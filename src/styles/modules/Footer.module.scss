@@ -4,7 +4,7 @@
   display: flex;
   padding: 2rem;
   gap: 1rem;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   max-width: 1000px;
   margin: 0 auto;
@@ -34,5 +34,31 @@
     grid-area: entries;
     display: flex;
     flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+.footer-endnote {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+
+  .footer-socials {
+    display: flex;
+  }
+
+  .footer-versions {
+    display: flex;
+    justify-content: space-;
+
+    .footer-version {
+      justify-content: flex-start;
+      display: flex;
+      flex: 1;
+      h4 {
+        padding-right: 1ch;
+        text-transform: uppercase;
+      }
+    }
   }
 }
