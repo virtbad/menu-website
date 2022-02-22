@@ -15,6 +15,7 @@ import "../styles/global.scss";
 import { loginRequest, msalConfig } from "../util/auth.config";
 import { NavigationClient } from "../util/NavigationClient";
 import { createEmotionCache } from "./_document";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 const msalInstance: PublicClientApplication = new PublicClientApplication(msalConfig);
 

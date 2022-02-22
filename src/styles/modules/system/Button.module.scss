@@ -11,12 +11,18 @@
   font-weight: bold;
   transition: all 0.2s;
   white-space: nowrap;
+  align-items: center;
 
   span[data-endadornment="true"] {
     padding-left: 0.75rem;
     transform: scale(0.8);
     margin-right: -0.5rem;
     transition: all 0.2s;
+  }
+
+  span[data-startadornment="true"] {
+    margin-left: -0.5rem;
+    padding-right: 0.75rem;
   }
 
   &:hover {
@@ -42,6 +48,34 @@
 
     &:disabled {
       color: $button !important;
+    }
+  }
+
+  &[data-theme="primary"] {
+    color: $foreground-primary !important;
+    background-color: $accent-primary;
+
+    &:hover {
+      background-color: $accent-primary-hover !important;
+    }
+
+    &:disabled {
+      background-color: $function-disabled !important;
+    }
+  }
+
+  &[data-theme="secondary"] {
+    color: $white !important;
+    border: 2px solid $accent-secondary;
+    background-color: transparent !important;
+
+    &:hover {
+      background-color: $accent-secondary-hover !important;
+      border-color: $accent-secondary-hover !important;
+    }
+
+    &:disabled {
+      color: $function-disabled !important;
     }
   }
 }

@@ -1,8 +1,11 @@
-@use "../config/" as *;
+@use "../config" as *;
 
 .menupage-container {
   display: flex;
+
   position: relative;
+  height: calc(100vh - $header-height);
+  margin-top: calc($header-height - $layout-padding);
 }
 
 .menupage-divider {
@@ -14,3 +17,114 @@
   left: 0;
   transform-origin: left;
 }
+
+.menupage-menu-container {
+  flex: 1;
+  margin-left: -$layout-padding;
+  margin-right: $layout-padding;
+  overflow: hidden;
+}
+
+.menupage-menu-blobtainer {
+  transform: translateY(-100%);
+  width: 100%;
+  height: 100%;
+  z-index: 233;
+  //background-color: rgba(138, 14, 6, 0.51);
+  display: flex;
+  align-items: center;
+}
+
+.menupage-menu-box {
+  width: 100%;
+  height: 200px;
+  display: flex;
+}
+.menupage-comments-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menupage-menu-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 0.5rem;
+  margin-left: 1rem;
+
+  .menupage-menu-rating-box {
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    background-color: $background-secondary;
+
+    padding: 0.75rem;
+    border-radius: 10px;
+  }
+}
+
+.menupage-menu-rating-button {
+  width: 2rem;
+
+  transition: 0.2s;
+
+  stroke: $foreground-primary;
+  fill: none;
+
+  &:hover {
+    stroke: $foreground-hover;
+  }
+
+
+  &[data-direction="up"] {
+    transform: rotate(180deg);
+  }
+
+  &[data-chosen="true"] {
+    stroke: $accent-primary;
+
+    &:hover {
+      stroke: $accent-primary-hover;
+    }
+  }
+}
+.menupage-menu-rating-number {
+  font-family: monospace;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.menupage-blob-path {
+  fill: url(#BackgroundGradient);
+  filter: drop-shadow( 5px 5px 5px rgba(0, 0, 0, .7));
+}
+
+.menupage-blob {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.4, 1.2) translateX(-15%);
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+}
+
+.menu-textbox {
+  display: flex;
+  flex-direction: column;
+  margin-right: 5rem;
+  padding-left: 1em;
+}
+
+.menu-title {
+  font-size: 28px;
+}
+
+.menu-content {
+
+}
+
+
+
+

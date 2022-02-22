@@ -5,8 +5,9 @@ import style from "../../styles/modules/system/Button.module.scss";
 
 interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: string;
-  theme?: "white" | "green";
+  theme?: "white" | "green" | "primary" | "secondary";
   endIcon?: JSX.Element;
+  startIcon?: JSX.Element;
   forwardIcon?: boolean;
 }
 
@@ -23,9 +24,10 @@ const Button: React.FC<ButtonProps> = ({ href, ...props }): JSX.Element => {
  * Base button component
  */
 
-const ButtonBase: React.FC = forwardRef<ButtonProps, any>(({ forwardIcon, href, theme = "white", className, endIcon, children, ...props }, ref): JSX.Element => {
+const ButtonBase: React.FC = forwardRef<ButtonProps, any>(({ forwardIcon, href, theme = "white", className, endIcon, startIcon, children, ...props }, ref): JSX.Element => {
   return (
     <button ref={ref} className={`${style["button-root"]} ${className}`} data-theme={theme} {...props}>
+      {startIcon && <span data-startadornment children={startIcon} />}
       {children}
       {(endIcon || forwardIcon) && <span data-endadornment children={forwardIcon ? <ArrowForwardIcon /> : endIcon} />}
     </button>

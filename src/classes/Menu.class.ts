@@ -65,4 +65,9 @@ export class Menu {
 
     this.votes = ctr.voteBalance;
   }
+
+
+  public get rating(): number {
+    return this._rating;
+  }
 }
