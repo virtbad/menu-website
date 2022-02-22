@@ -1,48 +1,29 @@
-import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
-import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
-import React, { useState } from "react";
-import useSWR from "swr";
+import React from "react";
 import { Menu } from "../../classes/Menu.class";
 import { MenuPrice } from "../../classes/MenuPrice.class";
 import style from "../../styles/modules/system/MenuCard.module.scss";
-import { randomMenu } from "../../util/test";
+import { VerticalVote } from "./Vote";
 
 interface MenuCardProps {
-  variant?: "small" | "big";
-  uuid: string;
-  stickOut?: boolean;
+  menu: Menu;
+  loading?: boolean;
 }
 
 /**
  * Card component to display menu information
  */
 
-const MenuCard: React.FC<MenuCardProps> = ({ stickOut = false, variant = "big" }): JSX.Element => {
-  const {} = useSWR(false && ""); //fetch menu for card
-
-  const [menu] = useState<Menu>(randomMenu());
-
+const MenuCard: React.FC<MenuCardProps> = ({ menu, loading = false }): JSX.Element => {
   return (
-    <section className={style["card-container"]} data-variant={variant}>
-      <div className={style["title"]}>
-        <h2 children={menu.title} />
-        <span className={style["vote-container"]}>
-          <ArrowDropUpSharpIcon />
-          <h2 children={10} />
-          <ArrowDropDownSharpIcon />
-        </span>
-      </div>
-      <div className={style["description"]}>
-        <div children={menu.description} />
-      </div>
-      <div className={style["prices-container"]}>
+    <section className={style["card-container"]}>
+      <div className={style["card-vote"]} children={<VerticalVote votes={Math.floor(Math.random() * 100)} />} />
+      <div className={style["card-title"]} children={<h2 children={menu.title} />} />
+      <div className={style["card-description"]} children={menu.description} />
+      <div className={style["card-prices-container"]}>
         {menu.prices.map((price: MenuPrice) => {
           return <Price price={price} key={price.group + price.priceString} />;
         })}
       </div>
-
-      {stickOut && <div className={style["card-border-top"]} />}
-      {stickOut && <div className={style["card-border-left"]} />}
     </section>
   );
 };

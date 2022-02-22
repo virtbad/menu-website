@@ -1,0 +1,13 @@
+@use "../config/" as *;
+
+.fallback-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.fallback-spinner {
+  fill: var(--secondary);
+}

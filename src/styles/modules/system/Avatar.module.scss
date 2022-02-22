@@ -2,7 +2,7 @@
 
 .avatar-container {
   border-radius: 50%;
-  background: $card-gradient;
+  background: var(--home-accent);
 
   &[data-size="text"] {
     height: 1em;
