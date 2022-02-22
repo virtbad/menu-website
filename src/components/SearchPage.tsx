@@ -18,9 +18,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   const { getMenuResults } = useSearchbar();
 
   useEffect(() => {
-    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => {
-      console.log(entry.isIntersecting);
-    });
+    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => {});
     observer.observe(ref.current as any);
     return () => {
       observer.disconnect();

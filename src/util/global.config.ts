@@ -11,6 +11,12 @@ export const isLocal: boolean = typeof window === "object" && window.location.ho
 const storageApiUrl: string | false | null = typeof window === "object" && localStorage.getItem("apiUrl");
 
 /**
+ * Boolean whether ms auth logs are enabled or not
+ */
+
+export const authLogsEnabled: boolean = false;
+
+/**
  * Api url
  */
 
