@@ -29,6 +29,7 @@ const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [] 
       {description && <meta property="og:description" content={description} key="ogdesc" />}
       {description && <meta name="twitter:description" content={description} />}
       {keywords && <meta name="keywords" content={Array.isArray(keywords) ? keywords.join(",") : keywords} />}
+      <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE} />
       <meta property="og:image" content={``} />
       <meta property="og:image:secure_url" content={``} />
       <meta name="keywords" content={allKeywords.join(", ")} />
