@@ -28,6 +28,7 @@
 .topmenu-container {
   @include without-layout-padding;
   color: $white;
+  filter: $drop-shadow;
 
   .topmenu-content {
     padding: $layout-padding;
@@ -57,7 +58,6 @@
 
       path {
         fill: var(--home-accent);
-        //fill: url(#background-gradient);
         fill-opacity: 1;
         height: 100%;
         width: 100%;
@@ -86,7 +86,6 @@
 
   .bubble-container {
     filter: $drop-shadow;
-    //fill: url(#background-gradient);
     fill: var(--home-accent);
     width: fit-content;
     display: flex;
@@ -97,7 +96,7 @@
       display: flex;
 
       svg {
-        height: 50rem; //TODO: Adjust height on small screens with media query
+        height: 50rem;
         width: 50rem;
       }
     }
@@ -180,7 +179,6 @@
   .bubbles-container {
     flex-direction: row;
     justify-content: center;
-    margin-bottom: 10rem;
   }
 
   .bubble-container {

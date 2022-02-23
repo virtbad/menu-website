@@ -1,12 +1,13 @@
 import { NextPage, NextPageContext } from "next";
 import React from "react";
+import Error from "../components/system/Error";
 
 interface ErrorPageProps {
   code: number; //http error code number
 }
 
 const ErrorPage: NextPage<ErrorPageProps> = ({ code }): JSX.Element => {
-  return <></>;
+  return <Error code={code} />;
 };
 
 ErrorPage.getInitialProps = async (ctx: NextPageContext) => {

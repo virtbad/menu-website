@@ -1,0 +1,20 @@
+@use "../../config/" as *;
+
+.error-container {
+  display: flex;
+  position: relative;
+
+  .error-content {
+    margin-top: 7rem;
+    position: relative;
+    margin-left: 7rem;
+    .error-blob-container {
+      height: 50rem;
+      width: 50rem;
+      fill: var(--home-accent);
+      position: relative;
+    }
+  }
+
+  
+}

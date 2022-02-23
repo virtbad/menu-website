@@ -1,0 +1,17 @@
+@use "../../config/" as *;
+
+.rating-empty {
+  color: var(--border) !important;
+}
+
+.rating-filled {
+  color: $rating;
+}
+
+.rating-hover {
+  transform: scale(1);
+}
+
+.rating-decimal {
+  transform: scale(1);
+}

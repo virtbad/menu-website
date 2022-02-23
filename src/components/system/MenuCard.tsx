@@ -2,6 +2,7 @@ import React from "react";
 import { Menu } from "../../classes/Menu.class";
 import { MenuPrice } from "../../classes/MenuPrice.class";
 import style from "../../styles/modules/system/MenuCard.module.scss";
+import { MenuLabel } from "../../types/Menu.types";
 import { VerticalVote } from "./Vote";
 
 interface MenuCardProps {
@@ -16,8 +17,9 @@ interface MenuCardProps {
 const MenuCard: React.FC<MenuCardProps> = ({ menu, loading = false }): JSX.Element => {
   return (
     <section className={style["card-container"]}>
-      <div className={style["card-vote"]} children={<VerticalVote votes={Math.floor(Math.random() * 100)} />} />
+      <div className={style["card-vote"]} children={<VerticalVote menuId={menu.uuid} theme={"dark"} votes={Math.floor(Math.random() * 100)} />} />
       <div className={style["card-title"]} children={<h2 children={menu.title} />} />
+      {menu.label !== MenuLabel.NO_LABEL && <div className={style["card-label"]} children={menu.parsedLabel} />}
       <div className={style["card-description"]} children={menu.description} />
       <div className={style["card-prices-container"]}>
         {menu.prices.map((price: MenuPrice) => {

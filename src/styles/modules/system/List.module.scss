@@ -87,6 +87,108 @@
       justify-content: flex-end;
     }
   }
+
+  &[data-comment="true"] {
+    cursor: default;
+    grid-template-columns: auto min-content;
+
+    &:active {
+      background-color: var(--option-hover);
+    }
+
+    &[data-editing="true"] {
+      border: solid 2px var(--secondary);
+      background-color: var(--option-select);
+      box-sizing: border-box;
+      grid-template-areas: "title rating" "content content" ". creator" "date buttons";
+
+      .item-title,
+      .item-content {
+        cursor: text;
+      }
+    }
+
+    &[data-editing="false"] {
+      border: solid 2px transparent;
+    }
+
+    &[data-editing="false"] {
+      grid-template-areas: "title rating" "content content" "date creator";
+    }
+
+    .item-title {
+      grid-area: title;
+      overflow: hidden;
+      div {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .item-rating {
+      grid-area: rating;
+      justify-self: flex-end;
+    }
+
+    .item-content {
+      grid-area: content;
+      margin-top: -0.75rem;
+      font-weight: 300;
+      font-size: 1.15rem;
+      word-break: break-all;
+      div {
+        word-break: break-all;
+      }
+    }
+
+    .item-creator {
+      grid-area: creator;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-self: flex-end;
+      span {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+    }
+
+    .item-date {
+      grid-area: date;
+      font-weight: bold;
+      font-family: monospace;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .item-button-container {
+      grid-area: buttons;
+      display: flex;
+      justify-self: flex-end;
+      gap: 0.5rem;
+
+      .item-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+
+    .item-iconbuttons {
+      display: flex;
+      justify-self: flex-start;
+      gap: 0.25rem;
+
+      .item-icon {
+        cursor: pointer;
+        transition: all 0.2s;
+        fill: var(--secondary);
+        &:hover {
+          fill: $button;
+        }
+      }
+    }
+  }
 }
 
 @include max-550 {

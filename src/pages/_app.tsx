@@ -5,17 +5,18 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { SWRConfig } from "swr";
 import { Logger } from "../classes/Logger.class";
 import { AuthProvider } from "../hooks/AuthContext";
 import { SearchbarProvider } from "../hooks/SearchbarContext";
 import { ThemeProvider } from "../hooks/ThemeContext";
+import { UserProvider } from "../hooks/UserContext";
 import { VersionProvider } from "../hooks/VersionContext";
 import "../styles/global.scss";
 import { loginRequest, msalConfig } from "../util/auth.config";
 import { NavigationClient } from "../util/NavigationClient";
 import { createEmotionCache } from "./_document";
-import {createTheme, ThemeProvider} from "@mui/material";
 
 const msalInstance: PublicClientApplication = new PublicClientApplication(msalConfig);
 
@@ -35,7 +36,8 @@ msalInstance.addEventCallback((event) => {
 
 const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
   const clientSideEmotionCache = createEmotionCache();
-  const [token, setToken] = useState<{ token: string; exp: Date }>(null);
+  const [token, setToken] = useState<{ token: string; exp: Date }>({ token: undefined, exp: undefined });
+  const [cookies] = useCookies();
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props as any;
 
   const router: NextRouter = useRouter();
@@ -102,13 +104,15 @@ const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
       <MsalProvider instance={msalInstance}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
           <AuthProvider fetching={token === null} token={token?.token} exp={token?.exp}>
-            <VersionProvider>
-              <ThemeProvider>
-                <SearchbarProvider>
-                  <Component {...pageProps} />
-                </SearchbarProvider>
-              </ThemeProvider>
-            </VersionProvider>
+            <UserProvider>
+              <VersionProvider>
+                <ThemeProvider>
+                  <SearchbarProvider>
+                    <Component {...pageProps} />
+                  </SearchbarProvider>
+                </ThemeProvider>
+              </VersionProvider>
+            </UserProvider>
           </AuthProvider>
         </SWRConfig>
       </MsalProvider>

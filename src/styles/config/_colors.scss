@@ -17,6 +17,7 @@ $error-hover: #9c1108;
 $button: #298519;
 $button-hover: #2e941c;
 $button-disabled: #184d0f;
+$rating: #1caf02;
 
 // light themed colors
 
@@ -99,6 +100,8 @@ $light-theme: (
   --border: $gray-border,
   --option-hover: $option-hover-light,
   --option-select: $option-selected-light,
+  --option-hover-alt: $option-hover-dark,
+  --option-select-alt: $option-selected-dark,
   --scrollbar-thumb: $scrollbar-thumb-light,
   --scrollbar-background: $scrollbar-background-light,
   --home-accent: $home-green-accent-light,
@@ -116,6 +119,8 @@ $dark-theme: (
   --border: $gray-border,
   --option-hover: $option-hover-dark,
   --option-select: $option-selected-dark,
+  --option-hover-alt: $option-hover-light,
+  --option-select-alt: $option-selected-light,
   --scrollbar-thumb: $scrollbar-thumb-dark,
   --scrollbar-background: $scrollbar-background-dark,
   --home-accent: $home-green-accent-dark,

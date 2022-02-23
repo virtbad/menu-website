@@ -66,8 +66,20 @@ export class Menu {
     this.votes = ctr.voteBalance;
   }
 
+  /**
+   * Parsed and translated version of the menu label
+   */
 
-  public get rating(): number {
-    return this._rating;
+  public get parsedLabel(): string {
+    switch (this.label) {
+      case MenuLabel.ONE_CLIMATE:
+        return "One Climate";
+      case MenuLabel.VEGAN:
+        return "Vegan";
+      case MenuLabel.VEGETARIAN:
+        return "Vegetarisch";
+      default:
+        "Kein Label";
+    }
   }
 }

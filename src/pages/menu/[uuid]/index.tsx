@@ -1,32 +1,41 @@
+import axios, { AxiosResponse } from "axios";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR from "swr";
+import { Menu } from "../../../classes/Menu.class";
 import Fallback from "../../../components/Fallback";
 import Layout from "../../../components/Layout";
 import MenuPage from "../../../components/MenuPage";
-import { fetcher } from "../../../util/global.config";
+import { MenuConstructor } from "../../../types/Menu.types";
+import { apiUrl } from "../../../util/global.config";
+
+interface SpecificMenuPageProps {
+  menu: MenuConstructor;
+}
 
 /**
  * Page for a given menu
  */
 
-const SpecificMenuPage: NextPage = (): JSX.Element => {
-  const { query, ...router } = useRouter();
-  const { uuid } = query;
-  const {} = useSWR(false && uuid && "", fetcher); //fetch specific menu [check for existance]
+const SpecificMenuPage: NextPage<SpecificMenuPageProps> = ({ menu }): JSX.Element => {
+  const router = useRouter();
 
   if (router.isFallback) return <Fallback />;
 
   return (
     <Layout>
-      <MenuPage />
+      <MenuPage menu={router.isFallback ? null : new Menu(menu)} />
     </Layout>
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  return { props: {}, revalidate: 1 };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  try {
+    const response: AxiosResponse = await axios.get(`${apiUrl}/menu/${params.uuid}`); // fetch the specific menu
+    return { props: { menu: response.data }, revalidate: 1 };
+  } catch (e) {
+    return { props: { menu: null }, notFound: true, revalidate: 1 };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

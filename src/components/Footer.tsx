@@ -22,12 +22,12 @@ const Footer: React.FC = (): JSX.Element => {
         <div className={style["footer-socials"]}></div>
         <div className={style["footer-versions"]}>
           <div className={style["footer-version"]}>
-            <h4 children={"Frontend"} />
-            <code children={`v${frontend}`} />
+            <h5 children={"Frontend"} />
+            <code children={`v${frontend || "?.?.?"}`} />
           </div>
           <div className={style["footer-version"]}>
-            <h4 children={"Backend"} />
-            <code children={`v${backend}`} />
+            <h5 children={"Backend"} />
+            <code children={`v${backend || "?.?.?"}`} />
           </div>
         </div>
       </section>
@@ -46,7 +46,7 @@ interface FooterSectionProps {
 const FooterSection: React.FC<FooterSectionProps> = ({ title, children }): JSX.Element => {
   return (
     <section className={style["footer-section"]}>
-      <h4 className={style["footer-section-title"]} children={title} />
+      <h5 className={style["footer-section-title"]} children={title} />
       <div className={style["footer-section-entries"]} children={children} />
     </section>
   );

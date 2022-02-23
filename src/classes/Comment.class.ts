@@ -1,54 +1,89 @@
-import {User} from "./User.class";
+import axios from "axios";
+import { CommentConstructor } from "../types/Menu.types";
+import { apiUrl } from "../util/global.config";
+import { parseCookies } from "../util/util";
+import { User } from "./User.class";
 
 export class Comment {
+  public readonly id: string;
+  private _user: User;
+  private _title: string;
+  private _content: string;
+  private _rating: number;
+  private _created: Date;
+  private _edited: boolean;
 
-    private _id: string;
+  constructor(ctr: CommentConstructor) {
+    this.id = ctr.id;
+    this._user = ctr.user instanceof User ? ctr.user : new User(ctr.user);
+    this._title = ctr.title;
+    this._content = ctr.content;
+    this._rating = ctr.rating;
+    this._created = new Date(ctr.created);
+    this._edited = ctr.edited;
+  }
 
-    private _user: User;
+  /**
+   * Creator of the comment
+   */
 
-    private _title: string;
-    private _content: string;
-    private _rating: number;
+  public get user(): User {
+    return this._user;
+  }
 
-    private _created: Date;
-    private _edited: boolean;
+  /**
+   * Title of the comment
+   */
 
-    // I guess for debugging, later the fields from the api can directly get deserialized into here
-    constructor(id: string, user: User, title: string, content: string, rating: number, created: Date, edited: boolean) {
-        this._id = id;
-        this._user = user;
-        this._title = title;
-        this._content = content;
-        this._rating = rating;
-        this._created = created;
-        this._edited = edited;
-    }
+  public get title(): string {
+    return this._title;
+  }
 
-    public get id(): string {
-        return this._id;
-    }
+  /**
+   * Content of the comment
+   */
 
-    public get user(): User {
-        return this._user;
-    }
+  public get content(): string {
+    return this._content;
+  }
 
-    public get title(): string {
-        return this._title;
-    }
+  /**
+   * Rating of the comment
+   */
 
-    public get content(): string {
-        return this._content;
-    }
+  public get rating(): number {
+    return this._rating;
+  }
 
-    public get rating(): number {
-        return this._rating;
-    }
+  /**
+   * Date when the comment was created
+   */
 
-    public get created(): Date {
-        return this._created;
-    }
+  public get created(): Date {
+    return this._created;
+  }
 
-    public get edited(): boolean {
-        return this._edited;
-    }
+  /**
+   * Boolean whether the comment was edited or not
+   */
+
+  public get edited(): boolean {
+    return this._edited;
+  }
+
+  /**
+   * Function to update a comment
+   *
+   * @param data new comment data
+   */
+
+  public async update(data: { title?: string; content?: string; rating?: number }, menuId: string): Promise<void> {
+    const { title = this._title, content = this._content, rating = this._rating } = data;
+
+    await axios.put(`${apiUrl}/menu/${menuId}/comment/${this.id}`, data, { headers: { Authorization: `Bearer ${parseCookies(document.cookie).token}` } });
+    this._title = title;
+    this._content = content;
+    this._rating = rating;
+    this._edited = true;
+  }
 }

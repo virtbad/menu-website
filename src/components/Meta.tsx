@@ -14,7 +14,7 @@ interface MetaProps {
 
 const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [] }): JSX.Element => {
   const hostname: string = "https://";
-  const allKeywords: Array<string> = ["", "", "", "", ""];
+  const allKeywords: Array<string> = process.env.NEXT_PUBLIC_SEO_KEYWORDS.split(",");
   if (typeof keywords === "string") allKeywords.push(keywords);
   else if (Array.isArray(keywords)) allKeywords.push(...keywords);
 

@@ -13,7 +13,7 @@
   gap: 0.75rem;
   color: $white;
 
-  grid-template-areas: "vote title" "vote description" "vote label" "price price";
+  grid-template-areas: "vote title label" "vote description description" "price price price";
   height: $menucard-big-height;
   width: $menucard-big-width;
 
@@ -33,6 +33,21 @@
     & > h2 {
       flex: 1 auto;
     }
+  }
+
+  .card-label {
+    grid-area: label;
+    height: fit-content;
+    align-self: center;
+    justify-self: flex-end;
+    padding: 0.25rem 0.5rem;
+    background: $white;
+    border-radius: $border-radius-small;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $button;
+    user-select: none;
   }
 
   .card-description {

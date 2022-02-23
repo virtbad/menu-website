@@ -1,6 +1,6 @@
 {
   "name": "menu-website",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,8 +19,10 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.3.0",
     "@mui/material": "^5.3.0",
+    "@types/crypto-js": "^4.1.1",
     "@types/uuid": "^8.3.4",
     "axios": "^0.25.0",
+    "crypto-js": "^4.1.1",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-cookie": "^4.1.1",

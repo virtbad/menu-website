@@ -20,7 +20,7 @@ export const authLogsEnabled: boolean = false;
  * Api url
  */
 
-export const apiUrl = storageApiUrl ? storageApiUrl : ``;
+export const apiUrl = storageApiUrl ? storageApiUrl : process.env.NEXT_PUBLIC_API_URL;
 
 const storageEnableLogs: string | false | null = typeof window === "object" && localStorage.getItem("logs");
 

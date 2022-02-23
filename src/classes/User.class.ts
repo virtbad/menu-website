@@ -1,46 +1,80 @@
+import { UserConstructor } from "../types/User.types";
+import { colorForSluz, parseCookies } from "../util/util";
+
 export class User {
+  /**
+   * Sluz of the user
+   */
 
-    private _tag: string;
+  public readonly tag: string;
 
-    private _firstname: string;
-    private _lastname: string;
+  /**
+   * Firstname of the user
+   */
 
-    private _joined: Date;
+  public readonly firstname: string;
 
-    private _admin: boolean;
-    private _banned: boolean;
+  /**
+   * Lastname of the user
+   */
 
-    // Also for debugging, see commment class
-    constructor(tag: string, firstname: string, lastname: string, joined: Date, admin: boolean, banned: boolean) {
-        this._tag = tag;
-        this._firstname = firstname;
-        this._lastname = lastname;
-        this._joined = joined;
-        this._admin = admin;
-        this._banned = banned;
-    }
+  public readonly lastname: string;
 
-    public get tag(): string {
-        return this._tag;
-    }
+  /**
+   * Date when the user first logged into the api
+   */
 
-    public get firstname(): string {
-        return this._firstname;
-    }
+  public readonly joined: Date;
 
-    public get lastname(): string {
-        return this._lastname;
-    }
+  private _admin: boolean;
+  private _banned: boolean;
 
-    public get joined(): Date {
-        return this._joined;
-    }
+  constructor(ctr: UserConstructor) {
+    this.tag = ctr.tag;
+    this.firstname = ctr.firstname;
+    this.lastname = ctr.lastname;
+    this.joined = ctr.joined;
+    this._admin = ctr.admin;
+    this._banned = ctr.banned;
+  }
 
-    public get admin(): boolean {
-        return this._admin;
-    }
+  /**
+   * Boolean whether the user is admin
+   */
 
-    public get banned(): boolean {
-        return this._banned;
-    }
+  public get admin(): boolean {
+    return this._admin;
+  }
+
+  /**
+   * Boolean whether the user is banned
+   */
+
+  public get banned(): boolean {
+    return this._banned;
+  }
+
+  /**
+   * Full name of the user
+   */
+
+  public get name(): string {
+    return `${this.firstname} ${this.lastname}`;
+  }
+
+  /**
+   * Get the hex color for the users tag
+   */
+
+  public get color(): string {
+    return colorForSluz(this.tag);
+  }
+
+  /**
+   * Access token of the logged in user
+   */
+
+  public get token(): string {
+    return parseCookies(document.cookie).token;
+  }
 }

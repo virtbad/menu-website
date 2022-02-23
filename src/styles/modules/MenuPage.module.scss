@@ -2,129 +2,176 @@
 
 .menupage-container {
   display: flex;
-
+  flex-direction: column;
   position: relative;
-  height: calc(100vh - $header-height);
   margin-top: calc($header-height - $layout-padding);
-}
-
-.menupage-divider {
-  transform: rotate(90deg);
-  width: 100vh;
-  height: 30vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: left;
+  justify-content: space-between;
+  gap: 5rem;
 }
 
 .menupage-menu-container {
-  flex: 1;
-  margin-left: -$layout-padding;
-  margin-right: $layout-padding;
-  overflow: hidden;
+  position: relative;
+  margin-left: calc(($layout-padding + 15rem) * -1);
+  margin-top: 7rem;
+  display: flex;
+  height: fit-content;
+  width: fit-content;
 }
 
-.menupage-menu-blobtainer {
-  transform: translateY(-100%);
-  width: 100%;
-  height: 100%;
-  z-index: 233;
-  //background-color: rgba(138, 14, 6, 0.51);
-  display: flex;
-  align-items: center;
-}
-
-.menupage-menu-box {
-  width: 100%;
-  height: 200px;
-  display: flex;
-}
 .menupage-comments-container {
-  flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-}
+  max-height: 900px;
+  width: 100%;
+  margin-top: 2rem;
 
-.menupage-menu-rating {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 0.5rem;
-  margin-left: 1rem;
-
-  .menupage-menu-rating-box {
-    flex-direction: column;
-    align-items: center;
-    display: flex;
-    background-color: $background-secondary;
-
-    padding: 0.75rem;
-    border-radius: 10px;
+  .menupage-comments-content {
+    height: 100%;
+    @include container-width;
   }
-}
-
-.menupage-menu-rating-button {
-  width: 2rem;
-
-  transition: 0.2s;
-
-  stroke: $foreground-primary;
-  fill: none;
-
-  &:hover {
-    stroke: $foreground-hover;
-  }
-
-
-  &[data-direction="up"] {
-    transform: rotate(180deg);
-  }
-
-  &[data-chosen="true"] {
-    stroke: $accent-primary;
-
-    &:hover {
-      stroke: $accent-primary-hover;
-    }
-  }
-}
-.menupage-menu-rating-number {
-  font-family: monospace;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.menupage-blob-path {
-  fill: url(#BackgroundGradient);
-  filter: drop-shadow( 5px 5px 5px rgba(0, 0, 0, .7));
 }
 
 .menupage-blob {
-  width: 100%;
-  height: 100%;
-  transform: scale(1.4, 1.2) translateX(-15%);
-  display: inline-block;
-  position: relative;
-  overflow: visible;
+  width: 900px;
+  height: 900px;
+
+  path {
+    fill: var(--home-accent);
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.7));
+  }
 }
 
-.menu-textbox {
-  display: flex;
-  flex-direction: column;
-  margin-right: 5rem;
-  padding-left: 1em;
+.menu-container {
+  position: absolute;
+  display: grid;
+  grid-template-areas: "vote title" "vote description" "date label";
+  padding: 2rem;
+  margin-left: 15rem;
+  width: calc(85% - 15rem);
+  gap: 0.75rem;
+  top: 30%;
+  color: $white;
+}
+
+.menu-vote {
+  grid-area: vote;
+  width: 2.5rem;
+  margin-right: 0.5rem;
 }
 
 .menu-title {
-  font-size: 28px;
+  grid-area: title;
 }
 
 .menu-content {
-
+  grid-area: description;
+  font-weight: 300;
+  font-size: 1.3rem;
+  margin-top: -0.75rem;
 }
 
+.commentbox-container {
+  max-height: 900px;
+  display: grid;
+  grid-template-areas: "title" "comments" "button";
+  gap: 1rem;
 
+  .commentbox-title {
+    grid-area: title;
+  }
 
+  .commentbox-buttons {
+    grid-area: button;
+    height: fit-content;
+    justify-self: flex-end;
+    align-self: center;
+    display: flex;
+    gap: 0.5rem;
+  }
 
+  .commentbox-comments {
+    grid-area: comments;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+
+    .comments-loader {
+      padding: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .newcomment-container {
+      display: grid;
+      padding: 0.5rem 1rem 1rem 1rem;
+      transition: background-color 0.2s ease;
+      gap: 0.75rem;
+      border-radius: $border-radius-small;
+      grid-template-columns: auto max-content;
+      grid-template-areas: "title rating" "content content" "buttons buttons";
+
+      .newcomment-title {
+        grid-area: title;
+      }
+
+      .newcomment-content {
+        grid-area: content;
+      }
+
+      .newcomment-rating {
+        grid-area: rating;
+        align-self: center;
+        margin-left: 0.5rem;
+      }
+
+      .newcomment-buttons {
+        grid-area: buttons;
+        height: fit-content;
+        justify-self: flex-end;
+        align-self: center;
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+.noresult {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-top: 1rem;
+  user-select: none;
+}
+
+*[theme="dark"] {
+  .newcomment-container {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+*[theme="light"] {
+  .newcomment-container {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+@include min-1300 {
+  .menupage-container {
+    flex-direction: row;
+
+    .menupage-comments-container {
+      margin-top: 7rem;
+      .menupage-comments-content {
+        max-width: 50rem !important;
+        width: 100% !important;
+      }
+    }
+  }
+}

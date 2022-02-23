@@ -1,12 +1,12 @@
 import { LogLevel } from "@azure/msal-common";
 import { Logger } from "../classes/Logger.class";
-import { authLogsEnabled, isLocal } from "./global.config";
+import { authLogsEnabled } from "./global.config";
 
 export const msalConfig = {
   auth: {
     clientId: "",
     authority: "",
-    redirectUri: isLocal ? "http://localhost:8000" : "",
+    redirectUri: "http://localhost:8000",
     knownAuthorities: [""],
   },
   cache: {

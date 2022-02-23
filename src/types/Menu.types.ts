@@ -1,4 +1,10 @@
 import { MenuPrice } from "../classes/MenuPrice.class";
+import { User } from "../classes/User.class";
+import { UserConstructor } from "./User.types";
+
+/**
+ * Constructor interface for the menu class
+ */
 
 export interface MenuConstructor {
   /**
@@ -51,10 +57,6 @@ export interface MenuConstructor {
 }
 
 /**
- * Constructor interface for the menu class
- */
-
-/**
  * Constructor interface for the menu price class
  */
 
@@ -77,4 +79,14 @@ export enum MenuLabel {
   VEGETARIAN = 1,
   VEGAN = 2,
   ONE_CLIMATE = 3,
+}
+
+export interface CommentConstructor {
+  id: string;
+  user: User | UserConstructor;
+  title: string;
+  content: string;
+  rating: number;
+  created: Date;
+  edited: boolean;
 }

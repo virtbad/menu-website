@@ -55,9 +55,7 @@ const TopMenus: React.FC = (): JSX.Element => {
     <section className={style["topmenu-container"]}>
       <UpperWave />
       <div className={style["topmenu-content"]}>
-        <div className={style["topmenu-title"]}>
-          <h2 children={"Beliebte Menüs"} />
-        </div>
+        <h2 className={style["topmenu-title"]} children={"Beliebte Menüs"} />
         <div className={style["topmenu-menus"]}>
           {menus.map((menu: Menu, index: number) => {
             return <RatedListItem theme={"dark"} key={index} menu={menu} />;

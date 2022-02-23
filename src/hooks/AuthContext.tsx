@@ -1,6 +1,7 @@
 import { EventType } from "@azure/msal-browser";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-common";
 import { useMsal } from "@azure/msal-react";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { loginRequest } from "../util/auth.config";
@@ -33,6 +34,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp
   const [cookies, setCookie, removeCookie] = useCookies();
   const { instance } = useMsal();
   const [auth, setAuth] = useState<{ token: string; exp: Date }>({ token: token, exp: exp });
+  const router = useRouter();
+
+  useEffect(() => {
+    if (instance.getActiveAccount() && !cookies.token) requestToken().catch(() => router.reload());
+  });
 
   useEffect(() => {
     if (token && exp) setAuth({ token: token, exp: exp });
@@ -80,11 +86,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp
     });
   };
 
-  const logout = (): void => {
+  const logout = async (): Promise<void> => {
     setAuth({ token: undefined, exp: undefined });
     removeCookie("token");
-    Object.keys(localStorage).forEach((key: string) => key !== "theme" && localStorage.removeItem(key));
-    instance.setActiveAccount(null);
+    try {
+      await instance.logoutRedirect({ account: instance.getActiveAccount(), postLogoutRedirectUri: "http://localhost:8000" });
+    } catch (e) {}
   };
 
   return <AuthContext.Provider value={{ token: cookies.token || auth.token, requestToken: requestToken, logout: logout }} children={children} />;

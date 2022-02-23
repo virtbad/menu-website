@@ -30,7 +30,7 @@ const HomePage: NextPage<HomePageProps> = ({ menus }): JSX.Element => {
 
 export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext) => {
   try {
-    const response: AxiosResponse = await axios.get(`${apiUrl}/menu/date?date=1644458817619`); //fetch the menus of today
+    const response: AxiosResponse = await axios.get(`${apiUrl}/menu/date?date=1644458817619`); // fetch the menus of today
     return { props: { menus: response.data }, revalidate: 1 };
   } catch (e) {
     return { props: { menus: [] }, revalidate: 1 };
