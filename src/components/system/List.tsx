@@ -21,7 +21,10 @@ const List: React.FC<ListProps> = (): JSX.Element => {
   return <div className={style["list-container"]}></div>;
 };
 
-interface ListItemProps {}
+interface ListItemProps {
+  theme?: "auto" | "dark" | "light";
+  background?: "auto" | "alt";
+}
 
 /**
  * List item component
@@ -31,18 +34,18 @@ export const ListItem: React.FC<ListItemProps> = (): JSX.Element => {
   return <div className={style["listitem-container"]}></div>;
 };
 
-interface RatedListItemProps {
+interface RatedListItemProps extends ListItemProps {
   menu: Menu;
-  theme?: "auto" | "dark" | "light";
   href?: string;
+  disabled?: boolean;
 }
 
-export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, theme = "auto", href }): JSX.Element => {
+export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, disabled = false, background = "auto", theme = "auto", href }): JSX.Element => {
   const BaseRatedListItem: JSX.Element = (
-    <div className={style["listitem-container"]} data-theme={theme} data-rated={true}>
+    <div className={style["listitem-container"]} id={menu.uuid} data-background={background} data-theme={theme} data-rated={true}>
       <h3 className={style["item-title"]} children={menu.title} />
       <div className={style["item-description"]} children={menu.description} />
-      <div className={style["item-vote"]} children={<VerticalVote menuId={menu.uuid} theme={theme} votes={menu.votes} />} />
+      <div className={style["item-vote"]} children={<VerticalVote disabled={disabled} menuId={menu.uuid} theme={theme} votes={menu.votes} />} />
       <div className={style["item-button"]} children={<Button forwardIcon theme={"green"} children={"Mehr"} href={`/menu/${menu.uuid}`} />} />
       <div className={style["item-date"]} children={menu.date.toLocaleDateString("de", { month: "2-digit", day: "2-digit", year: "numeric" })} />
     </div>
@@ -52,16 +55,15 @@ export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, theme = "aut
   else return BaseRatedListItem;
 };
 
-interface CommentListItemProps {
+interface CommentListItemProps extends ListItemProps {
   comment: Comment;
-  theme?: "auto" | "dark" | "light";
   editing: boolean;
   onEdit?: (start: boolean) => void;
   onDelete?: () => void;
   menuId: string;
 }
 
-export const CommentListItem: React.FC<CommentListItemProps> = ({ theme, comment, onEdit, onDelete, editing, menuId }): JSX.Element => {
+export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto", background = "auto", comment, onEdit, onDelete, editing, menuId }): JSX.Element => {
   const [title, setTitle] = useState<string>(comment.title);
   const [content, setContent] = useState<string>(comment.content);
   const [rating, setRating] = useState<number>(comment.rating);
@@ -103,7 +105,7 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme, comment
   };
 
   return (
-    <div className={style["listitem-container"]} id={comment.id} data-theme={theme} data-comment={true} data-editing={editing}>
+    <div className={style["listitem-container"]} id={comment.id} data-background={background} data-theme={theme} data-comment={true} data-editing={editing}>
       <h4 className={style["item-title"]} children={<ContentEditable onBlur={setTitle} onChange={(value: string) => setPending({ ...pending, title: value })} editable={editing} value={title} />} />
       <div className={style["item-content"]} ref={contentRef} children={<ContentEditable onBlur={setContent} onChange={(value: string) => setPending({ ...pending, content: value })} editable={editing} value={content} />} />
       <div className={style["item-rating"]} children={<Rating onChange={(_, value: number) => setRating(value)} readOnly={!editing} value={rating} />} />

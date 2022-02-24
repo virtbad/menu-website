@@ -45,16 +45,16 @@ export const debouncedPromise = <F extends (...args: any[]) => Promise<any>>(han
 /**
  * Function to get the hex value for a specific uuid
  *
- * @param tag tag address of the user
+ * @param tag tag of the user
  *
  * @returns string
  */
 
-export const colorForSluz = (uuid: string): string => {
+export const colorForTag = (uuid: string): string => {
   let h = (parseInt(Number("0x" + SHA256(uuid).toString().substring(0, 6)).toString(), 10) / 16777215) * 360; // h / 360
   // check whether hue isn't in the green color spectrum
-  if (h < 80) while (h > 140) h *= 1.1;
-  else if (h > 140) while (h > 140) h /= 1.1;
+  if (h < 90) while (h < 90) h *= 1.1;
+  else if (h > 130) while (h > 130) h /= 1.1;
 
   h /= 360;
 
@@ -86,4 +86,97 @@ export const colorForSluz = (uuid: string): string => {
 
 export const parseCookies = (cookieString: string): { [key: string]: any } => {
   return Object.fromEntries(cookieString.split("; ").map((x) => x.split(/=(.*)$/, 2).map(decodeURIComponent)));
+};
+
+/**
+ * Function to get a translated error message for a http status code
+ *
+ * @param code http status code
+ *
+ * @returns detailed error explaination
+ */
+
+export const getErrorMessage = (code: number): { title: string; description: string; href: string } => {
+  let title = "";
+  let description = "";
+  switch (code) {
+    case 400:
+      title = "Ungültige Anfrage";
+      description = "Es ist ein Fehler bei der Anfrage aufgetreten";
+      break;
+    case 401:
+      title = "Unauthentifiziert";
+      description = "Dir fehlen die benötigten Berechtigungen für diese Ressource";
+      break;
+    case 403:
+      title = "Verboten";
+      description = "Dir fehlen die benötigten Berechtigungen für diese Ressource";
+      break;
+    case 404:
+      title = "Nicht gefunden";
+      description = "Die angeforderte Ressource konnte nicht gefunden werden";
+      break;
+    case 500:
+      title = "Serverseitiger Fehler";
+      description = "Es ist ein serverseitiger Fehler aufgetreten. Versuche es später erneut.";
+      break;
+    default:
+      title = "Fehler";
+      description = "Es ist ein fehler bei der Anfrage aufgetreten";
+      break;
+  }
+  return { title: title, description: description, href: `https://developer.mozilla.org/de/docs/web/http/status/${code}` };
+};
+
+/**
+ * Function to convert a hex color to a hsl object
+ *
+ * @param hex input hex color
+ *
+ * @returns object
+ */
+
+export const hexToHsl = (hex: string): { h: number; s: number; l: number } => {
+  hex = hex.replace("#", "").trim();
+  if (hex.length !== 6) hex = "ffffff";
+
+  const result: RegExpExecArray = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  let r: number = parseInt(result[1], 16);
+  let g: number = parseInt(result[2], 16);
+  let b: number = parseInt(result[3], 16);
+
+  (r /= 255), (g /= 255), (b /= 255);
+  let max: number = Math.max(r, g, b);
+  let min: number = Math.min(r, g, b);
+
+  let h: number;
+  let s: number;
+  let l: number = (max + min) / 2;
+
+  if (max == min) h = s = 0;
+  else {
+    let d: number = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  s = s * 100;
+  s = Math.round(s);
+  l = l * 100;
+  l = Math.round(l);
+  h = Math.round(360 * h);
+
+  return { h: h, s: s, l: l };
 };

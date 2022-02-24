@@ -27,7 +27,6 @@
 
   .footer-section-title {
     grid-area: title;
-    text-transform: uppercase;
     margin-bottom: 0.5rem;
   }
 
@@ -35,7 +34,7 @@
     grid-area: entries;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.2rem;
   }
 }
 
@@ -55,10 +54,15 @@
     .footer-version {
       justify-content: flex-start;
       display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
       flex: 1;
       h5 {
         padding-right: 1ch;
-        text-transform: uppercase;
+      }
+
+      code {
+        color: var(--link);
       }
     }
   }

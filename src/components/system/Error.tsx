@@ -1,19 +1,31 @@
+import { useRouter } from "next/router";
 import React from "react";
+import { Button } from ".";
 import style from "../../styles/modules/system/Error.module.scss";
+import { getErrorMessage } from "../../util/util";
 import Layout from "../Layout";
+import Meta from "../Meta";
 
 interface ErrorProps {
   code: number;
 }
 
 const Error: React.FC<ErrorProps> = ({ code }): JSX.Element => {
+  const router = useRouter();
+  const { title, description, href } = getErrorMessage(code);
   return (
     <Layout>
+      <Meta noindex title={title} description={"Es ist ein Fehler aufgetreten"} />
       <section className={style["error-container"]}>
         <div className={style["error-content"]}>
           <BackgroundBlob />
           <div className={style["error-text"]}>
-            <h1 children={"Fehler"} />
+            <h2 children={title} />
+            <div className={style["error-description"]} children={description} />
+            <div className={style["error-button"]}>
+              {router.pathname !== "/" && <Button forwardIcon theme={"green"} href={"/"} children={"Home"} />}
+              <Button theme={"green"} forwardIcon href={href} children={"Info"} />
+            </div>
           </div>
         </div>
       </section>

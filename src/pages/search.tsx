@@ -15,7 +15,7 @@ const SearchMenuPage: NextPage = (): JSX.Element => {
 
   return (
     <Layout hideHeaderSearchbar>
-      <Meta title="Menüsuche" description="Suche ein bestimmtes Menü aus der Datenbank" />
+      <Meta keywords={["suche"]} title="Menüsuche" description="Suche ein bestimmtes Menü aus der Datenbank" />
       <SearchPage query={query?.query as string | undefined} />
     </Layout>
   );

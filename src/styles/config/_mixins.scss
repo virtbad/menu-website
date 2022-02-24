@@ -19,7 +19,6 @@
   @each $key, $value in $map {
     #{$key}: $value;
   }
-  transition: color, background-color 0.2s;
 }
 
 @mixin hide-scrollbar {

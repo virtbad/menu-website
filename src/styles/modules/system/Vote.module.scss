@@ -74,7 +74,9 @@
     .vote-triangle {
       svg {
         stroke: $secondary-light;
-        &[data-selected="true"] {
+      }
+      &[data-selected="true"] {
+        svg {
           fill: $secondary-light;
         }
       }
@@ -85,7 +87,9 @@
     .vote-triangle {
       svg {
         stroke: $secondary-dark;
-        &[data-selected="true"] {
+      }
+      &[data-selected="true"] {
+        svg {
           fill: $secondary-dark;
         }
       }
@@ -96,6 +100,7 @@
     grid-area: votes;
     font-size: 1.25rem;
     font-weight: bold;
+    user-select: none;
   }
 }
 

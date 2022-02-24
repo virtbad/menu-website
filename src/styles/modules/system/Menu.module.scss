@@ -15,6 +15,9 @@
   color: var(--secondary) !important;
   display: flex;
   gap: 0.75rem;
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  min-width: 4rem;
   &:hover {
     background-color: var(--option-hover) !important;
   }

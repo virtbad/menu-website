@@ -13,6 +13,23 @@
 *[theme="light"] {
   .listitem-container {
     background-color: rgba($black, 0.02);
+
+    &[data-comment="true"] {
+      &:hover {
+        background-color: var(--option-select);
+      }
+    }
+
+    &[data-background="alt"] {
+      background-color: rgba($white, 0.03);
+      &:hover {
+        background-color: var(--option-hover-alt);
+      }
+
+      &:active {
+        background-color: var(--option-select-alt);
+      }
+    }
   }
 }
 
@@ -35,12 +52,14 @@
     display: grid;
   }
 
-  &:hover {
-    background-color: var(--option-hover);
-  }
+  &[data-background="auto"] {
+    &:hover {
+      background-color: var(--option-hover);
+    }
 
-  &:active {
-    background-color: var(--option-select);
+    &:active {
+      background-color: var(--option-select);
+    }
   }
 
   border-radius: $border-radius-small;

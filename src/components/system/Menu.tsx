@@ -9,7 +9,7 @@ interface MenuProps extends MuiMenuProps {}
  */
 
 const Menu: React.FC<MenuProps> = ({ ...props }): JSX.Element => {
-  return <MuiMenu classes={{ list: style["menu-list"], paper: style["menu-paper"] }} {...props} />;
+  return <MuiMenu disableRestoreFocus classes={{ list: style["menu-list"], paper: style["menu-paper"] }} {...props} />;
 };
 
 interface MenuItemProps extends MuiMenuItemProps {
@@ -21,11 +21,16 @@ interface MenuItemProps extends MuiMenuItemProps {
  */
 
 export const MenuItem: React.FC<MenuItemProps> = ({ endIcon, children, ...props }): JSX.Element => {
+  if (false) return <MuiMenuItem children={children} />;
   return (
-    <MuiMenuItem disableRipple classes={{ selected: style["item-selected"], root: style["item-root"] }} {...props}>
+    /*  <MuiMenuItem unselectable={"on"} disableRipple disableTouchRipple classes={{ selected: style["item-selected"], root: style["item-root"] }} {...props}>
       {children}
       {endIcon && <span data-endicon children={endIcon} />}
-    </MuiMenuItem>
+    </MuiMenuItem> */
+    <div className={style["item-root"]} {...(props as any)}>
+      {children}
+      {endIcon && <span data-endicon children={endIcon} />}
+    </div>
   );
 };
 

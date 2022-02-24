@@ -12,25 +12,25 @@ interface VoteProps {
   votes: number;
   disabled?: boolean;
   menuId: string;
-  onVote?: (up: boolean, votes: number) => void;
 }
 
 /**
  * Vertical vote component
  */
 
-export const VerticalVote: React.FC<VoteProps> = ({ menuId, onVote, disabled = false, theme = "auto", ...props }): JSX.Element => {
+export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, theme = "auto", ...props }): JSX.Element => {
   const [voted, setVoted] = useState<number>(0);
   const [votes, setVotes] = useState<number>(props.votes);
   const user: User = useUser();
-  const { ...serverVote } = useSWR(!disabled && `${apiUrl}/menu/${menuId}/vote`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${user.token}` } }).then(({ data }) => data));
+  const { ...serverVote } = useSWR(user && !disabled && `${apiUrl}/menu/${menuId}/vote`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${user.token}` } }).then(({ data }) => data));
+  if (!user) disabled = true;
 
   useEffect(() => {
     setVotes(props.votes);
   }, [props.votes]);
 
   const onUpvote = async () => {
-    !disabled && onVote && onVote(true, votes + 1);
+    if (disabled || !user) return;
     if (voted > 0) return await onUnvote();
     try {
       setVotes(voted < 0 ? votes + 2 : votes + 1);
@@ -43,7 +43,7 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, onVote, disabled = f
   };
 
   const onDownvote = async () => {
-    !disabled && onVote && onVote(false, votes - 1);
+    if (disabled || !user) return;
     if (voted < 0) return await onUnvote();
     try {
       setVotes(voted > 0 ? votes - 2 : votes - 1);
@@ -72,11 +72,13 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, onVote, disabled = f
 
   if (serverVote.error) Logger.error("Error whilst fetching own vote", serverVote.error);
 
+  const voteString: string = votes.toLocaleString("de", { signDisplay: "always" }).replace(",", "'");
+
   return (
     <div className={style["vertical-vote-container"]} data-theme={theme}>
-      <div className={style["vote-up"]} children={<ArrowIcon variant={"up"} onClick={onUpvote} selected={voted > 0} />} />
-      <code className={style["vote-votes"]} children={votes.toLocaleString("de", { signDisplay: "always" }).replace(".", "'")} />
-      <div className={style["vote-down"]} children={<ArrowIcon variant={"down"} onClick={onDownvote} selected={voted < 0} />} />
+      <div className={style["vote-up"]} children={<ArrowIcon disabled={disabled} variant={"up"} onClick={onUpvote} selected={voted > 0} />} />
+      <code className={style["vote-votes"]} children={voteString} onClick={() => navigator.clipboard.writeText(`${voteString} Votes`)} />
+      <div className={style["vote-down"]} children={<ArrowIcon disabled={disabled} variant={"down"} onClick={onDownvote} selected={voted < 0} />} />
     </div>
   );
 };

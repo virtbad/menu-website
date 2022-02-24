@@ -1,20 +1,64 @@
 @use "../../config/" as *;
 
 .error-container {
+  margin-top: 7rem;
   display: flex;
   position: relative;
+  filter: $drop-shadow;
+  fill: var(--home-accent);
+  justify-content: center;
+  color: $white;
 
   .error-content {
-    margin-top: 7rem;
+    margin-right: 20%;
     position: relative;
-    margin-left: 7rem;
+    width: fit-content;
+    height: fit-content;
     .error-blob-container {
-      height: 50rem;
-      width: 50rem;
-      fill: var(--home-accent);
-      position: relative;
+      display: flex;
+      height: 100%;
+
+      svg {
+        height: 50rem;
+        width: 50rem;
+      }
+    }
+
+    .error-text {
+      position: absolute;
+      display: flex;
+      gap: 0.5rem;
+      flex-direction: column;
+      top: 13rem;
+      height: 20rem;
+      left: 13rem;
+      width: 26rem;
+      justify-content: center;
+
+      .error-description {
+        font-weight: 300;
+        font-size: 1.3rem;
+      }
+
+      .error-button {
+        display: flex;
+        align-items: stretch;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+      }
     }
   }
+}
 
-  
+@include max-1000 {
+  .error-content {
+    margin-right: 0 !important;
+  }
+}
+
+@include max-550 {
+  .error-text {
+    @include container-width;
+    padding-left: $layout-padding;
+  }
 }

@@ -1,6 +1,6 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Link from "next/link";
 import React, { forwardRef } from "react";
+import { Link } from ".";
 import style from "../../styles/modules/system/Button.module.scss";
 
 interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -16,7 +16,7 @@ interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes
  */
 
 const Button: React.FC<ButtonProps> = ({ href, ...props }): JSX.Element => {
-  if (href) return <Link href={href} children={<ButtonBase {...props} />} />;
+  if (href) return <Link noUnderline href={href} children={<ButtonBase {...props} />} />;
   else return <ButtonBase {...props} />;
 };
 

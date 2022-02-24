@@ -1,9 +1,9 @@
 import { UserConstructor } from "../types/User.types";
-import { colorForSluz, parseCookies } from "../util/util";
+import { colorForTag, parseCookies } from "../util/util";
 
 export class User {
   /**
-   * Sluz of the user
+   * Tag of the user
    */
 
   public readonly tag: string;
@@ -67,7 +67,7 @@ export class User {
    */
 
   public get color(): string {
-    return colorForSluz(this.tag);
+    return colorForTag(this.tag);
   }
 
   /**

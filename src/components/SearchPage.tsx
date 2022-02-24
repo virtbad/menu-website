@@ -65,7 +65,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
           </div>
           <div className={style["searchpage-menus"]}>
             {results.results.map((menu: Menu) => {
-              return <RatedListItem href={`/menu/${menu.uuid}`} key={menu.uuid} menu={menu} />;
+              return <RatedListItem disabled href={`/menu/${menu.uuid}`} key={menu.uuid} menu={menu} />;
             })}
             {results.results.length === 0 && results.query !== "" && results.query.length !== 1 && <span className={style["noresult"]} children={"Keine Ergebnisse gefunden"} />}
             {results.results.length === 0 && results.query === "" && <span className={style["noresult"]} children={"Gib einen Suchbegriff ein"} />}

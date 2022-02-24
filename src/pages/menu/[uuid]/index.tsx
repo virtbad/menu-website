@@ -6,6 +6,7 @@ import { Menu } from "../../../classes/Menu.class";
 import Fallback from "../../../components/Fallback";
 import Layout from "../../../components/Layout";
 import MenuPage from "../../../components/MenuPage";
+import Meta from "../../../components/Meta";
 import { MenuConstructor } from "../../../types/Menu.types";
 import { apiUrl } from "../../../util/global.config";
 
@@ -24,6 +25,7 @@ const SpecificMenuPage: NextPage<SpecificMenuPageProps> = ({ menu }): JSX.Elemen
 
   return (
     <Layout>
+      <Meta noindex title={"Menü"} description={"Sieh dir ein bestimmtes Menü etwas genauer an"} />
       <MenuPage menu={router.isFallback ? null : new Menu(menu)} />
     </Layout>
   );

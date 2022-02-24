@@ -12,7 +12,6 @@
   padding: $layout-padding;
   background: transparent;
   z-index: 10;
-  transition: all 0.2s;
 
   &[data-background="true"] {
     background-color: var(--primary);

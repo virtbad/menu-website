@@ -4,6 +4,9 @@
   border-radius: 50%;
   background: var(--home-accent);
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &::after {
     content: "";
@@ -13,7 +16,7 @@
     top: 0;
     left: 0;
     border-radius: 50%;
-    background: linear-gradient(60deg, rgba($black, 0.1), rgba($black, 0.5));
+    //background: linear-gradient(60deg, rgba($black, 0.1), rgba($black, 0.5));
   }
 
   &[data-size="text"] {

@@ -1,5 +1,3 @@
-import LightModeIcon from "@mui/icons-material/LightMode";
-import ModeNightIcon from "@mui/icons-material/ModeNight";
 import React, { useRef, useState } from "react";
 import { User } from "../classes/User.class";
 import { useAuth } from "../hooks/AuthContext";
@@ -22,8 +20,7 @@ const QuickProfile: React.FC = (): JSX.Element => {
     <>
       <Avatar color={user?.color} pointer onClick={() => setOpen(true)} ref={avatarRef} size={"small"} />
       <Menu style={{ marginTop: "0.5rem" }} open={open} anchorEl={avatarRef.current} onClose={() => setOpen(false)}>
-        {theme === "light" && <MenuItem children={"Helles Design"} endIcon={<LightModeIcon />} onClick={switchTheme} />}
-        {theme === "dark" && <MenuItem children={"Dunkles Design"} endIcon={<ModeNightIcon />} onClick={switchTheme} />}
+        <MenuItem children={theme === "dark" ? "Helles Design" : "Dunkles Design"} onClick={switchTheme} />
         {token && <MenuItem children={"Abmelden"} onClick={logout} />}
         {!token && <MenuItem children={"Anmelden"} onClick={requestToken} />}
       </Menu>

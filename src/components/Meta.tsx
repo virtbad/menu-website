@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import { isLocal } from "../util/global.config";
 
 interface MetaProps {
   title?: string;
@@ -13,12 +14,14 @@ interface MetaProps {
  */
 
 const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [] }): JSX.Element => {
-  const hostname: string = "https://";
+  const hostname: string = isLocal ? "http://localhost:8000" : process.env.NEXT_PUBLIC_HOSTNAME;
   const allKeywords: Array<string> = process.env.NEXT_PUBLIC_SEO_KEYWORDS.split(",");
   if (typeof keywords === "string") allKeywords.push(keywords);
   else if (Array.isArray(keywords)) allKeywords.push(...keywords);
 
-  const formedTitle: string = `${title}`; //embed title in template
+  const prefix: string = process.env.NEXT_PUBLIC_TITLE_PREFIX;
+
+  const formedTitle: string = prefix ? `${prefix} | ${title}` : title; //embed title in template
 
   return (
     <Head>

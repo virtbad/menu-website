@@ -1,13 +1,13 @@
 import { LogLevel } from "@azure/msal-common";
 import { Logger } from "../classes/Logger.class";
-import { authLogsEnabled } from "./global.config";
+import { authLogsEnabled, isLocal } from "./global.config";
 
 export const msalConfig = {
   auth: {
-    clientId: "",
-    authority: "",
-    redirectUri: "http://localhost:8000",
-    knownAuthorities: [""],
+    clientId: process.env.NEXT_PUBLIC_MSAL_CLIENTID,
+    authority: `https://login.microsoftonline.com/${process.env.NEXT_PUBLIC_MSAL_AUTHORITY}`,
+    redirectUri: isLocal ? "http://localhost:8000" : process.env.NEXT_PUBLIC_HOSTNAME,
+    knownAuthorities: [process.env.NEXT_PUBLIC_MSAL_AUTHORITY],
   },
   cache: {
     cacheLocation: "localStorage",
@@ -37,7 +37,7 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: ["/.default"],
+  scopes: [`${process.env.NEXT_PUBLIC_MSAL_CLIENTID}/.default`],
 };
 
 export const graphConfig = {

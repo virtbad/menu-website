@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /search
+Disallow: /menu/*
+Disallow: /404
+Disallow: /500
+Disallow: /api/*

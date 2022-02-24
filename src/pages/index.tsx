@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
 import { Menu } from "../classes/Menu.class";
-import Home from "../components/Home";
+import Home from "../components/HomePage";
 import Layout from "../components/Layout";
 import Meta from "../components/Meta";
 import { MenuConstructor } from "../types/Menu.types";
@@ -18,7 +18,7 @@ interface HomePageProps {
 const HomePage: NextPage<HomePageProps> = ({ menus }): JSX.Element => {
   return (
     <Layout>
-      <Meta title="Home" description="Home Seite mit den Top Menüs und einigen Statistiken" />
+      <Meta keywords={["heute", "morgen"]} title="Home" description="Home Seite mit den Top Menüs und einigen Statistiken" />
       <Home menus={menus.map((ctr: MenuConstructor) => new Menu(ctr))} />
     </Layout>
   );

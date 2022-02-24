@@ -25,7 +25,7 @@ export const UserProvider: NextPage = ({ children }): JSX.Element => {
     if (!token) return;
     try {
       const response: AxiosResponse = await axios.get(`${apiUrl}/user/`, { headers: { Authorization: `Bearer ${token}` } });
-      const user: User = new User({ ...response.data, tag: response.data.tag });
+      const user: User = new User(response.data);
       setCurrent(user);
     } catch (e) {}
   };

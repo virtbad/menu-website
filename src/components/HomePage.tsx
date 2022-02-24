@@ -6,7 +6,7 @@ import { randomMenu } from "../util/test";
 import { Button, MenuCard } from "./system";
 import { RatedListItem } from "./system/List";
 
-interface HomeProps {
+interface HomePageProps {
   menus: Array<Menu>;
 }
 
@@ -14,7 +14,7 @@ interface HomeProps {
  * Home landing page
  */
 
-const Home: React.FC<HomeProps> = ({ menus }): JSX.Element => {
+const HomePage: React.FC<HomePageProps> = ({ menus }): JSX.Element => {
   return (
     <section className={style["home-container"]}>
       <Today menus={menus} />
@@ -58,7 +58,7 @@ const TopMenus: React.FC = (): JSX.Element => {
         <h2 className={style["topmenu-title"]} children={"Beliebte Menüs"} />
         <div className={style["topmenu-menus"]}>
           {menus.map((menu: Menu, index: number) => {
-            return <RatedListItem theme={"dark"} key={index} menu={menu} />;
+            return <RatedListItem background={"alt"} theme={"dark"} key={index} menu={menu} />;
           })}
         </div>
       </div>
@@ -158,7 +158,15 @@ const StatisticsBubble: React.FC = (): JSX.Element => {
     </svg>
   );
 
-  return <BaseBubble bubble={bubble} title={<span ref={counterRef} />} description={`Sieh dir die Statistiken von ${menuCount.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden`} />;
+  return (
+    <BaseBubble
+      bubble={bubble}
+      title={<span ref={counterRef} />}
+      button={"Zur Suche"}
+      href={"/search"}
+      description={`Sieh dir die ${menuCount.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden und finde deine Lieblingsmenüs`}
+    />
+  );
 };
 
 interface BaseBubbleProps {
@@ -166,23 +174,24 @@ interface BaseBubbleProps {
   title?: string | JSX.Element;
   description?: string | JSX.Element;
   href?: string;
+  button?: string;
 }
 
 /**
  * Base bubble component for creating directly styled bubbles
  */
 
-const BaseBubble: React.FC<BaseBubbleProps> = ({ bubble, title, description, href }): JSX.Element => {
+const BaseBubble: React.FC<BaseBubbleProps> = ({ bubble, title, description, href, button = "Mehr" }): JSX.Element => {
   return (
     <section className={style["bubble-container"]}>
       <div className={style["bubble-background"]} children={bubble} />
       <div className={style["bubble-text"]}>
         <h2 className={style["bubble-text-title"]} children={title} />
         <div className={style["bubble-text-description"]} children={description} />
-        <div className={style["bubble-text-button"]} children={<Button theme={"green"} children={"Mehr"} forwardIcon href={href} />} />
+        <div className={style["bubble-text-button"]} children={<Button theme={"green"} children={button} forwardIcon href={href} />} />
       </div>
     </section>
   );
 };
 
-export default Home;
+export default HomePage;

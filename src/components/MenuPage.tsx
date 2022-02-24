@@ -29,6 +29,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ menu }): JSX.Element => {
         <BackgroundBlob />
         <MenuDisplay menu={menu} />
       </div>
+      {!user && <div className={style["menupage-comments-container"]} children={<div className={style["menupage-comments-content"]} children={<LoginBox />} />} />}
       {user && <div className={style["menupage-comments-container"]} children={<div className={style["menupage-comments-content"]} children={<CommentBox menu={menu} />} />} />}
     </section>
   );
@@ -41,7 +42,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ menu }): JSX.Element => {
 const MenuDisplay: React.FC<{ menu: Menu }> = ({ menu }): JSX.Element => {
   const router = useRouter();
 
-  if (router.isFallback) return <></>; // show fallback component
+  if (router.isFallback) return <></>;
   // TODO: Add prices and label
   return (
     <div className={style["menu-container"]}>
@@ -64,6 +65,21 @@ const BackgroundBlob: React.FC = (): JSX.Element => {
   );
 };
 
+/**
+ * Box to remind the user to be logged in to see comments
+ */
+
+const LoginBox: React.FC = (): JSX.Element => {
+  const { requestToken } = useAuth();
+  return (
+    <div className={style["loginbox-container"]}>
+      <h2 children={"Kommentare"} />
+      <span children={"Melde dich an, um die Kommentarfunktion nutzen zu können"} className={style["noresult"]} />
+      <Button onClick={() => requestToken()} children={"Anmelden"} />
+    </div>
+  );
+};
+
 interface newCommentBoxProps {
   menu: Menu;
 }
@@ -83,7 +99,7 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
   const { ...serverComments } = useSWR(menu && `${apiUrl}/menu/${menu.uuid}/comment`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => data));
 
   useEffect(() => {
-    setComments((serverComments.data || []).map((comment: any) => new Comment({ ...comment, user: { ...comment.user, tag: comment.user.tag } })));
+    setComments((serverComments.data || []).map((comment: any) => new Comment(comment)));
   }, [serverComments.data]);
 
   useEffect(() => {

@@ -4,7 +4,9 @@ import { useMsal } from "@azure/msal-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { Logger } from "../classes/Logger.class";
 import { loginRequest } from "../util/auth.config";
+import { isLocal } from "../util/global.config";
 
 interface AuthContext {
   token: string;
@@ -90,8 +92,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp
     setAuth({ token: undefined, exp: undefined });
     removeCookie("token");
     try {
-      await instance.logoutRedirect({ account: instance.getActiveAccount(), postLogoutRedirectUri: "http://localhost:8000" });
-    } catch (e) {}
+      await instance.logoutRedirect({ account: instance.getActiveAccount(), postLogoutRedirectUri: isLocal ? `http://localhost:8000` : process.env.NEXT_PUBLIC_HOSTNAME });
+    } catch (e) {
+      Logger.error("Error whilst logging out", e);
+    }
   };
 
   return <AuthContext.Provider value={{ token: cookies.token || auth.token, requestToken: requestToken, logout: logout }} children={children} />;
