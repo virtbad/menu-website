@@ -6,6 +6,7 @@ import { Logger } from "../classes/Logger.class";
 import { Menu } from "../classes/Menu.class";
 import { MenuConstructor, MenuLabel } from "../types/Menu.types";
 import { apiUrl } from "../util/global.config";
+import { convertAxiosErrorString } from "../util/util";
 
 interface SearchOptions {
   /**
@@ -89,7 +90,7 @@ export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
       setData({ query: query, results: mapped });
       return mapped;
     } catch (e: any) {
-      Logger.error(`Fetch menus: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Fetch menus: ${convertAxiosErrorString(e)}`);
       return [];
     }
   };

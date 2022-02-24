@@ -2,24 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCountUp } from "react-countup";
 import { Menu } from "../classes/Menu.class";
 import style from "../styles/modules/Home.module.scss";
-import { randomMenu } from "../util/test";
 import { Button, MenuCard } from "./system";
 import { RatedListItem } from "./system/List";
 
 interface HomePageProps {
   menus: Array<Menu>;
+  count: number;
 }
 
 /**
  * Home landing page
  */
 
-const HomePage: React.FC<HomePageProps> = ({ menus }): JSX.Element => {
+const HomePage: React.FC<HomePageProps> = ({ menus, count }): JSX.Element => {
   return (
     <section className={style["home-container"]}>
       <Today menus={menus} />
       <TopMenus />
-      <Bubbles />
+      <Bubbles count={count} />
     </section>
   );
 };
@@ -34,11 +34,17 @@ interface TodayProps {
 
 const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
   return (
-    <section className={style["today-container"]}>
+    <section className={style["today-container"]} data-closed={menus.length === 0}>
       <div className={style["today-content"]}>
         {menus.map((menu: Menu) => {
           return <MenuCard key={menu.uuid} menu={menu} />;
         })}
+        {menus.length === 0 && (
+          <div className={style["closed-container"]}>
+            <h2 children={"Geschlossen"} />
+            <span children={"Die Mensa hat heute geschlossen"} className={style["noresult"]} />
+          </div>
+        )}
       </div>
     </section>
   );
@@ -49,17 +55,18 @@ const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
  */
 
 const TopMenus: React.FC = (): JSX.Element => {
-  const [menus] = useState<Array<Menu>>(new Array(5).fill(null).map(randomMenu));
+  const [menus] = useState<Array<Menu>>(/* new Array(5).fill(null).map(randomMenu) */ []);
 
   return (
-    <section className={style["topmenu-container"]}>
+    <section className={style["upcoming-container"]}>
       <UpperWave />
-      <div className={style["topmenu-content"]}>
-        <h2 className={style["topmenu-title"]} children={"Beliebte Menüs"} />
-        <div className={style["topmenu-menus"]}>
+      <div className={style["upcoming-content"]}>
+        <h2 className={style["upcoming-title"]} children={"Zukünftige Menüs"} />
+        <div className={style["upcoming-menus"]}>
           {menus.map((menu: Menu, index: number) => {
-            return <RatedListItem background={"alt"} theme={"dark"} key={index} menu={menu} />;
+            return <RatedListItem disabled background={"alt"} theme={"dark"} key={index} menu={menu} />;
           })}
+          {menus.length === 0 && <span style={{ alignSelf: "flex-start" }} className={style["noresult"]} children={"Es konnten keine zukünftigen Menüs geladen werden"} />}
         </div>
       </div>
       <LowerWave />
@@ -95,15 +102,19 @@ const LowerWave: React.FC = (): JSX.Element => {
   );
 };
 
+interface BubblesProps {
+  count: number;
+}
+
 /**
  * Bubbles component
  */
 
-const Bubbles: React.FC = (): JSX.Element => {
+const Bubbles: React.FC<BubblesProps> = ({ count }): JSX.Element => {
   return (
     <section className={style["bubbles-container"]}>
       <MenuBubble />
-      <StatisticsBubble />
+      <StatisticsBubble count={count} />
     </section>
   );
 };
@@ -121,9 +132,16 @@ const MenuBubble: React.FC = (): JSX.Element => {
   return <BaseBubble bubble={bubble} title={"Alle Menüs"} description={"Alle Menüs, die es jemals in der Mensa vom SV-Service gegeben hat"} />;
 };
 
-const StatisticsBubble: React.FC = (): JSX.Element => {
-  const menuCount: number = 4812;
-  const reducedCount: number = menuCount - (menuCount % 50);
+interface StatisticsBubbleProps {
+  count: number;
+}
+
+/**
+ * Statistics bubble component
+ */
+
+const StatisticsBubble: React.FC<StatisticsBubbleProps> = ({ count }): JSX.Element => {
+  const reducedCount: number = count - (count % 50);
   const counterRef = useRef(null);
   const { reset, start } = useCountUp({
     start: 0,
@@ -164,7 +182,7 @@ const StatisticsBubble: React.FC = (): JSX.Element => {
       title={<span ref={counterRef} />}
       button={"Zur Suche"}
       href={"/search"}
-      description={`Sieh dir die ${menuCount.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden und finde deine Lieblingsmenüs`}
+      description={`Sieh dir die ${count.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden und finde deine Lieblingsmenüs`}
     />
   );
 };

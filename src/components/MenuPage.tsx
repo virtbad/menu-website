@@ -11,6 +11,7 @@ import { useAuth } from "../hooks/AuthContext";
 import { useUser } from "../hooks/UserContext";
 import style from "../styles/modules/MenuPage.module.scss";
 import { apiUrl } from "../util/global.config";
+import { convertAxiosErrorString } from "../util/util";
 import { Button, Input } from "./system";
 import { CommentListItem } from "./system/List";
 import Loader from "./system/Loader";
@@ -120,7 +121,7 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
       setComments([...comments, new Comment({ ...values, id: id, created: new Date(), edited: false, user: user })]);
       setCreating(false);
     } catch (e) {
-      Logger.error(`Error whilst creating new comment: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst creating new comment: ${convertAxiosErrorString(e)}`);
     }
   };
 
@@ -129,7 +130,7 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
       await axios.delete(`${apiUrl}/menu/${menu.uuid}/comment/${uuid}`, { headers: { Authorization: `Bearer ${token}` } });
       setComments(comments.filter(({ id }) => id !== uuid));
     } catch (e) {
-      Logger.error(`Error whilst deleting comment: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst deleting comment: ${convertAxiosErrorString(e)}`);
     }
   };
 

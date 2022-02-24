@@ -8,6 +8,7 @@ import { Logger } from "../../classes/Logger.class";
 import { Menu } from "../../classes/Menu.class";
 import { useUser } from "../../hooks/UserContext";
 import style from "../../styles/modules/system/List.module.scss";
+import { convertAxiosErrorString } from "../../util/util";
 import Rating from "./Rating";
 import { VerticalVote } from "./Vote";
 
@@ -89,7 +90,7 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
       await comment.update({ title: title, content: content, rating: rating }, menuId);
       setEdited(true);
     } catch (e) {
-      Logger.error(`Error whilst updating comment: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst updating comment: ${convertAxiosErrorString(e)}`);
       setContent(comment.content);
       setRating(comment.rating);
       setTitle(comment.title);

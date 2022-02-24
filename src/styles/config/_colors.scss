@@ -25,8 +25,8 @@ $primary-light: #ffffff;
 $secondary-light: #17181b;
 $tertiary-light: #212226;
 
-$link-light: rgba(#777373, 0.5);
-$link-hover-light: rgba(#777373, 0.7);
+$link-light: rgba(#222020, 0.5);
+$link-hover-light: rgba(#222020, 0.7);
 
 $input-border-light: #7f7f7f; //rgba($black, 0.5) but to avoid transparency
 $input-border-hover-light: rgba($black, 0.7);
@@ -59,29 +59,6 @@ $option-selected-dark: rgba(#e3e3e3, 0.1);
 $scrollbar-thumb-dark: #28292e;
 $scrollbar-background-dark: #1d1e22;
 
-// new color system
-
-$background-primary: #17181b;
-$background-secondary: #1d1d21;
-
-$foreground-primary: #e9ecef;
-$foreground-secondary: #bbbdbf;
-$foreground-tertiary: #626265;
-
-$foreground-hover: #aaacaf;
-$foreground-hover-urgent: #c04a4a;
-$foreground-hover-upvote: $foreground-hover;
-$foreground-hover-downvote: $foreground-hover;
-
-$accent-primary: #46b231;
-$accent-secondary: #298519;
-$accent-tertiary: #184d0f;
-
-$accent-primary-hover: #53d73a;
-$accent-secondary-hover: #34ad1f;
-$accent-tertiary-hover: #237016;
-
-$function-disabled: #7c7c7c;
 $home-green-accent-dark: #349f2194;
 
 // theme lists

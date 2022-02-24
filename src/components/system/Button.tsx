@@ -5,7 +5,7 @@ import style from "../../styles/modules/system/Button.module.scss";
 
 interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: string;
-  theme?: "white" | "green" | "primary" | "secondary";
+  theme?: "white" | "green";
   endIcon?: JSX.Element;
   startIcon?: JSX.Element;
   forwardIcon?: boolean;

@@ -1,69 +1,64 @@
 @use "../config/" as *;
 
 .footer-container {
+  border-top: solid 1px var(--border);
   display: flex;
   padding: 2rem;
-  gap: 1rem;
+  gap: 3rem;
   flex-direction: column;
   justify-content: center;
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 10rem;
+  @include container-width;
+  margin: 20rem auto 0 auto;
+  max-width: calc(100vw - $layout-padding * 2 - 4rem) !important;
 }
 
 .footer-items {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 4rem;
+  flex-flow: wrap;
+  justify-content: space-between;
 }
 
 .footer-section {
-  max-width: 15rem;
-  width: 15rem;
   flex: 1;
   display: grid;
   grid-template-areas: "title" "entries";
+  max-width: 15rem;
+  width: 15rem;
+  height: fit-content;
 
   .footer-section-title {
     grid-area: title;
     margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    height: fit-content;
   }
 
   .footer-section-entries {
     grid-area: entries;
     display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    gap: 1rem;
+
+    .footer-disclaimer {
+      color: var(--link);
+    }
   }
 }
 
 .footer-endnote {
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
 
-  .footer-socials {
+  .footer-copyright {
+    width: 100%;
     display: flex;
+    justify-content: flex-end;
   }
+}
 
-  .footer-versions {
-    display: flex;
-    justify-content: space-;
-
-    .footer-version {
-      justify-content: flex-start;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      flex: 1;
-      h5 {
-        padding-right: 1ch;
-      }
-
-      code {
-        color: var(--link);
-      }
-    }
+@include max-550 {
+  .footer-items {
+    flex-direction: column;
   }
 }

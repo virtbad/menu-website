@@ -6,6 +6,7 @@ import { User } from "../../classes/User.class";
 import { useUser } from "../../hooks/UserContext";
 import style from "../../styles/modules/system/Vote.module.scss";
 import { apiUrl } from "../../util/global.config";
+import { convertAxiosErrorString } from "../../util/util";
 
 interface VoteProps {
   theme?: "auto" | "dark" | "light";
@@ -22,7 +23,7 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, th
   const [voted, setVoted] = useState<number>(0);
   const [votes, setVotes] = useState<number>(props.votes);
   const user: User = useUser();
-  const { ...serverVote } = useSWR(user && !disabled && `${apiUrl}/menu/${menuId}/vote`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${user.token}` } }).then(({ data }) => data));
+  const { ...serverVote } = useSWR(user && user.token && !disabled && `${apiUrl}/menu/${menuId}/vote`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${user.token}` } }).then(({ data }) => data));
   if (!user) disabled = true;
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, th
       setVoted(1);
     } catch (e) {
       setVotes(voted < 0 ? votes - 2 : votes - 1);
-      Logger.error(`Error whilst upvoting a menu: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst upvoting a menu: ${convertAxiosErrorString(e)}`);
     }
   };
 
@@ -51,7 +52,7 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, th
       setVoted(-1);
     } catch (e) {
       setVotes(voted > 0 ? votes + 2 : votes + 1);
-      Logger.error(`Error whilst downvoting a menu: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst downvoting a menu: ${convertAxiosErrorString(e)}`);
     }
   };
 
@@ -62,15 +63,14 @@ export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, th
       setVoted(0);
     } catch (e) {
       setVotes(voted < 0 ? votes - 1 : votes + 1);
-      Logger.error(`Error whilst downvoting a menu: ${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`);
+      Logger.error(`Error whilst downvoting a menu: ${convertAxiosErrorString(e)}`);
     }
   };
 
   useEffect(() => {
     if (serverVote.data) setVoted(serverVote.data.direction);
-  }, [serverVote.data]);
-
-  if (serverVote.error) Logger.error("Error whilst fetching own vote", serverVote.error);
+    if (serverVote.error) Logger.error(`Error whilst fetching own vote: ${convertAxiosErrorString(serverVote.error)}`);
+  }, [serverVote.data, serverVote.error]);
 
   const voteString: string = votes.toLocaleString("de", { signDisplay: "always" }).replace(",", "'");
 

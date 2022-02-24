@@ -180,3 +180,15 @@ export const hexToHsl = (hex: string): { h: number; s: number; l: number } => {
 
   return { h: h, s: s, l: l };
 };
+
+/**
+ * Function to convert a potential axios error to a string message
+ *
+ * @param e potential error
+ *
+ * @returns string representation
+ */
+
+export const convertAxiosErrorString = (e: any): string => {
+  return `${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`;
+};
