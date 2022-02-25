@@ -77,7 +77,7 @@ const AllPage: React.FC<AllPageProps> = ({ menus }): JSX.Element => {
 const TopWave: React.FC = (): JSX.Element => {
   return (
     <section className={style["wave-container"]}>
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1440 320" xmlSpace="preserve">
+      <svg preserveAspectRatio={"none"} version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1440 320" xmlSpace="preserve">
         <path
           d="M0,158l48,5.3c48,5.7,144,15.7,240,16c96-0.3,192-10.3,288,16c96,26.7,192,90.7,288,112c96,21.7,192-0.3,288-16
 	c96-16.3,192-26.3,240-32l48-5.3V126h-48c-48,0-144,0-240,0s-192,0-288,0s-192,0-288,0s-192,0-288,0s-192,0-240,0H0V158z"

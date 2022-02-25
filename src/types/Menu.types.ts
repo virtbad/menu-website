@@ -11,7 +11,7 @@ export interface MenuConstructor {
    * Uuid of the menu
    */
 
-  uuid: string;
+  id: string;
 
   /**
    * Title of the menu

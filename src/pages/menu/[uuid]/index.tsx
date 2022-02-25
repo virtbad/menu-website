@@ -25,7 +25,7 @@ const SpecificMenuPage: NextPage<SpecificMenuPageProps> = ({ menu }): JSX.Elemen
 
   return (
     <Layout>
-      <Meta noindex title={"Menü"} description={"Sieh dir ein bestimmtes Menü etwas genauer an"} />
+      <Meta image={`${apiUrl}/menu/${menu.id}/og`} noindex title={"Menü"} description={"Sieh dir ein bestimmtes Menü etwas genauer an"} />
       <MenuPage menu={router.isFallback ? null : new Menu(menu)} />
     </Layout>
   );

@@ -51,7 +51,7 @@ export class Menu {
   public readonly votes: number;
 
   constructor(ctr: MenuConstructor) {
-    this.uuid = ctr.uuid || (ctr as any).id;
+    this.uuid = (ctr as any).uuid || (ctr as any).id;
     this.title = ctr.title;
     this.description = ctr.description;
     this.date = new Date(ctr.date);

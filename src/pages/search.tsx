@@ -4,6 +4,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import Meta from "../components/Meta";
 import SearchPage from "../components/SearchPage";
+import { apiUrl } from "../util/global.config";
 
 /**
  * Page to search for menus
@@ -15,7 +16,7 @@ const SearchMenuPage: NextPage = (): JSX.Element => {
 
   return (
     <Layout hideHeaderSearchbar>
-      <Meta keywords={["suche"]} title="Menüsuche" description="Suche ein bestimmtes Menü aus der Datenbank" />
+      <Meta image={`${apiUrl}/static/search/og`} keywords={["suche"]} title="Menüsuche" description="Suche ein bestimmtes Menü aus der Datenbank" />
       <SearchPage query={query?.query as string | undefined} />
     </Layout>
   );

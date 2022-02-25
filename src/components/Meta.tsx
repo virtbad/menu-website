@@ -7,13 +7,14 @@ interface MetaProps {
   description?: string;
   noindex?: boolean;
   keywords?: Array<string> | string;
+  image?: string;
 }
 
 /**
  * Meta data component
  */
 
-const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [] }): JSX.Element => {
+const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [], image }): JSX.Element => {
   const hostname: string = isLocal ? "http://localhost:8000" : process.env.NEXT_PUBLIC_HOSTNAME;
   const allKeywords: Array<string> = process.env.NEXT_PUBLIC_SEO_KEYWORDS.split(",");
   if (typeof keywords === "string") allKeywords.push(keywords);
@@ -33,8 +34,8 @@ const Meta: React.FC<MetaProps> = ({ title, description, noindex, keywords = [] 
       {description && <meta name="twitter:description" content={description} />}
       {keywords && <meta name="keywords" content={Array.isArray(keywords) ? keywords.join(",") : keywords} />}
       <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE} />
-      <meta property="og:image" content={``} />
-      <meta property="og:image:secure_url" content={``} />
+      {image && <meta property="og:image" content={image} />}
+      {image && <meta property="og:image:secure_url" content={image} />}
       <meta name="keywords" content={allKeywords.join(", ")} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="627" />

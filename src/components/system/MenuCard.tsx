@@ -12,16 +12,17 @@ interface MenuCardProps {
   more?: boolean;
   background?: boolean;
   href?: string;
+  disabled?: boolean;
 }
 
 /**
  * Card component to display menu information
  */
 
-const MenuCard: React.FC<MenuCardProps> = ({ menu, more = true, background = true, href }): JSX.Element => {
+const MenuCard: React.FC<MenuCardProps> = ({ menu, more = true, background = true, href, disabled = false }): JSX.Element => {
   const BaseCard: JSX.Element = (
     <section className={style["card-container"]} data-background={background} data-label={menu.label !== MenuLabel.NO_LABEL && menu.label !== undefined}>
-      <div className={style["card-vote"]} children={<VerticalVote menuId={menu.uuid} theme={"dark"} votes={Math.floor(Math.random() * 100)} />} />
+      <div className={style["card-vote"]} children={<VerticalVote disabled={disabled} menuId={menu.uuid} theme={"dark"} votes={menu.votes} />} />
       <div className={style["card-title"]}>
         <h3 children={menu.title} />
         {menu.label !== MenuLabel.NO_LABEL && <code children={menu.parsedLabel} className={style["card-label"]} />}

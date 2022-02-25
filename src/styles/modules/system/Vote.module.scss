@@ -115,15 +115,40 @@
 
   &[data-selected="true"] {
     svg {
-      fill: var(--secondary);
+      fill: var(--secondary) !important;
     }
   }
 
   svg {
     height: 1.5rem;
     width: 1rem;
-    stroke: var(--secondary);
+    stroke: var(--secondary) !important;
     fill: none;
     stroke-width: 2.5px;
+    transition: all 0.2s ease;
+  }
+}
+
+*[theme="dark"] {
+  .vote-triangle {
+    &[data-disabled="false"] {
+      &:hover {
+        svg {
+          fill: rgba($secondary-dark, 0.5);
+        }
+      }
+    }
+  }
+}
+
+*[theme="light"] {
+  .vote-triangle {
+    &[data-disabled="false"] {
+      &:hover {
+        svg {
+          fill: rgba($secondary-light, 0.5);
+        }
+      }
+    }
   }
 }
