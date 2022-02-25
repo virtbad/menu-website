@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { Logger } from "../classes/Logger.class";
 import { Menu } from "../classes/Menu.class";
 import { MenuConstructor, MenuLabel } from "../types/Menu.types";
@@ -41,15 +40,13 @@ interface SearchOptions {
 }
 
 interface SearchbarContext {
-  getMenuResults: (query: string) => Promise<Array<Menu>>;
-  clearData: () => void;
-  data: { query: string; results: Array<Menu> };
+  getMenuResults: (query: string, options?: SearchOptions) => Promise<Array<Menu>>;
+  getAllMenuResults: (page?: number) => Promise<Array<Menu>>;
 }
 
 const defaultValues: SearchbarContext = {
   getMenuResults: () => new Promise(() => {}),
-  clearData: () => {},
-  data: { query: "", results: [] },
+  getAllMenuResults: () => new Promise(() => {}),
 };
 
 export const SearchbarContext = createContext<SearchbarContext>(defaultValues);
@@ -59,19 +56,6 @@ export const SearchbarContext = createContext<SearchbarContext>(defaultValues);
  */
 
 export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
-  const router = useRouter();
-  const [data, setData] = useState<{ query: string; results: Array<Menu> }>(defaultValues.data);
-
-  useEffect(() => {
-    let mounted: boolean = true;
-    getMenuResults("bu")
-      .then((menus: Array<Menu>) => mounted && setData({ query: "", results: menus }))
-      .catch(() => {});
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   /**
    * Get the menus for a search query
    *
@@ -87,23 +71,36 @@ export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
       Logger.request(`Fetching menus with query "${query}"`);
       const results: AxiosResponse<Array<MenuConstructor>> = await axios.get(searchQuery);
       const mapped = (results?.data || []).map((ctr: MenuConstructor) => new Menu(ctr));
-      setData({ query: query, results: mapped });
       return mapped;
     } catch (e: any) {
-      Logger.error(`Fetch menus: ${convertAxiosErrorString(e)}`);
+      Logger.error(`Query menus: ${convertAxiosErrorString(e)}`);
       return [];
     }
   };
 
   /**
-   * Clear data
+   * Get all menus
+   *
+   * @param page page of the menus
+   *
+   * @returns array with menus
    */
 
-  const clearData = (): void => {
-    if (defaultValues.data.query !== data.query) setData(defaultValues.data);
+  const getAllMenuResults = async (page: number = 0): Promise<Array<Menu>> => {
+    try {
+      let allQuery = `${apiUrl}/menu/all`;
+      if (page !== 0) allQuery += `?page=${page}`;
+      Logger.request(`Fetching all menus at page ${page}`);
+      const results: AxiosResponse<Array<MenuConstructor>> = await axios.get(allQuery);
+      const mapped = (results?.data || []).map((ctr: MenuConstructor) => new Menu(ctr));
+      return mapped;
+    } catch (e: any) {
+      Logger.error(`Fetch all menus: ${convertAxiosErrorString(e)}`);
+      return [];
+    }
   };
 
-  return <SearchbarContext.Provider value={{ getMenuResults: getMenuResults, clearData: clearData, data: data }} children={children} />;
+  return <SearchbarContext.Provider value={{ getMenuResults: getMenuResults, getAllMenuResults: getAllMenuResults }} children={children} />;
 };
 
 /**

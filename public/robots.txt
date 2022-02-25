@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Allow: /search
+Allow: /all
 Disallow: /menu/*
 Disallow: /404
 Disallow: /500

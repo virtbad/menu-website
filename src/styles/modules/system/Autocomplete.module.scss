@@ -29,5 +29,6 @@
 .autocomplete-root {
   &[data-background="true"] {
     background-color: var(--primary);
+    border-radius: $border-radius-small;
   }
 }

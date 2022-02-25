@@ -1,21 +1,52 @@
 @use "../../config/" as *;
 
 .card-container {
-  filter: $drop-shadow;
   display: grid;
   border-radius: $border-radius-big;
-  background-color: var(--home-accent);
   padding: 1.25rem 1.5rem 1.5rem 1.5rem;
   justify-self: center;
   align-self: center;
   position: relative;
-  grid-template-rows: min-content;
+  grid-template-columns: 2.5rem auto auto;
+  grid-template-rows: min-content min-content min-content;
   gap: 0.75rem;
   color: $white;
+  background-color: transparent;
+  transition: all 0.2s ease;
 
-  grid-template-areas: "vote title label" "vote description description" "price price price";
-  height: $menucard-big-height;
-  width: $menucard-big-width;
+  &[data-background="true"] {
+    cursor: pointer;
+    filter: $drop-shadow;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: $border-radius-big;
+      background-color: var(--home-accent);
+      background: $background-gradient;
+      z-index: -1;
+    }
+
+    &:hover {
+      background-color: var(--option-hover);
+    }
+
+    &:active {
+      background-color: var(--option-select);
+    }
+  }
+
+  grid-template-areas: "vote title title" "vote description description" "vote price buttons";
+  width: 100%;
+
+  &[data-label="true"] {
+    .card-title {
+      margin-bottom: 0.75rem;
+    }
+  }
 
   .card-vote {
     grid-area: vote;
@@ -25,9 +56,9 @@
   .card-title {
     grid-area: title;
     line-height: 1.1;
-    margin-bottom: 0.25rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.25rem;
     word-break: break-word;
 
     & > h2 {
@@ -36,7 +67,6 @@
   }
 
   .card-label {
-    grid-area: label;
     height: fit-content;
     align-self: center;
     justify-self: flex-end;
@@ -48,6 +78,7 @@
     font-weight: bold;
     color: $button;
     user-select: none;
+    align-self: flex-start;
   }
 
   .card-description {
@@ -61,12 +92,8 @@
   .card-prices-container {
     grid-area: price;
     display: flex;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: solid 1px var(--border);
-    align-self: flex-end;
-    justify-content: space-between;
-    margin-bottom: -0.75rem;
+    align-self: center;
+    gap: 0.75rem;
 
     .price-container {
       padding: 0.125rem 0.4rem;
@@ -76,6 +103,7 @@
       border-top-left-radius: $border-radius-small;
       letter-spacing: 0.1px;
       display: flex;
+      width: fit-content;
 
       &:first-child {
         justify-content: flex-start;
@@ -96,6 +124,15 @@
         font-family: monospace;
       }
     }
+  }
+
+  .card-buttons {
+    grid-area: buttons;
+    display: flex;
+    gap: 0.5rem;
+    height: fit-content;
+    justify-self: flex-end;
+    justify-content: flex-end;
   }
 
   .label {

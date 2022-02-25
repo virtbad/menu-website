@@ -6,6 +6,7 @@
   position: relative;
   filter: $drop-shadow;
   fill: var(--home-accent);
+  fill: url(#background-gradient);
   justify-content: center;
   color: $white;
 

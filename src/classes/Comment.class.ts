@@ -82,7 +82,9 @@ export class Comment {
 
     await axios.put(`${apiUrl}/menu/${menuId}/comment/${this.id}`, data, { headers: { Authorization: `Bearer ${parseCookies(document.cookie).token}` } });
     this._title = title;
+    if (this._title.length > 64) this._title = this._title.substring(0, 64);
     this._content = content;
+    if (this._content.length > 256) this._content = this._content.substring(0, 256);
     this._rating = rating;
     this._edited = true;
   }

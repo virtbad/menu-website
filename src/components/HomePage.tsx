@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useCountUp } from "react-countup";
 import { Menu } from "../classes/Menu.class";
 import style from "../styles/modules/Home.module.scss";
@@ -8,17 +8,18 @@ import { RatedListItem } from "./system/List";
 interface HomePageProps {
   menus: Array<Menu>;
   count: number;
+  upcoming: Array<Menu>;
 }
 
 /**
  * Home landing page
  */
 
-const HomePage: React.FC<HomePageProps> = ({ menus, count }): JSX.Element => {
+const HomePage: React.FC<HomePageProps> = ({ menus, count, upcoming }): JSX.Element => {
   return (
     <section className={style["home-container"]}>
       <Today menus={menus} />
-      <TopMenus />
+      <UpcomingMenus menus={upcoming} />
       <Bubbles count={count} />
     </section>
   );
@@ -34,11 +35,13 @@ interface TodayProps {
 
 const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
   return (
-    <section className={style["today-container"]} data-closed={menus.length === 0}>
+    <section data-nosnippet className={style["today-container"]} data-closed={menus.length === 0}>
       <div className={style["today-content"]}>
-        {menus.map((menu: Menu) => {
-          return <MenuCard key={menu.uuid} menu={menu} />;
-        })}
+        {menus
+          .sort((a: Menu, b: Menu) => a.channel - b.channel)
+          .map((menu: Menu) => {
+            return <MenuCard href={`/menu/${menu.uuid}`} key={menu.uuid} menu={menu} />;
+          })}
         {menus.length === 0 && (
           <div className={style["closed-container"]}>
             <h2 children={"Geschlossen"} />
@@ -50,22 +53,26 @@ const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
   );
 };
 
+interface UpcomingMenusProps {
+  menus: Array<Menu>;
+}
+
 /**
- * Top menus component
+ * Upcoming menus component
  */
 
-const TopMenus: React.FC = (): JSX.Element => {
-  const [menus] = useState<Array<Menu>>(/* new Array(5).fill(null).map(randomMenu) */ []);
-
+const UpcomingMenus: React.FC<UpcomingMenusProps> = ({ menus }): JSX.Element => {
   return (
-    <section className={style["upcoming-container"]}>
+    <section data-nosnippet className={style["upcoming-container"]}>
       <UpperWave />
       <div className={style["upcoming-content"]}>
         <h2 className={style["upcoming-title"]} children={"Zukünftige Menüs"} />
         <div className={style["upcoming-menus"]}>
-          {menus.map((menu: Menu, index: number) => {
-            return <RatedListItem disabled background={"alt"} theme={"dark"} key={index} menu={menu} />;
-          })}
+          {menus
+            .sort((a: Menu, b: Menu) => a.date.getTime() - b.date.getTime())
+            .map((menu: Menu, index: number) => {
+              return <RatedListItem disabled background={"alt"} theme={"dark"} key={index} menu={menu} />;
+            })}
           {menus.length === 0 && <span style={{ alignSelf: "flex-start" }} className={style["noresult"]} children={"Es konnten keine zukünftigen Menüs geladen werden"} />}
         </div>
       </div>
@@ -129,7 +136,7 @@ const MenuBubble: React.FC = (): JSX.Element => {
       <path d="M462,276.5Q464,313,440,340.5Q416,368,385.5,383Q355,398,329,416.5Q303,435,271.5,449.5Q240,464,206,457Q172,450,146,427.5Q120,405,91,387Q62,369,46,338.5Q30,308,16,274Q2,240,10.5,204Q19,168,34,134.5Q49,101,86.5,91Q124,81,146,50.5Q168,20,204,16.5Q240,13,273,24.5Q306,36,330.5,59Q355,82,376.5,103.5Q398,125,430.5,146.5Q463,168,461.5,204Q460,240,462,276.5Z" />
     </svg>
   );
-  return <BaseBubble bubble={bubble} title={"Alle Menüs"} description={"Alle Menüs, die es jemals in der Mensa vom SV-Service gegeben hat"} />;
+  return <BaseBubble bubble={bubble} title={"Alle Menüs"} button={"Zur Liste"} description={"Sieh dir alle Menüs an, die es jemals in der Mensa gegeben hat"} />;
 };
 
 interface StatisticsBubbleProps {
@@ -141,7 +148,7 @@ interface StatisticsBubbleProps {
  */
 
 const StatisticsBubble: React.FC<StatisticsBubbleProps> = ({ count }): JSX.Element => {
-  const reducedCount: number = count - (count % 50);
+  const reducedCount: number = count - 1 - ((count - 1) % 50);
   const counterRef = useRef(null);
   const { reset, start } = useCountUp({
     start: 0,
@@ -182,7 +189,7 @@ const StatisticsBubble: React.FC<StatisticsBubbleProps> = ({ count }): JSX.Eleme
       title={<span ref={counterRef} />}
       button={"Zur Suche"}
       href={"/search"}
-      description={`Sieh dir die ${count.toLocaleString("de").replace(".", "'")} Menüs an, welche über mehrere Jahre hinweg gesammelt wurden und finde deine Lieblingsmenüs`}
+      description={`Durchsuche die ${count.toLocaleString("de").replace(".", "'")} Menüs, welche über mehrere Jahre hinweg gesammelt wurden und finde deine Lieblingsmenüs`}
     />
   );
 };

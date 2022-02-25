@@ -20,8 +20,8 @@
     margin-top: $header-height;
     display: flex;
     flex-wrap: wrap;
-    gap: 3rem;
-    width: max(360px, 80%);
+    gap: 2rem;
+    @include container-width;
     height: fit-content;
     align-self: center;
 
@@ -53,6 +53,7 @@
     padding: $layout-padding;
     display: flex;
     background-color: var(--home-accent);
+    background: $background-gradient;
     align-items: center;
     flex-direction: column;
 
@@ -76,7 +77,7 @@
       height: 20rem;
 
       path {
-        fill: var(--home-accent);
+        fill: url(#background-gradient);
         fill-opacity: 1;
         height: 100%;
         width: 100%;
@@ -106,6 +107,7 @@
   .bubble-container {
     filter: $drop-shadow;
     fill: var(--home-accent);
+    fill: url(#background-gradient);
     width: fit-content;
     display: flex;
     position: relative;
@@ -135,7 +137,7 @@
       color: $white;
       position: absolute;
       height: 40%;
-      top: 25%;
+      top: 27%;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -171,8 +173,8 @@
     margin: 0 !important;
     width: initial !important;
     .bubble-text {
-      width: 55% !important;
-      left: 22.5% !important;
+      width: 52% !important;
+      left: 25% !important;
     }
 
     .bubble-background {

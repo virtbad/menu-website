@@ -38,6 +38,7 @@
 
   path {
     fill: var(--home-accent);
+    fill: url(#background-gradient);
   }
 }
 
@@ -57,17 +58,6 @@
   grid-area: vote;
   width: 2.5rem;
   margin-right: 0.5rem;
-}
-
-.menu-title {
-  grid-area: title;
-}
-
-.menu-content {
-  grid-area: description;
-  font-weight: 300;
-  font-size: 1.3rem;
-  margin-top: -0.75rem;
 }
 
 .loginbox-container {

@@ -21,6 +21,7 @@
     @include spread-map($light-theme);
   }
   transition: all 0.2s ease;
+  --header-opacity: 0;
 }
 
 //scrollbar

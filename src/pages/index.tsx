@@ -10,17 +10,18 @@ import { apiUrl } from "../util/global.config";
 interface HomePageProps {
   menus: Array<MenuConstructor>;
   count: number;
+  upcoming: Array<MenuConstructor>;
 }
 
 /**
  * Landing page of the website
  */
 
-const HomePage: NextPage<HomePageProps> = ({ menus, count }): JSX.Element => {
+const HomePage: NextPage<HomePageProps> = ({ menus = [], count = 0, upcoming = [] }): JSX.Element => {
   return (
     <Layout>
       <Meta keywords={["heute", "morgen"]} title="Home" description="Home Seite mit den Top Menüs und einigen Statistiken" />
-      <Home count={count} menus={menus.map((ctr: MenuConstructor) => new Menu(ctr))} />
+      <Home upcoming={upcoming.map((ctr: MenuConstructor) => new Menu(ctr))} count={count} menus={menus.map((ctr: MenuConstructor) => new Menu(ctr))} />
     </Layout>
   );
 };
@@ -30,17 +31,24 @@ const HomePage: NextPage<HomePageProps> = ({ menus, count }): JSX.Element => {
  */
 
 export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext) => {
+  let todayMenus: Array<MenuConstructor> = [];
+  let menuCount: number = 0;
+  let upcomingMenus: Array<MenuConstructor> = [];
+
   try {
     const menuResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/date`); // fetch the menus of today
-    try {
-      const countResponse: AxiosResponse = await axios.get(`${apiUrl}/stats/menu`);
-      return { props: { menus: menuResponse.data, count: countResponse?.data?.amount || 0 }, revalidate: 1 };
-    } catch (e) {
-      return { props: { menus: menuResponse.data, count: 0 }, revalidate: 1 };
-    }
-  } catch (e) {
-    return { props: { menus: [] }, revalidate: 1 };
-  }
+    todayMenus = menuResponse.data;
+  } catch (e) {}
+  try {
+    const countResponse: AxiosResponse = await axios.get(`${apiUrl}/stats/menu`); // get total amount of menus
+    menuCount = countResponse.data?.amount || 0;
+  } catch (e) {}
+  try {
+    const upcomingResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/upcoming`);
+    upcomingMenus = upcomingResponse.data;
+  } catch (e) {}
+
+  return { props: { menus: todayMenus, count: menuCount, upcoming: upcomingMenus }, revalidate: 1 };
 };
 
 export default HomePage;

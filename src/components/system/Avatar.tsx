@@ -33,7 +33,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(({ color, size = "normal"
   const gradient: string = `linear-gradient(204deg, hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%) 22%,  hsl(${hsl.h}, ${hsl.s}%, ${hsl.l - 20}%) 85%)`;
 
   return (
-    <div data-size={size} className={style["avatar-container"]} style={{ cursor: pointer ? "pointer" : "default", background: gradient }} onClick={onClick} ref={ref}>
+    <div data-size={size} className={style["avatar-container"]} style={{ cursor: pointer ? "pointer" : "default", background: color && gradient }} onClick={onClick} ref={ref}>
       {src && <img src={src} alt={""} />}
       {user && size !== "text" && <code style={{ fontSize: "1.5rem", color: `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l - 30}%)` }} children={`${user.firstname.substring(0, 1).toUpperCase()}${user.lastname.substring(0, 1).toUpperCase()}`} />}
     </div>

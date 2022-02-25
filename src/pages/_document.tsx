@@ -60,9 +60,9 @@ export default class CustomDocument extends Document {
           <section style={{ height: "0px" }}>
             <svg height={"0px"} width={"0px"}>
               <defs>
-                <linearGradient id="background-gradient" gradientTransform="rotate(65)">
-                  <stop offset="0%" stopColor="#184d0f" />
-                  <stop offset="100%" stopColor="#298519" />
+                <linearGradient id="background-gradient" gradientTransform="rotate(0)">
+                  <stop offset="12%" stopColor="#2c9112" />
+                  <stop offset="100%" stopColor="#047a0e" />
                 </linearGradient>
               </defs>
             </svg>

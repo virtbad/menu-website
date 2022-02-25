@@ -6,29 +6,56 @@ import style from "../styles/modules/SearchPage.module.scss";
 import { searchDebounceDelay } from "../util/global.config";
 import { Autocomplete } from "./system";
 import { RatedListItem } from "./system/List";
+import Loader from "./system/Loader";
 
 interface SearchPageProps {
   query?: string;
 }
 
+/**
+ * Search page component
+ */
+
 const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   let mounted: boolean = true;
-  const [results, setResults] = useState<{ query: string; results: Array<Menu> }>({ query: "", results: [] });
+  const [results, setResults] = useState<{ query: string; results: Array<Menu>; page: number }>({ query: "", results: [], page: 0 });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [last, setLast] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
+  const loaderRef = useRef<HTMLSpanElement>(null);
   const { getMenuResults } = useSearchbar();
+  const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => {});
-    observer.observe(ref.current as any);
+    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => setVisible(entry.isIntersecting));
+    observer.observe(loaderRef.current as any);
     return () => {
       observer.disconnect();
     };
   }, []);
 
   useEffect(() => {
+    if (!visible) return;
+    moreMenus();
+  }, [visible]);
+
+  const moreMenus = () => {
+    if (loading || !results.query || last) return;
+    setLoading(true);
+    getMenuResults(results.query, { page: results.page })
+      .then((menus: Array<Menu>) => {
+        if (!mounted) return;
+        if (menus.length === 0) setLast(true);
+        setResults({ query: results.query, results: [...results.results, ...menus], page: results.page + 1 });
+        setLoading(false);
+      })
+      .catch();
+  };
+
+  useEffect(() => {
     mounted = true;
     getMenuResults(query)
-      .then((menus: Array<Menu>) => mounted && setResults({ query: query, results: menus }))
+      .then((menus: Array<Menu>) => mounted && setResults({ query: query, results: menus, page: 0 }))
       .catch();
     return () => {
       mounted = false;
@@ -37,7 +64,11 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     getMenuResults(event.target.value)
-      .then((menus: Array<Menu>) => mounted && setResults({ query: event.target.value, results: menus }))
+      .then((menus: Array<Menu>) => {
+        if (!mounted) return;
+        setResults({ query: event.target.value, results: menus, page: 0 });
+        setLast(false);
+      })
       .catch();
   };
 
@@ -64,11 +95,15 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
             />
           </div>
           <div className={style["searchpage-menus"]}>
-            {results.results.map((menu: Menu) => {
-              return <RatedListItem disabled href={`/menu/${menu.uuid}`} key={menu.uuid} menu={menu} />;
-            })}
+            {results.results
+              .filter((v, i, a) => a.indexOf(v) === i)
+              .map((menu: Menu, index: number) => {
+                return <RatedListItem disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
+              })}
             {results.results.length === 0 && results.query !== "" && results.query.length !== 1 && <span className={style["noresult"]} children={"Keine Ergebnisse gefunden"} />}
             {results.results.length === 0 && results.query === "" && <span className={style["noresult"]} children={"Gib einen Suchbegriff ein"} />}
+            <span id={"menu-spanner"} ref={loaderRef} />
+            {loading && <div className={style["loader-container"]} children={<Loader />} />}
           </div>
         </div>
       </section>

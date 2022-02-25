@@ -12,11 +12,10 @@ import { useUser } from "../hooks/UserContext";
 import style from "../styles/modules/MenuPage.module.scss";
 import { apiUrl } from "../util/global.config";
 import { convertAxiosErrorString } from "../util/util";
-import { Button, Input } from "./system";
+import { Button, Input, MenuCard } from "./system";
 import { CommentListItem } from "./system/List";
 import Loader from "./system/Loader";
 import Rating from "./system/Rating";
-import { VerticalVote } from "./system/Vote";
 
 interface MenuPageProps {
   menu: Menu;
@@ -36,20 +35,21 @@ const MenuPage: React.FC<MenuPageProps> = ({ menu }): JSX.Element => {
   );
 };
 
+interface MenuDisplayProps {
+  menu: Menu;
+}
+
 /**
  * Menu display component
  */
 
-const MenuDisplay: React.FC<{ menu: Menu }> = ({ menu }): JSX.Element => {
+const MenuDisplay: React.FC<MenuDisplayProps> = ({ menu }): JSX.Element => {
   const router = useRouter();
-
   if (router.isFallback) return <></>;
-  // TODO: Add prices and label
+
   return (
     <div className={style["menu-container"]}>
-      <div className={style["menu-vote"]} children={<VerticalVote menuId={menu.uuid} theme={"dark"} votes={menu.votes} />} />
-      <h2 className={style["menu-title"]} children={menu.title} />
-      <div className={style["menu-content"]} children={menu.description} />
+      <MenuCard background={false} more={false} menu={menu} />
     </div>
   );
 };

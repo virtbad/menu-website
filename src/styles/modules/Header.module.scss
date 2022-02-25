@@ -13,9 +13,23 @@
   background: transparent;
   z-index: 10;
 
-  &[data-background="true"] {
+  &::after {
+    content: "";
+    position: absolute;
     background-color: var(--primary);
+    opacity: var(--header-opacity);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
   }
+
+  /*   &[data-background="true"] {
+  }
+
+  background-color: var(--primary);
+  opacity: 0.1; */
 
   & > * {
     align-self: center;

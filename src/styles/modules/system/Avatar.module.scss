@@ -2,11 +2,12 @@
 
 .avatar-container {
   border-radius: 50%;
-  background: var(--home-accent);
+  background: $background-gradient;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px var(--border) solid;
 
   &::after {
     content: "";

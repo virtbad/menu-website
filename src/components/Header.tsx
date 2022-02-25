@@ -20,8 +20,10 @@ const Header: React.FC<HeaderProps> = ({ hideSearchbar = false }): JSX.Element =
   const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    const scrollHandler = () => {
+    const scrollHandler = (event: Event) => {
       setVisible(window.scrollY > 200);
+      const newOpacity: number = window.scrollY / 250;
+      document.documentElement.style.setProperty("--header-opacity", (newOpacity > 1 ? 1 : newOpacity).toFixed(2));
     };
     window.addEventListener("scroll", scrollHandler);
     return () => {
@@ -46,7 +48,7 @@ const Searchbar: React.FC = (): JSX.Element => {
   let mounted: boolean = true;
   const router = useRouter();
   const ref = useRef<HTMLInputElement>(null);
-  const { getMenuResults, data } = useSearchbar();
+  const { getMenuResults } = useSearchbar();
   const [results, setResults] = useState<Array<Menu>>([]);
 
   useEffect(() => {

@@ -21,6 +21,7 @@ const Footer: React.FC = (): JSX.Element => {
           links={[
             { title: "Home", href: "/" },
             { title: "Menusuche", href: "/search" },
+            { title: "Alle", href: "/all" },
           ]}
         />
 

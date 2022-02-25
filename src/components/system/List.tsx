@@ -85,9 +85,12 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
   };
 
   const handleSave = async () => {
+    console.log(pending, title, content);
     onEdit && onEdit(false);
     try {
-      await comment.update({ title: title, content: content, rating: rating }, menuId);
+      await comment.update({ title: title.replace(/(\n){2,}/g, "\n").trim(), content: content.replace(/(\n){2,}/g, "\n").trim(), rating: rating }, menuId);
+      setTitle(title.replace(/(\n){2,}/g, "\n").trim());
+      setContent(content.replace(/(\n){2,}/g, "\n").trim());
       setEdited(true);
     } catch (e) {
       Logger.error(`Error whilst updating comment: ${convertAxiosErrorString(e)}`);
@@ -107,8 +110,8 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
 
   return (
     <div className={style["listitem-container"]} id={comment.id} data-background={background} data-theme={theme} data-comment={true} data-editing={editing}>
-      <h4 className={style["item-title"]} children={<ContentEditable onBlur={setTitle} onChange={(value: string) => setPending({ ...pending, title: value })} editable={editing} value={title} />} />
-      <div className={style["item-content"]} ref={contentRef} children={<ContentEditable onBlur={setContent} onChange={(value: string) => setPending({ ...pending, content: value })} editable={editing} value={content} />} />
+      <h4 className={style["item-title"]} children={<ContentEditable length={64} onBlur={setTitle} onChange={(value: string) => setPending({ ...pending, title: value })} editable={editing} value={title} />} />
+      <div className={style["item-content"]} ref={contentRef} children={<ContentEditable length={256} onBlur={setContent} onChange={(value: string) => setPending({ ...pending, content: value })} editable={editing} value={content} />} />
       <div className={style["item-rating"]} children={<Rating onChange={(_, value: number) => setRating(value)} readOnly={!editing} value={rating} />} />
       <div className={style["item-creator"]}>
         {canEdit && (
@@ -138,6 +141,7 @@ interface ContentEditableProps {
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
   editable?: boolean;
+  length?: number;
 }
 
 /**
@@ -146,8 +150,28 @@ interface ContentEditableProps {
  * Moved to separate component to enable state updates in the parent component without messing up the pointer position
  */
 
-const ContentEditable: React.FC<ContentEditableProps> = ({ value, onChange, onBlur, editable = false }): JSX.Element => {
-  return <div spellCheck onInput={(event: any) => onChange && onChange(event.target.innerText)} onBlur={(event) => onBlur && onBlur(event.target.innerText)} contentEditable={editable} suppressContentEditableWarning children={value} />;
+const ContentEditable: React.FC<ContentEditableProps> = ({ value, onChange, onBlur, editable = false, length }): JSX.Element => {
+  return (
+    <div
+      spellCheck
+      onKeyPress={(e) => {
+        let text: string = (e.target as any)?.innerText || "";
+        if (e.key === "Enter") text += "\n";
+        else if (e.key.length === 1) text += e.key;
+        if (text.length > length) e.preventDefault();
+      }}
+      onInput={(event: any) => {
+        onChange && onChange(event.target.innerText);
+      }}
+      onBlur={(event) => {
+        const text: string = event.target.innerText.replace(/(\n){2,}/g, "\n");
+        onBlur && onBlur(text);
+      }}
+      contentEditable={editable}
+      suppressContentEditableWarning
+      children={value}
+    />
+  );
 };
 
 export default List;
