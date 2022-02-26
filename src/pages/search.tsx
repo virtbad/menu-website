@@ -16,7 +16,7 @@ const SearchMenuPage: NextPage = (): JSX.Element => {
 
   return (
     <Layout hideHeaderSearchbar>
-      <Meta image={`${apiUrl}/static/search/og`} keywords={["suche"]} title="Menüsuche" description="Suche ein bestimmtes Menü aus der Datenbank" />
+      <Meta image={`${apiUrl}/static/search/og`} keywords={"suche"} title="Menüsuche" description={`Durchsuche alle Menüs der Mensa der ${process.env.NEXT_PUBLIC_LOCATION} und finde Statistiken zu deinen Lieblingsmenüs`} />
       <SearchPage query={query?.query as string | undefined} />
     </Layout>
   );

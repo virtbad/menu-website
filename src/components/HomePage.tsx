@@ -34,8 +34,10 @@ interface TodayProps {
  */
 
 const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
+  const date: Date = menus.length > 0 ? menus[0].date : null;
+  const dateString: string = date ? date.toLocaleString("de", { day: "2-digit", month: "2-digit", year: "numeric" }).replaceAll(".", "-") : "";
   return (
-    <section data-nosnippet className={style["today-container"]} data-closed={menus.length === 0}>
+    <section id={dateString} data-nosnippet className={style["today-container"]} data-closed={menus.length === 0}>
       <div className={style["today-content"]}>
         {menus
           .sort((a: Menu, b: Menu) => a.channel - b.channel)
@@ -71,7 +73,7 @@ const UpcomingMenus: React.FC<UpcomingMenusProps> = ({ menus }): JSX.Element => 
           {menus
             .sort((a: Menu, b: Menu) => a.date.getTime() - b.date.getTime())
             .map((menu: Menu, index: number) => {
-              return <RatedListItem disabled background={"alt"} theme={"dark"} key={index} menu={menu} />;
+              return <RatedListItem href={`/menu/${menu.uuid}`} disabled background={"alt"} theme={"dark"} key={index} menu={menu} />;
             })}
           {menus.length === 0 && <span style={{ alignSelf: "flex-start" }} className={style["noresult"]} children={"Es konnten keine zukünftigen Menüs geladen werden"} />}
         </div>

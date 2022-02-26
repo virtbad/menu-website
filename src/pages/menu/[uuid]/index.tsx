@@ -25,7 +25,7 @@ const SpecificMenuPage: NextPage<SpecificMenuPageProps> = ({ menu }): JSX.Elemen
 
   return (
     <Layout>
-      <Meta image={`${apiUrl}/menu/${menu.id}/og`} noindex title={"Menü"} description={"Sieh dir ein bestimmtes Menü etwas genauer an"} />
+      <Meta noindex title={menu?.title || "Menü"} description={"Sieh dir ein bestimmtes Menü etwas genauer an"} />
       <MenuPage menu={router.isFallback ? null : new Menu(menu)} />
     </Layout>
   );
@@ -41,8 +41,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  //fetch top 100 menus to staticly prerender
-  return { paths: [], fallback: true };
+  let todayMenus: Array<MenuConstructor> = [];
+  let upcomingMenus: Array<MenuConstructor> = [];
+
+  // prerender the current and upcoming menus at build time
+
+  try {
+    const menuResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/date`); // fetch the menus of today
+    todayMenus = menuResponse.data;
+  } catch (e) {}
+  try {
+    const upcomingResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/upcoming`);
+    upcomingMenus = upcomingResponse.data;
+  } catch (e) {}
+
+  return { paths: [...todayMenus, ...upcomingMenus].map(({ id }) => `/menu/${id}`), fallback: true };
 };
 
 export default SpecificMenuPage;
