@@ -85,10 +85,9 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
   };
 
   const handleSave = async () => {
-    console.log(pending, title, content);
     onEdit && onEdit(false);
     try {
-      await comment.update({ title: title.replace(/(\n){2,}/g, "\n").trim(), content: content.replace(/(\n){2,}/g, "\n").trim(), rating: rating }, menuId);
+      await comment.update({ title: title.replace(/(\n){2,}/g, "\n").trim(), content: content.replace(/(\n){2,}/g, "\n").trim(), rating: rating >= 1 ? rating : 1 }, menuId);
       setTitle(title.replace(/(\n){2,}/g, "\n").trim());
       setContent(content.replace(/(\n){2,}/g, "\n").trim());
       setEdited(true);
@@ -112,7 +111,7 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
     <div className={style["listitem-container"]} id={comment.id} data-background={background} data-theme={theme} data-comment={true} data-editing={editing}>
       <h4 className={style["item-title"]} children={<ContentEditable length={64} onBlur={setTitle} onChange={(value: string) => setPending({ ...pending, title: value })} editable={editing} value={title} />} />
       <div className={style["item-content"]} ref={contentRef} children={<ContentEditable length={256} onBlur={setContent} onChange={(value: string) => setPending({ ...pending, content: value })} editable={editing} value={content} />} />
-      <div className={style["item-rating"]} children={<Rating onChange={(_, value: number) => setRating(value)} readOnly={!editing} value={rating} />} />
+      <div className={style["item-rating"]} children={<Rating onChange={(_, value: number) => setRating(value >= 1 ? value : 1)} readOnly={!editing} value={rating} />} />
       <div className={style["item-creator"]}>
         {canEdit && (
           <div className={style["item-iconbuttons"]}>

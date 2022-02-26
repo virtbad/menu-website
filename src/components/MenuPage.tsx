@@ -186,13 +186,13 @@ const CreateCommentItem: React.FC<CreateCommentItemProps> = ({ onAbort, onSave }
   };
 
   const handleSave = () => {
-    onSave && onSave({ title: title, content: content, rating: rating });
+    onSave && onSave({ title: title, content: content, rating: rating >= 1 ? rating : 1 });
   };
 
   return (
     <div className={style["newcomment-container"]}>
       <div className={style["newcomment-title"]} children={<Input inputProps={{ maxLength: 64 }} value={title} onChange={(event) => setTitle(event.target.value)} fullWidth label={"Titel"} placeholder={titlePlaceholder} />} />
-      <div className={style["newcomment-rating"]} children={<Rating value={rating} onChange={(_, value: number) => setRating(value)} />} />
+      <div className={style["newcomment-rating"]} children={<Rating value={rating} onChange={(_, value: number) => setRating(value >= 1 ? value : 1)} />} />
       <div
         className={style["newcomment-content"]}
         children={<Input inputProps={{ maxLength: 256 }} value={content} onChange={(event) => setContent(event.target.value)} fullWidth label={"Kommentar"} placeholder={contentPlaceholder} multiline rows={3} />}
