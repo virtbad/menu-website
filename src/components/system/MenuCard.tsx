@@ -27,6 +27,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, more = true, background = tru
         <h3 children={menu.title} />
         {menu.label !== MenuLabel.NO_LABEL && <code children={menu.parsedLabel} className={style["card-label"]} />}
       </div>
+      <div className={style["card-date"]} children={menu.date.toLocaleDateString("de", { month: "2-digit", day: "2-digit", year: "numeric" })} />
       <div className={style["card-description"]} children={menu.description} />
       <div className={style["card-prices-container"]}>
         {menu.prices.map((price: MenuPrice) => {

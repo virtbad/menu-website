@@ -1,4 +1,4 @@
-import { EventType } from "@azure/msal-browser";
+import { EventType, InteractionStatus } from "@azure/msal-browser";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-common";
 import { useMsal } from "@azure/msal-react";
 import { useRouter } from "next/router";
@@ -34,7 +34,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp, fetching = false }) => {
   const [cookies, setCookie, removeCookie] = useCookies();
-  const { instance } = useMsal();
+  const { instance, inProgress } = useMsal();
   const [auth, setAuth] = useState<{ token: string; exp: Date }>({ token: token, exp: exp });
   const router = useRouter();
 
@@ -53,10 +53,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp
   }, [auth]);
 
   const requestToken = async (): Promise<string> => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || inProgress !== InteractionStatus.None) return;
     if (!instance.getActiveAccount()) await login();
 
-    await instance.handleRedirectPromise();
     try {
       const response: AuthenticationResult = await instance.acquireTokenSilent({ scopes: loginRequest.scopes });
       setAuth({ token: response.accessToken, exp: response.expiresOn });

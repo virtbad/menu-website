@@ -39,7 +39,7 @@
     }
   }
 
-  grid-template-areas: "vote title title" "vote description description" "vote price buttons";
+  grid-template-areas: "vote title date" "vote description description" "vote price buttons";
   width: 100%;
 
   &[data-label="true"] {
@@ -64,6 +64,14 @@
     & > h2 {
       flex: 1 auto;
     }
+  }
+
+  .card-date {
+    grid-area: date;
+    font-weight: bold;
+    font-family: monospace;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .card-label {
