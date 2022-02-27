@@ -20,7 +20,7 @@ interface HomePageProps {
 const HomePage: NextPage<HomePageProps> = ({ menus = [], count = 0, upcoming = [] }): JSX.Element => {
   return (
     <Layout>
-      <Meta image={`${apiUrl}/static/home/og`} keywords={["heute", "morgen"]} title={"Home"} description={`Sieh dir heutige und zukünftige Menüs der Mensa der ${process.env.NEXT_PUBLIC_LOCATION} gemeinsam mit einigen Statistiken an`} />
+      <Meta image={`${apiUrl}/static/og/home`} keywords={["heute", "morgen"]} title={"Home"} description={`Sieh dir heutige und zukünftige Menüs der Mensa der ${process.env.NEXT_PUBLIC_LOCATION} gemeinsam mit einigen Statistiken an`} />
       <Home upcoming={upcoming.map((ctr: MenuConstructor) => new Menu(ctr))} count={count} menus={menus.map((ctr: MenuConstructor) => new Menu(ctr))} />
     </Layout>
   );

@@ -15,7 +15,7 @@ interface AllMenuPageProps {
 const AllMenuPage: NextPage<AllMenuPageProps> = ({ menus = [] }): JSX.Element => {
   return (
     <Layout>
-      <Meta image={`${apiUrl}/static/all/og`} title={"Alle Menüs"} keywords={"Alle Menüs"} description={`Schau dir alle bisherigen Menüs der Mensa der ${process.env.NEXT_PUBLIC_LOCATION} an und finde deine Lieblingsmenüs`} />
+      <Meta image={`${apiUrl}/static/og/all`} title={"Alle Menüs"} keywords={"Alle Menüs"} description={`Schau dir alle bisherigen Menüs der Mensa der ${process.env.NEXT_PUBLIC_LOCATION} an und finde deine Lieblingsmenüs`} />
       <AllPage menus={menus.map((ctr: MenuConstructor) => new Menu(ctr))} />
     </Layout>
   );

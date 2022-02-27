@@ -32,7 +32,7 @@ const Footer: React.FC = (): JSX.Element => {
           source={process.env.NEXT_PUBLIC_BACKEND_REPO}
           links={[
             { title: "API", href: apiUrl },
-            { title: "Dokumentation", href: `${process.env.NEXT_PUBLIC_BACKEND_REPO}/tree/main/docs` },
+            { title: "Dokumentation", href: process.env.NEXT_PUBLIC_DOCUMENTATION },
           ]}
         />
         <FooterSection title={"Disclaimer"}>
