@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { NextPage } from "next";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { Logger } from "../classes/Logger.class";
 import { Menu } from "../classes/Menu.class";
 import { MenuConstructor, MenuLabel } from "../types/Menu.types";
@@ -42,11 +42,15 @@ interface SearchOptions {
 interface SearchbarContext {
   getMenuResults: (query: string, options?: SearchOptions) => Promise<Array<Menu>>;
   getAllMenuResults: (page?: number) => Promise<Array<Menu>>;
+  headerSearchbar: boolean;
+  setHeaderSearchbar: (show: boolean) => void;
 }
 
 const defaultValues: SearchbarContext = {
   getMenuResults: () => new Promise(() => {}),
   getAllMenuResults: () => new Promise(() => {}),
+  headerSearchbar: false,
+  setHeaderSearchbar: () => {},
 };
 
 export const SearchbarContext = createContext<SearchbarContext>(defaultValues);
@@ -56,6 +60,7 @@ export const SearchbarContext = createContext<SearchbarContext>(defaultValues);
  */
 
 export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
+  const [headerSearchbar, setHeaderSearchbar] = useState<boolean>(false);
   /**
    * Get the menus for a search query
    *
@@ -100,7 +105,7 @@ export const SearchbarProvider: NextPage = ({ children }): JSX.Element => {
     }
   };
 
-  return <SearchbarContext.Provider value={{ getMenuResults: getMenuResults, getAllMenuResults: getAllMenuResults }} children={children} />;
+  return <SearchbarContext.Provider value={{ getMenuResults: getMenuResults, getAllMenuResults: getAllMenuResults, headerSearchbar: headerSearchbar, setHeaderSearchbar: setHeaderSearchbar }} children={children} />;
 };
 
 /**

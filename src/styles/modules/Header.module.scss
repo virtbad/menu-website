@@ -25,11 +25,15 @@
     z-index: -1;
   }
 
-  /*   &[data-background="true"] {
+  .logo-container {
+    height: 3rem;
+    width: 3rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    background-color: $white;
+    filter: $drop-shadow;
   }
-
-  background-color: var(--primary);
-  opacity: 0.1; */
 
   & > * {
     align-self: center;

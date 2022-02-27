@@ -23,8 +23,16 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   const [last, setLast] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
   const loaderRef = useRef<HTMLSpanElement>(null);
-  const { getMenuResults } = useSearchbar();
+  const { getMenuResults, setHeaderSearchbar } = useSearchbar();
   const [visible, setVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => setHeaderSearchbar(!entry.isIntersecting));
+    observer.observe(ref.current as any);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => setVisible(entry.isIntersecting));
@@ -38,6 +46,13 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
     if (!visible) return;
     moreMenus();
   }, [visible]);
+
+  useEffect(() => {
+    mounted = true;
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const moreMenus = () => {
     if (loading || !results.query || last) return;
@@ -53,16 +68,21 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   };
 
   useEffect(() => {
-    mounted = true;
+    if (!query) return;
     getMenuResults(query)
-      .then((menus: Array<Menu>) => mounted && setResults({ query: query, results: menus, page: 0 }))
+      .then((menus: Array<Menu>) => {
+        if (!mounted) return;
+        setResults({ query: query, results: menus, page: 0 });
+      })
       .catch();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  }, [query]);
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") handleChange(event as any);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (results.query === event.target.value) return;
     getMenuResults(event.target.value)
       .then((menus: Array<Menu>) => {
         if (!mounted) return;
@@ -89,6 +109,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
               onAutocomplete={(event: any, _: string, reason: string) => {
                 if (reason === "input") ref.current?.setAttribute("data-text", event.target.value);
               }}
+              onKeyPress={debounce(handleKeyPress, searchDebounceDelay)}
               options={results.results.map(({ title }) => title)}
               label={"Menü suchen"}
               placeholder={"Suchbegriff eingeben"}

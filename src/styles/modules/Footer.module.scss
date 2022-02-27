@@ -48,12 +48,21 @@
 
 .footer-endnote {
   display: flex;
-  flex-direction: column;
+
+  .footer-icons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    svg {
+      cursor: pointer;
+    }
+  }
 
   .footer-copyright {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
   }
 }
 
