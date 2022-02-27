@@ -25,9 +25,14 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   const loaderRef = useRef<HTMLSpanElement>(null);
   const { getMenuResults, setHeaderSearchbar } = useSearchbar();
   const [visible, setVisible] = useState<boolean>(false);
+  const [inScreen, setInScreen] = useState<boolean>(true);
 
   useEffect(() => {
-    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => setHeaderSearchbar(!entry.isIntersecting));
+    setHeaderSearchbar({ visible: !inScreen, query: results.query });
+  }, [inScreen]);
+
+  useEffect(() => {
+    const observer: IntersectionObserver = new IntersectionObserver(([entry]: Array<IntersectionObserverEntry>) => setInScreen(entry.isIntersecting));
     observer.observe(ref.current as any);
     return () => {
       observer.disconnect();

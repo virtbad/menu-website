@@ -28,9 +28,9 @@ const AllMenuPage: NextPage<AllMenuPageProps> = ({ menus = [] }): JSX.Element =>
 export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext): Promise<any> => {
   try {
     const menuResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/all`);
-    return { props: { menus: menuResponse.data }, revalidate: 1 };
+    return { props: { menus: menuResponse.data }, revalidate: 60 };
   } catch (e) {
-    return { props: { menus: [] }, revalidate: 1 };
+    return { props: { menus: [] }, revalidate: 60 };
   }
 };
 

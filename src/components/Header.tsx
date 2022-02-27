@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ hideSearchbar = false }): JSX.Element =
   const { headerSearchbar } = useSearchbar();
 
   useEffect(() => {
-    const scrollHandler = (event: Event) => {
+    const scrollHandler = () => {
       setVisible(window.scrollY > 200);
       const newOpacity: number = window.scrollY / 250;
       document.documentElement.style.setProperty("--header-opacity", (newOpacity > 1 ? 1 : newOpacity).toFixed(2));
@@ -36,17 +36,21 @@ const Header: React.FC<HeaderProps> = ({ hideSearchbar = false }): JSX.Element =
   return (
     <header className={style["header-container"]} data-background={visible}>
       <div children={<Logo />} />
-      {(hideSearchbar === "scroll-in" && visible) || !hideSearchbar || (router.pathname === "/search" && headerSearchbar) ? <Searchbar /> : <span />}
+      {(hideSearchbar === "scroll-in" && visible) || !hideSearchbar || (router.pathname === "/search" && headerSearchbar.visible) ? <Searchbar value={headerSearchbar.query} /> : <span />}
       <div children={<QuickProfile />} />
     </header>
   );
 };
 
+interface SearchbarProps {
+  value?: string;
+}
+
 /**
  * Header search bar component
  */
 
-const Searchbar: React.FC = (): JSX.Element => {
+const Searchbar: React.FC<SearchbarProps> = ({ value = "" }): JSX.Element => {
   let mounted: boolean = true;
   const router = useRouter();
   const ref = useRef<HTMLInputElement>(null);
@@ -59,6 +63,10 @@ const Searchbar: React.FC = (): JSX.Element => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (ref.current) ref.current.setAttribute("data-text", value || "");
+  }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     getMenuResults(event.target.value)
@@ -74,6 +82,7 @@ const Searchbar: React.FC = (): JSX.Element => {
   return (
     <Autocomplete
       ref={ref}
+      value={value}
       onAutocomplete={(event: any, value: string, reason: string) => {
         if (reason === "input") ref.current?.setAttribute("data-text", event.target.value);
         else router.push(`/search?query=${value}`);
