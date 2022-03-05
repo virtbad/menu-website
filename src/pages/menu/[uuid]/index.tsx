@@ -34,9 +34,9 @@ const SpecificMenuPage: NextPage<SpecificMenuPageProps> = ({ menu }): JSX.Elemen
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const response: AxiosResponse = await axios.get(`${apiUrl}/menu/${params.uuid}`); // fetch the specific menu
-    return { props: { menu: response.data }, revalidate: 60 };
+    return { props: { menu: response.data }, revalidate: 10 };
   } catch (e) {
-    return { props: { menu: null }, notFound: true, revalidate: 60 };
+    return { props: { menu: null }, notFound: true, revalidate: 10 };
   }
 };
 

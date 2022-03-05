@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext)
     upcomingMenus = upcomingResponse.data;
   } catch (e) {}
 
-  return { props: { menus: todayMenus, count: menuCount, upcoming: upcomingMenus }, revalidate: 60 };
+  return { props: { menus: todayMenus, count: menuCount, upcoming: upcomingMenus }, revalidate: 10 };
 };
 
 export default HomePage;

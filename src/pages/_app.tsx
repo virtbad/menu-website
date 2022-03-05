@@ -90,11 +90,16 @@ const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
   useEffect(() => {
     if (!msalInstance.getActiveAccount()) return;
     msalInstance
-      .acquireTokenSilent({ ...loginRequest, account: msalInstance.getActiveAccount() })
-      .then((response) => setToken({ token: response.accessToken, exp: response.expiresOn }))
-      .catch(() => {
-        setToken({ token: undefined, exp: undefined });
-        msalInstance.acquireTokenRedirect({ ...loginRequest, account: msalInstance.getActiveAccount() }).catch(Logger.error);
+      .handleRedirectPromise()
+      .then(() => {
+        msalInstance
+          .acquireTokenSilent({ ...loginRequest, account: msalInstance.getActiveAccount() })
+          .then((response) => setToken({ token: response.accessToken, exp: response.expiresOn }))
+          .catch(() => {
+            setToken({ token: undefined, exp: undefined });
+            msalInstance.acquireTokenRedirect({ ...loginRequest, account: msalInstance.getActiveAccount() }).catch(Logger.error);
+          })
+          .catch(Logger.error);
       })
       .catch(Logger.error);
   }, [props]);
