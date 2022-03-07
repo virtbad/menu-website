@@ -34,10 +34,8 @@ interface TodayProps {
  */
 
 const Today: React.FC<TodayProps> = ({ menus }): JSX.Element => {
-  const date: Date = menus.length > 0 ? menus[0].date : null;
-  const dateString: string = date ? date.toLocaleString("de", { day: "2-digit", month: "2-digit", year: "numeric" }).replaceAll(".", "-") : "";
   return (
-    <section id={dateString} data-nosnippet className={style["today-container"]} data-closed={menus.length === 0}>
+    <section data-nosnippet className={style["today-container"]} data-closed={menus.length === 0}>
       <div className={style["today-content"]}>
         {menus
           .sort((a: Menu, b: Menu) => a.channel - b.channel)
