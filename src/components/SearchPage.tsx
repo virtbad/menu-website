@@ -128,7 +128,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
             {results.results
               .filter((v, i, a) => a.indexOf(v) === i)
               .map((menu: Menu, index: number) => {
-                const handleClick = () => setCookie("query", results.query || query || "");
+                const handleClick = () => setCookie("query", results.query || query || cookies.query || "");
                 return <RatedListItem onClick={handleClick} disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
               })}
             {results.results.length === 0 && results.query !== "" && results.query.length !== 1 && <span className={style["noresult"]} children={"Keine Ergebnisse gefunden"} />}
