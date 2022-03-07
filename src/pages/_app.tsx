@@ -4,17 +4,17 @@ import { CacheProvider } from "@emotion/react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { NextRouter, useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { SWRConfig } from "swr";
 import { Logger } from "../classes/Logger.class";
-import { AuthProvider } from "../hooks/AuthContext";
+import { AuthProvider, useAuth } from "../hooks/AuthContext";
 import { SearchbarProvider } from "../hooks/SearchbarContext";
 import { ThemeProvider } from "../hooks/ThemeContext";
 import { UserProvider } from "../hooks/UserContext";
 import { VersionProvider } from "../hooks/VersionContext";
 import "../styles/global.scss";
-import { loginRequest, msalConfig } from "../util/auth.config";
+import { msalConfig } from "../util/auth.config";
 import { NavigationClient } from "../util/NavigationClient";
 import { createEmotionCache } from "./_document";
 
@@ -36,84 +36,21 @@ msalInstance.addEventCallback((event) => {
 
 const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
   const clientSideEmotionCache = createEmotionCache();
-  const [token, setToken] = useState<{ token: string; exp: Date }>({ token: undefined, exp: undefined });
-  const [cookies] = useCookies();
-  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props as any;
+  const { emotionCache = clientSideEmotionCache, ...rest } = props as any;
 
   const router: NextRouter = useRouter();
   msalInstance.setNavigationClient(new NavigationClient(router));
-
-  useEffect(() => {
-    if (!msalInstance.getActiveAccount()) return;
-    msalInstance
-      .acquireTokenSilent({ ...loginRequest, account: msalInstance.getActiveAccount() })
-      .then((response) => {
-        setToken({ token: response.accessToken, exp: response.expiresOn });
-      })
-      .catch(() => {
-        setToken({ token: undefined, exp: undefined });
-        msalInstance.acquireTokenRedirect({ ...loginRequest, account: msalInstance.getActiveAccount() }).catch(Logger.error);
-      })
-      .catch(Logger.error);
-
-    const callbackId = msalInstance.addEventCallback((event) => {
-      if (event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS) {
-        setToken({ token: (event.payload as any).accessToken, exp: (event.payload as any).expiresOn });
-        Logger.auth("Refreshed access token");
-      }
-    });
-
-    //less than hourly interval to renew access token to prevent invalid access token errors
-    const interval = setInterval(() => {
-      if (msalInstance.getActiveAccount()) {
-        msalInstance
-          .acquireTokenSilent({ ...loginRequest, account: msalInstance.getActiveAccount() })
-          .then((response) => {
-            setToken({ token: response.accessToken, exp: response.expiresOn });
-            Logger.auth("Automatically refreshed access token");
-          })
-          .catch(() => {
-            setToken({ token: undefined, exp: undefined });
-            Logger.auth("Automated access token refresh failed");
-            msalInstance.acquireTokenRedirect({ ...loginRequest, account: msalInstance.getActiveAccount() }).catch(Logger.error);
-          })
-          .catch(Logger.error);
-      }
-    }, 3500000);
-
-    return () => {
-      msalInstance.removeEventCallback(callbackId);
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!msalInstance.getActiveAccount()) return;
-    msalInstance
-      .handleRedirectPromise()
-      .then(() => {
-        msalInstance
-          .acquireTokenSilent({ ...loginRequest, account: msalInstance.getActiveAccount() })
-          .then((response) => setToken({ token: response.accessToken, exp: response.expiresOn }))
-          .catch(() => {
-            setToken({ token: undefined, exp: undefined });
-            msalInstance.acquireTokenRedirect({ ...loginRequest, account: msalInstance.getActiveAccount() }).catch(Logger.error);
-          })
-          .catch(Logger.error);
-      })
-      .catch(Logger.error);
-  }, [props]);
 
   return (
     <CacheProvider value={emotionCache}>
       <MsalProvider instance={msalInstance}>
         <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
-          <AuthProvider fetching={token === null} token={token?.token} exp={token?.exp}>
+          <AuthProvider>
             <UserProvider>
               <VersionProvider>
                 <ThemeProvider>
                   <SearchbarProvider>
-                    <Component {...pageProps} />
+                    <Container {...rest} />
                   </SearchbarProvider>
                 </ThemeProvider>
               </VersionProvider>
@@ -123,6 +60,40 @@ const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
       </MsalProvider>
     </CacheProvider>
   );
+};
+
+const Container: React.FC<AppProps> = ({ Component, pageProps }): JSX.Element => {
+  const { requestToken } = useAuth();
+  const [cookies, _, removeCookie] = useCookies();
+
+  useEffect(() => {
+    if (cookies.query) removeCookie("query");
+    //less than hourly interval to renew access token to prevent invalid access token errors
+    const interval = setInterval(async () => {
+      try {
+        await requestToken();
+        Logger.auth("Periodically refreshed access token");
+      } catch (e) {
+        Logger.auth("Periodic access token refresh failed");
+      }
+    }, 3500000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    requestToken()
+      .then(() => {
+        Logger.auth("Refreshed access token");
+      })
+      .catch(() => {
+        Logger.auth("Access token refresh failed");
+      });
+  }, [pageProps]);
+
+  return <Component {...pageProps} />;
 };
 
 export default Wrapper;

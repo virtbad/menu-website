@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import React from "react";
 import { Menu } from "../classes/Menu.class";
 import AllPage from "../components/AllPage";
@@ -25,12 +25,12 @@ const AllMenuPage: NextPage<AllMenuPageProps> = ({ menus = [] }): JSX.Element =>
  * Fetch the first page statically
  */
 
-export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext): Promise<any> => {
+export const getStaticProps: GetStaticProps = async (): Promise<any> => {
   try {
     const menuResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/all`);
-    return { props: { menus: menuResponse.data }, revalidate: 10 };
+    return { props: { menus: menuResponse.data }, revalidate: 65 };
   } catch (e) {
-    return { props: { menus: [] }, revalidate: 10 };
+    return { props: { menus: [] }, revalidate: 65 };
   }
 };
 

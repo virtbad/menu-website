@@ -1,5 +1,6 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import TerminalIcon from "@mui/icons-material/Terminal";
 import React from "react";
 import { useVersion } from "../hooks/VersionContext";
 import style from "../styles/modules/Footer.module.scss";
@@ -43,6 +44,7 @@ const Footer: React.FC = (): JSX.Element => {
         <div className={style["footer-icons"]}>
           {process.env.NEXT_PUBLIC_TELEGRAM && <Link noUnderline href={process.env.NEXT_PUBLIC_TELEGRAM} children={<TelegramIcon fontSize={"small"} />} />}
           {process.env.NEXT_PUBLIC_ORGA && <Link noUnderline href={process.env.NEXT_PUBLIC_ORGA} children={<GitHubIcon fontSize={"small"} />} />}
+          {process.env.NEXT_PUBLIC_CLI && <Link noUnderline href={process.env.NEXT_PUBLIC_CLI} children={<TerminalIcon fontSize={"small"} />} />}
         </div>
         <code className={style["footer-copyright"]} children={`Copyright © ${new Date().getFullYear()}`} />
       </section>

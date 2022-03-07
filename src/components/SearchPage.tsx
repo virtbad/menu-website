@@ -1,5 +1,6 @@
 import { debounce } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Menu } from "../classes/Menu.class";
 import { useSearchbar } from "../hooks/SearchbarContext";
 import style from "../styles/modules/SearchPage.module.scss";
@@ -26,6 +27,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   const { getMenuResults, setHeaderSearchbar } = useSearchbar();
   const [visible, setVisible] = useState<boolean>(false);
   const [inScreen, setInScreen] = useState<boolean>(true);
+  const [cookies, setCookie] = useCookies();
 
   useEffect(() => {
     setHeaderSearchbar({ visible: !inScreen, query: results.query });
@@ -73,13 +75,15 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!query) return;
-    getMenuResults(query)
+    if ((!query && !cookies.query) || loading) return;
+    setLoading(true);
+    getMenuResults(query || cookies.query)
       .then((menus: Array<Menu>) => {
         if (!mounted) return;
         setResults({ query: query, results: menus, page: 0 });
       })
-      .catch();
+      .catch()
+      .finally(() => setLoading(false));
   }, [query]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -124,7 +128,8 @@ const SearchPage: React.FC<SearchPageProps> = ({ query = "" }): JSX.Element => {
             {results.results
               .filter((v, i, a) => a.indexOf(v) === i)
               .map((menu: Menu, index: number) => {
-                return <RatedListItem disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
+                const handleClick = () => setCookie("query", results.query || query || "");
+                return <RatedListItem onClick={handleClick} disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
               })}
             {results.results.length === 0 && results.query !== "" && results.query.length !== 1 && <span className={style["noresult"]} children={"Keine Ergebnisse gefunden"} />}
             {results.results.length === 0 && results.query === "" && <span className={style["noresult"]} children={"Gib einen Suchbegriff ein"} />}

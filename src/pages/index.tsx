@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { GetStaticProps, GetStaticPropsContext, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { Menu } from "../classes/Menu.class";
 import Home from "../components/HomePage";
 import Layout from "../components/Layout";
@@ -30,7 +30,7 @@ const HomePage: NextPage<HomePageProps> = ({ menus = [], count = 0, upcoming = [
  * Fetch the today menu statically
  */
 
-export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async () => {
   let todayMenus: Array<MenuConstructor> = [];
   let menuCount: number = 0;
   let upcomingMenus: Array<MenuConstructor> = [];
@@ -44,11 +44,11 @@ export const getStaticProps: GetStaticProps = async (ctx: GetStaticPropsContext)
     menuCount = countResponse.data?.amount || 0;
   } catch (e) {}
   try {
-    const upcomingResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/upcoming`);
+    const upcomingResponse: AxiosResponse = await axios.get(`${apiUrl}/menu/upcoming`); // get all available upcoming menus
     upcomingMenus = upcomingResponse.data;
   } catch (e) {}
 
-  return { props: { menus: todayMenus, count: menuCount, upcoming: upcomingMenus }, revalidate: 10 };
+  return { props: { menus: todayMenus, count: menuCount, upcoming: upcomingMenus }, revalidate: 65 };
 };
 
 export default HomePage;

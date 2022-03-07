@@ -39,11 +39,12 @@ interface RatedListItemProps extends ListItemProps {
   menu: Menu;
   href?: string;
   disabled?: boolean;
+  onClick?: () => void;
 }
 
-export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, disabled = false, background = "auto", theme = "auto", href }): JSX.Element => {
+export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, onClick, disabled = false, background = "auto", theme = "auto", href }): JSX.Element => {
   const BaseRatedListItem: JSX.Element = (
-    <div className={style["listitem-container"]} id={menu.uuid} data-background={background} data-theme={theme} data-rated={true}>
+    <div className={style["listitem-container"]} onClick={onClick} id={menu.uuid} data-background={background} data-theme={theme} data-rated={true}>
       <h3 className={style["item-title"]} children={menu.title} />
       <div className={style["item-description"]} children={menu.description} />
       <div className={style["item-vote"]} children={<VerticalVote disabled={disabled} menuId={menu.uuid} theme={theme} votes={menu.votes} />} />
@@ -62,9 +63,10 @@ interface CommentListItemProps extends ListItemProps {
   onEdit?: (start: boolean) => void;
   onDelete?: () => void;
   menuId: string;
+  disableDelete?: boolean;
 }
 
-export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto", background = "auto", comment, onEdit, onDelete, editing, menuId }): JSX.Element => {
+export const CommentListItem: React.FC<CommentListItemProps> = ({ disableDelete = false, theme = "auto", background = "auto", comment, onEdit, onDelete, editing, menuId }): JSX.Element => {
   const [title, setTitle] = useState<string>(comment.title);
   const [content, setContent] = useState<string>(comment.content);
   const [rating, setRating] = useState<number>(comment.rating);
@@ -81,7 +83,7 @@ export const CommentListItem: React.FC<CommentListItemProps> = ({ theme = "auto"
   const canSave: boolean = title !== comment.title || content !== comment.content || rating !== comment.rating || pending.title !== comment.title || pending.content !== comment.content;
 
   const handleDelete = () => {
-    onDelete && onDelete();
+    if (!disableDelete && onDelete) onDelete();
   };
 
   const handleSave = async () => {

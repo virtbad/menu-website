@@ -97,6 +97,7 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
   const user = useUser();
   const router = useRouter();
   const { token } = useAuth();
+  const [deleting, setDeleting] = useState<Array<string>>([]);
   const { ...serverComments } = useSWR(menu && `${apiUrl}/menu/${menu.uuid}/comment`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => data));
 
   useEffect(() => {
@@ -127,10 +128,13 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
 
   const handleDelete = async (uuid: string) => {
     try {
+      setDeleting([...deleting, menu.uuid]);
       await axios.delete(`${apiUrl}/menu/${menu.uuid}/comment/${uuid}`, { headers: { Authorization: `Bearer ${token}` } });
       setComments(comments.filter(({ id }) => id !== uuid));
+      setDeleting(deleting.filter((id: string) => id !== menu.uuid));
     } catch (e) {
       Logger.error(`Error whilst deleting comment: ${convertAxiosErrorString(e)}`);
+      setDeleting(deleting.filter((id: string) => id !== menu.uuid));
     }
   };
 
@@ -147,7 +151,17 @@ const CommentBox: React.FC<newCommentBoxProps> = ({ menu }): JSX.Element => {
       <h2 className={style["commentbox-title"]} children={"Kommentare"} />
       <div ref={commentsRef} className={style["commentbox-comments"]}>
         {comments.map((comment: Comment) => {
-          return <CommentListItem menuId={menu.uuid} editing={editing === comment.id} comment={comment} key={comment.id} onEdit={(start) => handleCommentEdit(start, comment.id)} onDelete={() => handleDelete(comment.id)} />;
+          return (
+            <CommentListItem
+              disableDelete={deleting.includes(menu.uuid)}
+              menuId={menu.uuid}
+              editing={editing === comment.id}
+              comment={comment}
+              key={comment.id}
+              onEdit={(start) => handleCommentEdit(start, comment.id)}
+              onDelete={() => handleDelete(comment.id)}
+            />
+          );
         })}
         {serverComments.isValidating && <div className={style["comments-loader"]} children={<Loader />} />}
         {comments.length === 0 && !serverComments.isValidating && <span className={style["noresult"]} children={"Keine Bisherigen Kommentare"} />}

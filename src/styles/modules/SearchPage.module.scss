@@ -56,11 +56,12 @@
 
   &:first-of-type {
     align-self: flex-start;
-    transform: translateY(-$layout-padding);
+    transform: translateY(calc(($layout-padding + 5px) * -1));
 
     rect {
       fill: var(--home-accent);
       fill: url(#background-gradient);
+      transform: translateY(3px);
     }
   }
 

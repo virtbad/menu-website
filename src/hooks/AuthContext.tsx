@@ -22,20 +22,14 @@ const defaultValue: AuthContext = {
 
 export const AuthContext = React.createContext<AuthContext>(defaultValue);
 
-interface AuthProviderProps {
-  token?: string;
-  exp?: Date;
-  fetching?: boolean;
-}
-
 /**
  * Provider for the auth context to manage the logged in user
  */
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp, fetching = false }) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies();
   const { instance, inProgress } = useMsal();
-  const [auth, setAuth] = useState<{ token: string; exp: Date }>({ token: token, exp: exp });
+  const [auth, setAuth] = useState<{ token: string; exp: Date }>({ token: undefined, exp: undefined });
   const router = useRouter();
 
   useEffect(() => {
@@ -43,11 +37,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, token, exp
   });
 
   useEffect(() => {
-    if (token && exp) setAuth({ token: token, exp: exp });
-  }, [token, exp]);
-
-  useEffect(() => {
-    if (fetching) return;
     auth.token && setCookie("token", auth.token, { path: "/", expires: auth.exp });
     !auth.token && removeCookie("token");
   }, [auth]);
