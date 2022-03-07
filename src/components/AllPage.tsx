@@ -58,7 +58,7 @@ const AllPage: React.FC<AllPageProps> = ({ menus }): JSX.Element => {
             {results.results
               .filter((v, i, a) => a.indexOf(v) === i)
               .map((menu: Menu, index: number) => {
-                return <RatedListItem disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
+                return <RatedListItem syncVotes={false} disabled href={`/menu/${menu.uuid}`} key={`${index}-${menu.uuid}`} menu={menu} />;
               })}
             {results.results.length === 0 && <span className={style["noresult"]} children={"Keine Menüs gefunden"} />}
             <span id={"menu-spanner"} ref={loaderRef} />

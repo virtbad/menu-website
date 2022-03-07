@@ -5,7 +5,7 @@ import { Logger } from "../../classes/Logger.class";
 import { User } from "../../classes/User.class";
 import { useUser } from "../../hooks/UserContext";
 import style from "../../styles/modules/system/Vote.module.scss";
-import { apiUrl } from "../../util/global.config";
+import { apiUrl, fetcher } from "../../util/global.config";
 import { convertAxiosErrorString } from "../../util/util";
 
 interface VoteProps {
@@ -13,18 +13,24 @@ interface VoteProps {
   votes: number;
   disabled?: boolean;
   menuId: string;
+  sync?: boolean;
 }
 
 /**
  * Vertical vote component
  */
 
-export const VerticalVote: React.FC<VoteProps> = ({ menuId, disabled = false, theme = "auto", ...props }): JSX.Element => {
+export const VerticalVote: React.FC<VoteProps> = ({ menuId, sync = true, disabled = false, theme = "auto", ...props }): JSX.Element => {
   const [voted, setVoted] = useState<number>(0);
   const [votes, setVotes] = useState<number>(props.votes);
   const user: User = useUser();
+  const { ...totalVote } = useSWR(sync && `${apiUrl}/menu/${menuId}`, fetcher);
   const { ...serverVote } = useSWR(user && user.token && !disabled && `${apiUrl}/menu/${menuId}/vote`, (url: string) => axios.get(url, { headers: { Authorization: `Bearer ${user.token}` } }).then(({ data }) => data));
   if (!user) disabled = true;
+
+  useEffect(() => {
+    setVotes(totalVote.data?.voteBalance || votes);
+  }, [totalVote.data]);
 
   useEffect(() => {
     setVotes(props.votes);

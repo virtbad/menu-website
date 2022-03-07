@@ -40,14 +40,15 @@ interface RatedListItemProps extends ListItemProps {
   href?: string;
   disabled?: boolean;
   onClick?: () => void;
+  syncVotes?: boolean;
 }
 
-export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, onClick, disabled = false, background = "auto", theme = "auto", href }): JSX.Element => {
+export const RatedListItem: React.FC<RatedListItemProps> = ({ menu, syncVotes = true, onClick, disabled = false, background = "auto", theme = "auto", href }): JSX.Element => {
   const BaseRatedListItem: JSX.Element = (
     <div className={style["listitem-container"]} onClick={onClick} id={menu.uuid} data-background={background} data-theme={theme} data-rated={true}>
       <h3 className={style["item-title"]} children={menu.title} />
       <div className={style["item-description"]} children={menu.description} />
-      <div className={style["item-vote"]} children={<VerticalVote disabled={disabled} menuId={menu.uuid} theme={theme} votes={menu.votes} />} />
+      <div className={style["item-vote"]} children={<VerticalVote sync={syncVotes} disabled={disabled} menuId={menu.uuid} theme={theme} votes={menu.votes} />} />
       <div className={style["item-button"]} children={<Button forwardIcon theme={"green"} children={"Mehr"} href={`/menu/${menu.uuid}`} />} />
       <div className={style["item-date"]} children={menu.date.toLocaleDateString("de", { month: "2-digit", day: "2-digit", year: "numeric" })} />
     </div>
