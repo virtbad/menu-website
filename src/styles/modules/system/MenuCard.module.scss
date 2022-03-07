@@ -147,3 +147,23 @@
     grid-area: label;
   }
 }
+
+@include max-550 {
+  .card-container {
+    grid-template-areas: "vote title date" "vote description description" "vote price price" ". . buttons";
+    padding: 1.125rem 1.25rem 1.25rem 1.25rem;
+  }
+
+  .card-prices-container {
+    gap: 0.25rem !important;
+  }
+}
+
+@include max-380 {
+  .card-container {
+    grid-template-areas: "vote title title" "vote description description" "vote price price" ". . date" ". . buttons";
+  }
+  .card-prices-container {
+    flex-direction: column;
+  }
+}
