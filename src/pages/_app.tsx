@@ -1,5 +1,5 @@
 import { EventType, PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
+import { MsalProvider, useMsal } from "@azure/msal-react";
 import { CacheProvider } from "@emotion/react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
@@ -64,6 +64,7 @@ const Wrapper: NextPage<AppProps> = (props: AppProps): JSX.Element => {
 
 const Container: React.FC<AppProps> = ({ Component, pageProps }): JSX.Element => {
   const { requestToken } = useAuth();
+  const { instance } = useMsal();
   const [cookies, _, removeCookie] = useCookies();
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const Container: React.FC<AppProps> = ({ Component, pageProps }): JSX.Element =>
     //less than hourly interval to renew access token to prevent invalid access token errors
     const interval = setInterval(async () => {
       try {
+        if (!instance.getActiveAccount()) return;
         await requestToken();
         Logger.auth("Periodically refreshed access token");
       } catch (e) {
@@ -84,6 +86,7 @@ const Container: React.FC<AppProps> = ({ Component, pageProps }): JSX.Element =>
   }, []);
 
   useEffect(() => {
+    if (!instance.getActiveAccount()) return;
     requestToken()
       .then(() => {
         Logger.auth("Refreshed access token");
