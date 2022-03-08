@@ -8,7 +8,7 @@ interface LinkProps extends NextLinkProps {
   noUnderline?: boolean;
 }
 
-const EXTERNAL_URL_PATTERN: RegExp = /^http(s)?:\/\/*/; // pattern to match whether the href is external or al
+const EXTERNAL_URL_PATTERN: RegExp = /^http(s)?:\/\/*/; // pattern to match whether the href is external or internal
 
 /**
  * Link component
